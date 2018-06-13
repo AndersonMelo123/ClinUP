@@ -1,0 +1,59 @@
+{
+  "project_info": {
+    "project_number": "402161144898",
+    "firebase_url": "https://clinup-42550.firebaseio.com",
+    "project_id": "clinup-42550",
+    "storage_bucket": "clinup-42550.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:402161144898:android:f897b9f4833c6f53",
+        "android_client_info": {
+          "package_name": "br.com.projetofragmeto.clinup"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "402161144898-73kffmpqrk9aikq6linatien2e1but2b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.projetofragmeto.clinup",
+            "certificate_hash": "7ba68d95952ea9e915e895bf1a398212d0b2b688"
+          }
+        },
+        {
+          "client_id": "402161144898-dltitg0crgdvpjf7l6er2876iffgueco.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "402161144898-dltitg0crgdvpjf7l6er2876iffgueco.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDw3Xclir997XN6BKz0SxTRsX3r0ldkMFw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "402161144898-dltitg0crgdvpjf7l6er2876iffgueco.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
