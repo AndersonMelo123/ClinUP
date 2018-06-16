@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -74,6 +75,22 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void validarLogin(){
+
+        String Email = email.getText().toString().trim();
+        String password  = senha.getText().toString().trim();
+
+
+        //checking if email and passwords are empty
+        if(TextUtils.isEmpty(Email)){
+            Toast.makeText(this,"Por favor entre com o e-mail",Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if(TextUtils.isEmpty(password)){
+            Toast.makeText(this,"Por favor entre com a senha",Toast.LENGTH_LONG).show();
+            return;
+        }
+
         autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
         autenticacao.signInWithEmailAndPassword(
                 usuario.getEmail(),

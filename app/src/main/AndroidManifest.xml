@@ -20,7 +20,12 @@
         </activity>
 
         <activity android:name=".activity.MainActivity" />
-        <activity android:name=".activity.CadastroUsuarioActivity" />
+        <activity android:name=".activity.CadastroUsuarioActivity"
+            android:parentActivityName=".activity.MainActivity">
+                <meta-data android:name="android.support.PARENT_ACTIVITY"
+                    android:value="br.com.projetofragmeto.clinup.activity.MainActivity">
+                </meta-data>
+        </activity>
         
     </application>
 
