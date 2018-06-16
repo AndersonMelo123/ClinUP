@@ -134,7 +134,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void metodoTeste(){
-
+        String nome = "Ihago";
     }
 }
 
