@@ -9,26 +9,26 @@ public class Preferencias {
 
     private Context contexto;
     private SharedPreferences preferences;
-    private final String NOME_ARQUIVO = "clinup.preferencias";
+    private final String NOME_ARQUIVO = "clinup.preferencias"; //Nome do arquivo onde serão salvas as prefer
     private final int MODE = 0;
     private SharedPreferences.Editor editor;
 
-    private final String CHAVE_IDENTIFICADOR = "identificadorUsuarioLogado";
-    private final String CHAVE_NOME = "nomeUsuarioLogado";
+    private final String CHAVE_IDENTIFICADOR = "identificadorUsuarioLogado"; //Variável para identificar usuário logado
+    private final String CHAVE_NOME = "nomeUsuarioLogado"; //Nome do usuário logado
 
     public Preferencias( Context contextoParametro){
 
         contexto = contextoParametro;
         preferences = contexto.getSharedPreferences(NOME_ARQUIVO, MODE );
-        editor = preferences.edit();
+        editor = preferences.edit(); //Salvar a preferência
 
     }
 
     public void salvarDados( String identificadorUsuario, String nomeUsuario ){
 
-        editor.putString(CHAVE_IDENTIFICADOR, identificadorUsuario); // Salva o identificador no aparelho
-        editor.putString(CHAVE_NOME, nomeUsuario); // Salva o identificador no aparelho
-        editor.commit();
+        editor.putString(CHAVE_IDENTIFICADOR, identificadorUsuario); //Colocar nas preferências a chave identificadora do usuário
+        //editor.putString(CHAVE_NOME, nomeUsuario); //Colocar nas preferências a chave com o titulo do usuário
+        editor.commit(); //Salvar as alterações nas preferências
 
     }
 

@@ -14,4 +14,8 @@
     <string name="digite_seu_e_mail">Digite seu e-mail</string>
     <string name="digite_sua_senha">Digite sua senha</string>
     <string name="digite_seu_nome">Digite seu nome</string>
+    <string name="botao_login_google">Google</string>
+    <string name="erro_login_invalido_Toast">Erro ao fazer login</string>
+    <string name="atencao">Atenção</string>
+    <string name="pergunta_cadastro_endereco">Pergunta cadastro endereco</string>
 </resources>

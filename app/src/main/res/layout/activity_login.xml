@@ -6,17 +6,15 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     tools:context=".activity.LoginActivity"
-    tools:layout_editor_absoluteY="81dp">
+    tools:layout_editor_absoluteY="25dp">
 
 
     <EditText
         android:id="@+id/edit_login_emailID"
-        android:layout_width="0dp"
+        android:layout_width="356dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginEnd="14dp"
-        android:layout_marginStart="14dp"
-        android:layout_marginTop="209dp"
+        android:layout_marginBottom="7dp"
+        android:layout_marginTop="138dp"
         android:ems="10"
         android:hint="@string/digite_seu_e_mail"
         android:inputType="textEmailAddress"
@@ -28,11 +26,9 @@
 
     <EditText
         android:id="@+id/edit_login_senhaID"
-        android:layout_width="0dp"
+        android:layout_width="356dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="28dp"
-        android:layout_marginEnd="14dp"
-        android:layout_marginStart="14dp"
+        android:layout_marginBottom="31dp"
         android:ems="10"
         android:hint="@string/digite_sua_senha"
         android:inputType="textPassword"
@@ -44,11 +40,9 @@
 
     <Button
         android:id="@+id/botao_logarID"
-        android:layout_width="0dp"
+        android:layout_width="356dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="13dp"
-        android:layout_marginEnd="14dp"
-        android:layout_marginStart="14dp"
+        android:layout_marginBottom="7dp"
         android:text="@string/botao_logar"
         android:theme="@style/botaoPadrao"
         app:layout_constraintBottom_toTopOf="@+id/textView3"
@@ -60,7 +54,7 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="97dp"
+        android:layout_marginBottom="173dp"
         android:onClick="abrirCadastroUsuario"
         android:text="@string/texto_cadastre"
         android:textColor="@android:color/white"
@@ -68,5 +62,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/botao_logarID" />
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/btnLoginGoogle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        app:layout_constraintVertical_bias="0.100000024" />
+
 
 </android.support.constraint.ConstraintLayout>
