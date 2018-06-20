@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    android:background="@color/Cinza"
     tools:context=".activity.LoginActivity"
     tools:layout_editor_absoluteY="25dp">
 
@@ -61,7 +61,7 @@
         android:layout_marginStart="8dp"
         android:onClick="abrirCadastroUsuario"
         android:text="@string/texto_cadastre"
-        android:textColor="@android:color/white"
+        android:textColor="@color/colorPrimaryDarker"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -78,6 +78,7 @@
         app:layout_constraintBottom_toTopOf="@+id/textView3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/botao_logarID" />
+        app:layout_constraintTop_toBottomOf="@+id/botao_logarID"
+        app:layout_constraintVertical_bias="0.735" />
 
 </android.support.constraint.ConstraintLayout>
