@@ -1,5 +1,7 @@
 package br.com.projetofragmeto.clinup.activity;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -84,7 +86,7 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
 
                     Preferencias preferencias = new Preferencias( CadastroUsuarioActivity.this );
                     preferencias.salvarDados( identificadorUsuario, usuario.getNome() );
-
+                    salvarPreferencias("id", identificadorUsuario);
 
                     abrirLogadoUsuario();
 
@@ -117,6 +119,14 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
         Intent intent = new Intent(CadastroUsuarioActivity.this, LoginActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    //Método que salva o id do usuário nas preferências para login automático ao abrir aplicativo
+    private void salvarPreferencias(String key, String value) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(key, value);
+        editor.commit();
     }
 
 }

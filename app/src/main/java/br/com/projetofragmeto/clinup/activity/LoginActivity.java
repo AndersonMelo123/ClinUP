@@ -1,6 +1,7 @@
 package br.com.projetofragmeto.clinup.activity;
 
 import android.app.AlertDialog;
+import android.app.LauncherActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -29,6 +30,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -60,16 +62,16 @@ public class LoginActivity extends AppCompatActivity {
 
     private SignInButton mLoginGoogle;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        firebase = ConfiguracaoFirebase.getFirebase();
-
         verificarUsuarioLogado(); /* Verifica se o usuario está logado,
                                      se estiver ele redireciona para a tela principal*/
+
+        firebase = ConfiguracaoFirebase.getFirebase();
+
 
         email = findViewById(R.id.edit_login_emailID);
         senha = findViewById(R.id.edit_login_senhaID);
@@ -114,17 +116,16 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+
     private void verificarUsuarioLogado(){
 
         autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
 
         //Se já estiver logado pelo Google
-       /* if (autenticacao.getCurrentUser() != null && getPreferencesKeyConsumidorVerificarLogado(this)) {
-            abrirTelaPrincipal();
-        }*/
-       if (autenticacao.getCurrentUser() != null){
+        if (autenticacao.getCurrentUser() != null && getPreferencesKeyConsumidorVerificarLogado(this)) {
             abrirTelaPrincipal();
         }
+
     }
 
     //Método para válidar o login e-mail e senha
@@ -304,7 +305,7 @@ public class LoginActivity extends AppCompatActivity {
 
         final String finalIdUsuarioLogado = idUsuarioLogado;
 
-        firebase.child("usuarios").child(idUsuarioLogado).addListenerForSingleValueEvent(new ValueEventListener() {
+        firebase.child("usuarios").child(finalIdUsuarioLogado).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //Verifica se o usuário já está salvo no banco de dados
