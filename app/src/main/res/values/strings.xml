@@ -14,4 +14,7 @@
     <string name="digite_seu_e_mail">Digite seu e-mail</string>
     <string name="digite_sua_senha">Digite sua senha</string>
     <string name="digite_seu_nome">Digite seu nome</string>
+
+    <string name="facebook_app_id">1126678920815484</string>
+    <string name="fb_login_protocol_scheme">fb1126678920815484</string>
 </resources>

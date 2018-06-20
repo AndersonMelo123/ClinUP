@@ -33,7 +33,16 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.0'
     implementation 'com.google.firebase:firebase-database:16.0.1'
     implementation 'com.google.firebase:firebase-auth:16.0.1'
+    implementation 'com.google.android.gms:play-services-auth:11.6.2'
     implementation 'com.android.support:design:27.1.1'
+
+    implementation 'com.google.android.gms:play-services:11.6.2'
+
+    implementation 'com.facebook.android:facebook-login:[4,5)'
+    implementation 'com.github.bumptech.glide:glide:3.6.1'
+
+
+
 
 }
 

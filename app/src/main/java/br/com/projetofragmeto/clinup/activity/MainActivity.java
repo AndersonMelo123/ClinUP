@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 
 import br.com.projetofragmeto.clinup.R;
@@ -29,7 +30,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                autenticacaoUsuario.signOut();
+                autenticacaoUsuario.signOut(); // Faz o logOut do firebase
+                LoginManager.getInstance().logOut(); // Faz o logOut do facebook
+
 
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
