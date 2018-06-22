@@ -18,4 +18,6 @@
     <string name="erro_login_invalido_Toast">Erro ao fazer login</string>
     <string name="atencao">Atenção</string>
     <string name="pergunta_cadastro_endereco">Pergunta cadastro endereco</string>
+    <string name="facebook_app_id">478683035902050</string>
+    <string name="fb_login_protocol_scheme">fb478683035902050</string>
 </resources>
