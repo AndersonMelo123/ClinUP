@@ -8,9 +8,64 @@ import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
 public class Usuario {
 
     private String id;
-    private String nome;
-    private String email;
-    private String senha;
+    private String nome;//
+    private String email;//
+    private String senha;//
+    private PlanoDeSaude plano;//
+    private String cpf;//
+    private String telefone;//
+    private String dataNascimento;//
+    private String estadoCivil;
+
+    public PlanoDeSaude getPlano() {
+        return plano;
+    }
+
+    public void setPlano(PlanoDeSaude plano) {
+        this.plano = plano;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    public String getDataNascimento() {
+        return dataNascimento;
+    }
+
+    public void setDataNascimento(String dataNascimento) {
+        this.dataNascimento = dataNascimento;
+    }
+
+    public String getEstadoCivil() {
+        return estadoCivil;
+    }
+
+    public void setEstadoCivil(String estadoCivil) {
+        this.estadoCivil = estadoCivil;
+    }
+
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
+
+    private Endereco endereco;
 
     public Usuario() {
     }

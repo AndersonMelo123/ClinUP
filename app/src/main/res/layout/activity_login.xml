@@ -4,21 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/Cinza"
+    android:background="@drawable/backgound_login"
     tools:context=".activity.LoginActivity"
-    tools:layout_editor_absoluteY="25dp">
+    tools:layout_editor_absoluteY="25dp"
+
+    >
 
 
     <EditText
         android:id="@+id/edit_login_emailID"
-        android:layout_width="356dp"
-        android:layout_height="64dp"
+        android:layout_width="322dp"
+        android:layout_height="39dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="124dp"
+        android:layout_marginTop="220dp"
+        android:background="#4d000000"
         android:ems="10"
         android:hint="@string/digite_seu_e_mail"
         android:inputType="textEmailAddress"
+        android:textAlignment="center"
         android:textColor="@color/textColorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,14 +30,16 @@
 
     <EditText
         android:id="@+id/edit_login_senhaID"
-        android:layout_width="356dp"
-        android:layout_height="64dp"
+        android:layout_width="322dp"
+        android:layout_height="39dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="24dp"
+        android:background="#4d000000"
         android:ems="10"
         android:hint="@string/digite_sua_senha"
         android:inputType="textPassword"
+        android:textAlignment="center"
         android:textColor="@color/textColorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -41,14 +47,15 @@
 
     <Button
         android:id="@+id/botao_logarID"
-        android:layout_width="356dp"
-        android:layout_height="64dp"
+        android:layout_width="329dp"
+        android:layout_height="57dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="24dp"
         android:text="@string/botao_logar"
         android:theme="@style/botaoPadrao"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.512"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_login_senhaID" />
 
@@ -62,6 +69,7 @@
         android:onClick="abrirCadastroUsuario"
         android:text="@string/texto_cadastre"
         android:textColor="@color/colorPrimaryDarker"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -79,6 +87,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/botao_logarID"
-        app:layout_constraintVertical_bias="0.735" />
+        app:layout_constraintVertical_bias="0.734" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="0dp"
+        android:layout_height="151dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:background="#4d000000"
+        app:layout_constraintBottom_toTopOf="@+id/edit_login_emailID"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.641"
+        app:srcCompat="@drawable/logo" />
 
 </android.support.constraint.ConstraintLayout>
