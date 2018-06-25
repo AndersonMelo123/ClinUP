@@ -11,8 +11,17 @@ public class Usuario {
     private String nome;
     private String email;
     private String senha;
+    private String Foto;
+
+    public Usuario(String idUsuario, String nome, String email, String foto){
+        this.id = idUsuario;
+        this.nome = nome;
+        this.email = email;
+        this.Foto = foto;
+    }
 
     public Usuario() {
+
     }
 
     public void salvar(){
@@ -51,5 +60,13 @@ public class Usuario {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public String getmFoto() {
+        return Foto;
+    }
+
+    public void setmFoto(String mFoto) {
+        this.Foto = mFoto;
     }
 }
