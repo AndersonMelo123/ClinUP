@@ -16,6 +16,20 @@ public class Usuario {
     private String telefone;//
     private String dataNascimento;//
     private String estadoCivil;
+    private String foto;
+
+    public Usuario(String nome, String email, String foto) {
+        this.nome = nome;
+        this.email = email;
+        this.foto = foto;
+    }
+
+    public Usuario(String id, String nome, String email, String foto) {
+        this.id = id;
+        this.nome = nome;
+        this.email = email;
+        this.foto = foto;
+    }
 
     public PlanoDeSaude getPlano() {
         return plano;
