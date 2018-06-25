@@ -8,20 +8,66 @@ import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
 public class Usuario {
 
     private String id;
-    private String nome;
-    private String email;
-    private String senha;
-    private String Foto;
+    private String nome;//
+    private String email;//
+    private String senha;//
+    private PlanoDeSaude plano;//
+    private String cpf;//
+    private String telefone;//
+    private String dataNascimento;//
+    private String estadoCivil;
 
-    public Usuario(String idUsuario, String nome, String email, String foto){
-        this.id = idUsuario;
-        this.nome = nome;
-        this.email = email;
-        this.Foto = foto;
+    public PlanoDeSaude getPlano() {
+        return plano;
     }
 
-    public Usuario() {
+    public void setPlano(PlanoDeSaude plano) {
+        this.plano = plano;
+    }
 
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    public String getDataNascimento() {
+        return dataNascimento;
+    }
+
+    public void setDataNascimento(String dataNascimento) {
+        this.dataNascimento = dataNascimento;
+    }
+
+    public String getEstadoCivil() {
+        return estadoCivil;
+    }
+
+    public void setEstadoCivil(String estadoCivil) {
+        this.estadoCivil = estadoCivil;
+    }
+
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
+
+    private Endereco endereco;
+
+    public Usuario() {
     }
 
     public void salvar(){
@@ -60,13 +106,5 @@ public class Usuario {
 
     public void setSenha(String senha) {
         this.senha = senha;
-    }
-
-    public String getmFoto() {
-        return Foto;
-    }
-
-    public void setmFoto(String mFoto) {
-        this.Foto = mFoto;
     }
 }
