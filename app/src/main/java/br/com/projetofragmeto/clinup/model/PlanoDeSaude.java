@@ -4,10 +4,10 @@ public class PlanoDeSaude {
     private String nomePlano;
     private String numPlano;
 
-    public PlanoDeSaude(String nomePlano, String numPlano) {
+    /*public PlanoDeSaude(String nomePlano, String numPlano) {
         this.nomePlano = nomePlano;
         this.numPlano = numPlano;
-    }
+    }*/
 
     public String getNomePlano() {
         return nomePlano;

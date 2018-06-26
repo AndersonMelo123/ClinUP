@@ -26,6 +26,7 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
 import br.com.projetofragmeto.clinup.helper.Base64Custom;
 import br.com.projetofragmeto.clinup.helper.Preferencias;
+import br.com.projetofragmeto.clinup.model.PlanoDeSaude;
 import br.com.projetofragmeto.clinup.model.Usuario;
 
 public class CadastroUsuarioActivity extends AppCompatActivity {
@@ -33,8 +34,13 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
     private EditText nome;
     private EditText email;
     private EditText senha;
+    private EditText cpf;
+    private EditText nomePlano;
+    private EditText numPlano;
+    private EditText dataNascimento;
     private Button botaoCadastrar;
     private Usuario usuario;
+    private PlanoDeSaude planoDeSaude;
 
     private FirebaseAuth autenticacao;
 
@@ -46,6 +52,10 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
         nome = findViewById(R.id.edit_cadastro_nomeID);
         email = findViewById(R.id.edit_cadastro_emailID);
         senha = findViewById(R.id.edit_cadastro_senhaID);
+        cpf = findViewById(R.id.edit_cadastro_cpfID);
+        nomePlano = findViewById(R.id.edit_nomePlanoID);
+        numPlano = findViewById(R.id.edit_numPlanoID);
+        dataNascimento = findViewById(R.id.edit_dataNascimentoID);
         botaoCadastrar = findViewById(R.id.bt_cadastrarID);
 
         botaoCadastrar.setOnClickListener(new View.OnClickListener() {
@@ -53,9 +63,17 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 usuario = new Usuario();
+                planoDeSaude = new PlanoDeSaude();
                 usuario.setNome( nome.getText().toString() );
                 usuario.setEmail( email.getText().toString());
                 usuario.setSenha( senha.getText().toString());
+                usuario.setCpf( cpf.getText().toString());
+                usuario.setNomePlano( nomePlano.getText().toString());
+                usuario.setNumPlano( numPlano.getText().toString());
+
+
+                usuario.setDataNascimento( dataNascimento.getText().toString());
+
 
                 cadastrarUsuario();
             }

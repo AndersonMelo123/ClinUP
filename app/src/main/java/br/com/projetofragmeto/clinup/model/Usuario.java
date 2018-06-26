@@ -31,8 +31,24 @@ public class Usuario {
         this.foto = foto;
     }
 
+    public Usuario(String nome, String email, String senha, PlanoDeSaude plano, String cpf, String telefone, String dataNascimento) {
+        this.nome = nome;
+        this.email = email;
+        this.senha = senha;
+        this.plano = plano;
+        this.cpf = cpf;
+        this.telefone = telefone;
+        this.dataNascimento = dataNascimento;
+    }
+
     public PlanoDeSaude getPlano() {
         return plano;
+    }
+    public void setNomePlano(String nome){
+        plano.setNomePlano(nome);
+    }
+    public void setNumPlano(String num){
+        plano.setNumPlano(num);
     }
 
     public void setPlano(PlanoDeSaude plano) {

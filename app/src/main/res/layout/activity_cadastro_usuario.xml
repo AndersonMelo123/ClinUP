@@ -40,7 +40,7 @@
         android:textColor="@color/textColorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText8" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_dataNascimentoID" />
 
     <EditText
         android:id="@+id/edit_cadastro_senhaID"
@@ -88,9 +88,9 @@
         android:hint="(87)"
         android:inputType="textPersonName"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/editText6"
+        app:layout_constraintBottom_toTopOf="@+id/edit_nomePlanoID"
         app:layout_constraintStart_toEndOf="@+id/editText4"
-        app:layout_constraintTop_toBottomOf="@+id/editText5" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_cadastro_cpfID" />
 
     <EditText
         android:id="@+id/editText3"
@@ -106,7 +106,7 @@
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/editText"
-        app:layout_constraintTop_toBottomOf="@+id/editText5" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_cadastro_cpfID" />
 
     <EditText
         android:id="@+id/editText4"
@@ -120,12 +120,12 @@
         android:hint="+55"
         android:inputType="textPersonName"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/editText6"
+        app:layout_constraintBottom_toTopOf="@+id/edit_nomePlanoID"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText5" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_cadastro_cpfID" />
 
     <EditText
-        android:id="@+id/editText5"
+        android:id="@+id/edit_cadastro_cpfID"
         android:layout_width="322dp"
         android:layout_height="39dp"
         android:layout_marginEnd="8dp"
@@ -141,7 +141,7 @@
         app:layout_constraintTop_toBottomOf="@+id/edit_cadastro_nomeID" />
 
     <EditText
-        android:id="@+id/editText6"
+        android:id="@+id/edit_nomePlanoID"
         android:layout_width="322dp"
         android:layout_height="39dp"
         android:layout_marginEnd="8dp"
@@ -157,7 +157,7 @@
         app:layout_constraintTop_toBottomOf="@+id/editText3" />
 
     <EditText
-        android:id="@+id/editText7"
+        android:id="@+id/edit_numPlanoID"
         android:layout_width="322dp"
         android:layout_height="39dp"
         android:layout_marginEnd="8dp"
@@ -170,10 +170,10 @@
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText6" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_nomePlanoID" />
 
     <EditText
-        android:id="@+id/editText8"
+        android:id="@+id/edit_dataNascimentoID"
         android:layout_width="322dp"
         android:layout_height="39dp"
         android:layout_marginEnd="8dp"
@@ -186,6 +186,6 @@
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText7" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_numPlanoID" />
 
 </android.support.constraint.ConstraintLayout>
