@@ -347,6 +347,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 firebaseLogin(loginResult.getAccessToken());
+                verificarUsuarioLogado();
+
             }
 
             @Override
