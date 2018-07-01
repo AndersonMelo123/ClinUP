@@ -77,7 +77,7 @@
         app:layout_constraintVertical_bias="0.547" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/edit_numEstadoID"
         android:layout_width="55dp"
         android:layout_height="39dp"
         android:layout_marginBottom="8dp"
@@ -89,11 +89,11 @@
         android:inputType="textPersonName"
         android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/edit_nomePlanoID"
-        app:layout_constraintStart_toEndOf="@+id/editText4"
+        app:layout_constraintStart_toEndOf="@+id/edit_numPaisID"
         app:layout_constraintTop_toBottomOf="@+id/edit_cadastro_cpfID" />
 
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/edit_numTelefoneID"
         android:layout_width="200dp"
         android:layout_height="39dp"
         android:layout_marginEnd="31dp"
@@ -105,11 +105,11 @@
         android:inputType="textPersonName"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/editText"
+        app:layout_constraintStart_toEndOf="@+id/edit_numEstadoID"
         app:layout_constraintTop_toBottomOf="@+id/edit_cadastro_cpfID" />
 
     <EditText
-        android:id="@+id/editText4"
+        android:id="@+id/edit_numPaisID"
         android:layout_width="50dp"
         android:layout_height="39dp"
         android:layout_marginBottom="8dp"
@@ -154,7 +154,7 @@
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText3" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_numTelefoneID" />
 
     <EditText
         android:id="@+id/edit_numPlanoID"

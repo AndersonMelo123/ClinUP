@@ -3,20 +3,38 @@ package br.com.projetofragmeto.clinup.model;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
 
+import java.io.Serializable;
+
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
+import br.com.projetofragmeto.clinup.database.PlanoDeSaudeImplements;
 
-public class Usuario {
+/*Adicionando a interface serializable será possível transformar o objeto num formato que poderá ser salvo num arquivo.
+ Por exemplo, para utilizar um ObjectOutputStream e salvar um objeto num arquivo do disco será necessário implementar essa interface.*/
 
+public class Usuario implements Serializable {
+
+    private String idUsuario;
     private String id;
+
     private String nome;//
     private String email;//
     private String senha;//
-    private PlanoDeSaude plano;//
+
     private String cpf;//
     private String telefone;//
     private String dataNascimento;//
     private String estadoCivil;
     private String foto;
+
+    private String numPais;
+    private String numEstado;
+    private String numTelefone;
+
+    private Endereco endereco;
+
+    private PlanoDeSaude plano;//
+    private String nomePlano;//
+    private String numPlano;//
 
     public Usuario(String nome, String email, String foto) {
         this.nome = nome;
@@ -31,28 +49,47 @@ public class Usuario {
         this.foto = foto;
     }
 
-    public Usuario(String nome, String email, String senha, PlanoDeSaude plano, String cpf, String telefone, String dataNascimento) {
-        this.nome = nome;
-        this.email = email;
-        this.senha = senha;
-        this.plano = plano;
-        this.cpf = cpf;
-        this.telefone = telefone;
-        this.dataNascimento = dataNascimento;
+    public Usuario() {
     }
 
-    public PlanoDeSaude getPlano() {
-        return plano;
-    }
-    public void setNomePlano(String nome){
-        plano.setNomePlano(nome);
-    }
-    public void setNumPlano(String num){
-        plano.setNumPlano(num);
+    public String getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setPlano(PlanoDeSaude plano) {
-        this.plano = plano;
+    public void setIdUsuario(String idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
+    }
+
+    public String getNumPais() {
+        return numPais;
+    }
+
+    public void setNumPais(String numPais) {
+        this.numPais = numPais;
+    }
+
+    public String getNumEstado() {
+        return numEstado;
+    }
+
+    public void setNumEstado(String numEstado) {
+        this.numEstado = numEstado;
+    }
+
+    public String getNumTelefone() {
+        return numTelefone;
+    }
+
+    public void setNumTelefone(String numTelefone) {
+        this.numTelefone = numTelefone;
     }
 
     public String getCpf() {
@@ -95,15 +132,6 @@ public class Usuario {
         this.endereco = endereco;
     }
 
-    private Endereco endereco;
-
-    public Usuario() {
-    }
-
-    public void salvar(){
-        DatabaseReference referenciaFirebase = ConfiguracaoFirebase.getFirebase();
-        referenciaFirebase.child("usuarios").child( getId() ).setValue( this );
-    }
 
     @Exclude
     public String getId() {
@@ -137,4 +165,10 @@ public class Usuario {
     public void setSenha(String senha) {
         this.senha = senha;
     }
+
+    public void salvar(){
+        DatabaseReference referenciaFirebase = ConfiguracaoFirebase.getFirebase();
+        referenciaFirebase.child("usuarios").child( getId() ).setValue( this );
+    }
+
 }

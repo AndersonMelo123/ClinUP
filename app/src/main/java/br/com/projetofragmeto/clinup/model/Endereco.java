@@ -1,29 +1,76 @@
 package br.com.projetofragmeto.clinup.model;
 
-public class Endereco {
+import java.io.Serializable;
 
-    private String rua;
+/*Adicionando a interface serializable será possível transformar o objeto num formato que poderá ser salvo num arquivo.
+ Por exemplo, para utilizar um ObjectOutputStream e salvar um objeto num arquivo do disco será necessário implementar essa interface.*/
+
+public class Endereco implements Serializable{
+
+    //Atributos
+
+    private String idUsuario;
+    private String id;
+
+    private String logradouro;
+    private String numero;
+    private String complemento;
     private String bairro;
-    private String cidade;
-    private String estado;
+    private String localidade;
+    private String uf;
     private String cep;
-    private int numero;
 
-    public Endereco(String rua, String bairro, String cidade, String estado, String cep, int numero) {
-        this.rua = rua;
+    private double Latitude;
+    private double Longitude;
+
+    public Endereco(String logradouro, String bairro, String localidade, String uf) {
+        this.logradouro = logradouro;
         this.bairro = bairro;
-        this.cidade = cidade;
-        this.estado = estado;
-        this.cep = cep;
+        this.localidade = localidade;
+        this.uf = uf;
+    }
+
+    public Endereco() {
+    }
+
+    public String getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(String idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getLogradouro() {
+        return logradouro;
+    }
+
+    public void setLogradouro(String logradouro) {
+        this.logradouro = logradouro;
+    }
+
+    public String getNumero() {
+        return numero;
+    }
+
+    public void setNumero(String numero) {
         this.numero = numero;
     }
 
-    public String getRua() {
-        return rua;
+    public String getComplemento() {
+        return complemento;
     }
 
-    public void setRua(String rua) {
-        this.rua = rua;
+    public void setComplemento(String complemento) {
+        this.complemento = complemento;
     }
 
     public String getBairro() {
@@ -34,20 +81,20 @@ public class Endereco {
         this.bairro = bairro;
     }
 
-    public String getCidade() {
-        return cidade;
+    public String getLocalidade() {
+        return localidade;
     }
 
-    public void setCidade(String cidade) {
-        this.cidade = cidade;
+    public void setLocalidade(String localidade) {
+        this.localidade = localidade;
     }
 
-    public String getEstado() {
-        return estado;
+    public String getUf() {
+        return uf;
     }
 
-    public void setEstado(String estado) {
-        this.estado = estado;
+    public void setUf(String uf) {
+        this.uf = uf;
     }
 
     public String getCep() {
@@ -58,11 +105,20 @@ public class Endereco {
         this.cep = cep;
     }
 
-    public int getNumero() {
-        return numero;
+    public double getLatitude() {
+        return Latitude;
     }
 
-    public void setNumero(int numero) {
-        this.numero = numero;
+    public void setLatitude(double latitude) {
+        Latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return Longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        Longitude = longitude;
     }
 }
+

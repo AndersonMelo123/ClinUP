@@ -61,7 +61,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText email;
     private EditText senha;
-    private Button botaoLogar;
     private Button mLoginButtonFacebook;
 
     private LoginButton botaoLoginFacebook;
@@ -78,8 +77,6 @@ public class LoginActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 1;
     private GoogleApiClient mGoogleApiClient;
 
-    private SignInButton mLoginGoogle;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
 
         email = findViewById(R.id.edit_login_emailID);
         senha = findViewById(R.id.edit_login_senhaID);
-        botaoLogar = findViewById(R.id.botao_logarID);
+        Button botaoLogar = findViewById(R.id.botao_logarID);
         botaoLoginFacebook = findViewById(R.id.login_facebook_button);
 
         firebase = FirebaseDatabase.getInstance().getReference();
@@ -128,9 +125,9 @@ public class LoginActivity extends AppCompatActivity {
                 Log.i("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
             }
         } catch (PackageManager.NameNotFoundException e) {
-
+            Log.i("TAG", String.valueOf(e));
         } catch (NoSuchAlgorithmException e) {
-            //Vazio
+            Log.i("TAG", String.valueOf(e));
         }
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -158,7 +155,7 @@ public class LoginActivity extends AppCompatActivity {
         };
 
 
-        mLoginGoogle = findViewById(R.id.btnLoginGoogle);
+        SignInButton mLoginGoogle = findViewById(R.id.btnLoginGoogle);
 
         //Configuração do Google Sign In para login pelo Google
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -218,7 +215,6 @@ public class LoginActivity extends AppCompatActivity {
 
         String Email = email.getText().toString().trim();
         String password  = senha.getText().toString().trim();
-
 
         //checking if email and passwords are empty
         if(TextUtils.isEmpty(Email)){
@@ -288,6 +284,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    // Login do Google
     private void signIn() {
 
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
@@ -341,28 +338,28 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
-
     private void clickBotaoFacebook() {
         botaoLoginFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 firebaseLogin(loginResult.getAccessToken());
-                verificarUsuarioLogado();
+                //verificarUsuarioLogado();
 
             }
 
             @Override
             public void onCancel() {
-                Toast.makeText(LoginActivity.this, "Sign In canceled", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Login cancelado", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onError(FacebookException error) {
-                Toast.makeText(LoginActivity.this, "Something bad happened", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Algo de errado aconteceu", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    // Login no facebook
     private void firebaseLogin(AccessToken accessToken) {
         AuthCredential credencial = FacebookAuthProvider.getCredential(accessToken.getToken());
         autenticacao.signInWithCredential(credencial)
@@ -427,10 +424,9 @@ public class LoginActivity extends AppCompatActivity {
     //Método para salvar usuário no banco de dados do Firebase
     public void inserirUsuario(final Usuario usuario) {
 
-        String idUsuarioLogado = Base64Custom.codificarBase64(usuario.getEmail());
+        final String idUsuarioLogado = Base64Custom.codificarBase64(usuario.getEmail());
 
-        final String finalIdUsuarioLogado = idUsuarioLogado;
-        firebase.child("usuarios").child(finalIdUsuarioLogado).addListenerForSingleValueEvent(new ValueEventListener() {
+        firebase.child("usuarios").child(idUsuarioLogado).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //Verifica se o usuário já está salvo no banco de dados
@@ -442,7 +438,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 //Senão, salva o novo usuário no banco
                 else {
-                    firebase.child("usuarios").child(finalIdUsuarioLogado).setValue(usuario).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    firebase.child("usuarios").child(idUsuarioLogado).setValue(usuario).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
