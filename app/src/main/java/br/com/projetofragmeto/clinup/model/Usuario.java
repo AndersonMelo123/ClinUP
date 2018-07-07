@@ -1,5 +1,6 @@
 package br.com.projetofragmeto.clinup.model;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
 
@@ -170,5 +171,6 @@ public class Usuario implements Serializable {
         DatabaseReference referenciaFirebase = ConfiguracaoFirebase.getFirebase();
         referenciaFirebase.child("usuarios").child( getId() ).setValue( this );
     }
+
 
 }

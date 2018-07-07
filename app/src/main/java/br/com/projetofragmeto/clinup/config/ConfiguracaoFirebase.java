@@ -20,6 +20,7 @@ public final class ConfiguracaoFirebase {
     private static FirebaseDatabase database;
     private static DatabaseReference referenciaFirebase; //Variável para acesso ao banco de dados do Firebase
     private static FirebaseAuth autenticacao; //Variável para acesso a autenticação de usuário no Firebase
+    private static FirebaseUser user;
 
     public static DatabaseReference getFirebase(){ //Método para obter uma instância do banco de dados do Firebase
 
@@ -45,6 +46,13 @@ public final class ConfiguracaoFirebase {
 
         }
         return autenticacao;
+    }
+
+    public static FirebaseUser getUsuarioLogado(){ // retorna o usuário que está logado no momento
+         user = ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser(); // retorna o usuário logado
+
+        return user;
+
     }
 
 

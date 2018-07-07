@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
@@ -22,15 +23,22 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import br.com.projetofragmeto.clinup.R;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
+import br.com.projetofragmeto.clinup.model.Usuario;
 
 public class MainActivity extends AppCompatActivity {
 
     private Button logout;
+    private Button botaoDelete;
+    private TextView texto;
+    private TextView texto2;
+
     private FirebaseAuth autenticacaoUsuario;
     private GoogleApiClient googleApiClient;
+    private FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +46,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         autenticacaoUsuario = ConfiguracaoFirebase.getFirebaseAutenticacao();
+        user = ConfiguracaoFirebase.getUsuarioLogado(); // retorna o usuário que está logado no momento
 
         logout = findViewById(R.id.logoutID);
+        botaoDelete = findViewById(R.id.excluirContaButton);
+        texto = findViewById(R.id.idUser);
+        texto2 = findViewById(R.id.emailUser);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -67,6 +79,15 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
+            }
+        });
+
+        botaoDelete.setOnClickListener(new View.OnClickListener() { // Botão para deletar contas
+            @Override
+            public void onClick(View view) {
+                texto.setText("Id User: "+user.getUid());
+                texto2.setText("Email User: "+user.getEmail());
+
             }
         });
     }
