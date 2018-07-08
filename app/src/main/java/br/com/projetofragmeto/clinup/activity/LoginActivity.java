@@ -24,7 +24,6 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
-import com.facebook.Profile;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
@@ -61,7 +60,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText email;
     private EditText senha;
-    private Button mLoginButtonFacebook;
 
     private LoginButton botaoLoginFacebook;
     private CallbackManager callbackManager;
@@ -134,18 +132,20 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (AccessToken.getCurrentAccessToken() != null)
+                if (AccessToken.getCurrentAccessToken() != null && user != null){
                     Log.i("TAGUE",AccessToken.getCurrentAccessToken().getExpires().toString());
-                if (user != null) {
+
                     Log.e("Aceita", "onAuthStateChanged:signed_in" + user.getUid());
-                    String userId = AccessToken.getCurrentAccessToken().getUserId();
-                    String id = Profile.getCurrentProfile().getId();
+                    String userId = AccessToken.getCurrentAccessToken().getUserId(); // Pegar o id do facebook do usuário para coletar a imagem do perfil
                     usuario = new Usuario(user.getDisplayName(),user.getEmail(),"https://graph.facebook.com/" + userId + "/picture?type=large");
 
                     inserirUsuario(usuario);
 
-                    salvarPreferencias("id", userId);
-                    salvarPreferencias("idFacebook", userId);
+                    String idUsuario = Base64Custom.codificarBase64(user.getEmail());
+                    Preferencias preferencias = new Preferencias( LoginActivity.this );
+                    preferencias.salvarDados( idUsuario, usuario.getNome() );
+                    salvarPreferencias("id", idUsuario);
+                    //salvarPreferencias("idFacebook", idUsuario);
 
                 } else {
                     Log.d("TG", "SIGNED OUT");
@@ -305,18 +305,30 @@ public class LoginActivity extends AppCompatActivity {
             //Se o login pelo Google foi realizado com sucesso pela segunda vez na mesma sessão
             if (result.isSuccess() && getPreferencesKeyConsumidorGoogle(this)) {
 
+                Log.i("ResultadoPreference", String.valueOf(getPreferencesKeyConsumidorGoogle(this)));
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
-                salvarPreferencias("id", account.getId());
+
+                String idUsuario = Base64Custom.codificarBase64(account.getEmail());
+                Preferencias preferencias = new Preferencias(this);
+                preferencias.salvarDados( idUsuario, usuario.getNome() );
+                salvarPreferencias("id", idUsuario);
+
                 Toast.makeText(LoginActivity.this, "Sucesso ao fazer login!", Toast.LENGTH_LONG).show();
                 abrirTelaPrincipal();
 
                 //Se o login pelo Google foi realizado com sucesso pela primeira vez na sessão
             } else if (result.isSuccess() && !getPreferencesKeyConsumidorGoogle(this)) {
 
+                Log.i("ResultadoPreference", String.valueOf(getPreferencesKeyConsumidorGoogle(this)));
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
-                salvarPreferencias("idGoogle", account.getId());
+
+                String idUsuario = Base64Custom.codificarBase64(account.getEmail());
+                Preferencias preferencias = new Preferencias(this);
+                preferencias.salvarDados("id",idUsuario);
+                salvarPreferencias("idGoogle", idUsuario);
+
                 salvarUsuarioGoogle(account);
                 abrirTelaPrincipal();
 
@@ -407,7 +419,10 @@ public class LoginActivity extends AppCompatActivity {
 
             usuario = new Usuario(account.getId(), account.getDisplayName(), account.getEmail(), account.getPhotoUrl().toString());
 
-            salvarPreferencias("id", account.getId());
+            String idUsuario = Base64Custom.codificarBase64(usuario.getEmail());
+            Preferencias preferencias = new Preferencias( LoginActivity.this );
+            preferencias.salvarDados( idUsuario, usuario.getNome() );
+            salvarPreferencias("id", idUsuario);
 
             //Chamada do DAO para salvar no banco
             inserirUsuario(usuario);

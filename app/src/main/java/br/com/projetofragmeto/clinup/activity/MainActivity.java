@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
@@ -27,10 +28,17 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
+
 
 import br.com.projetofragmeto.clinup.R;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
+import br.com.projetofragmeto.clinup.helper.Preferencias;
 import br.com.projetofragmeto.clinup.model.Usuario;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,6 +51,14 @@ public class MainActivity extends AppCompatActivity {
     private GoogleApiClient googleApiClient;
     private FirebaseUser user;
     private Usuario usuario;
+
+    private TextView nomeText;
+    private TextView emailText;
+    private TextView idUsuario;
+
+    private DatabaseReference firebase;
+    private ValueEventListener valueEventListener;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +121,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
+        firebase.addValueEventListener(valueEventListener);
+
         OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(googleApiClient);
         if (opr.isDone()) {
             GoogleSignInResult result = opr.get();
@@ -117,6 +135,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (valueEventListener != null) {
+            firebase.removeEventListener(valueEventListener);
+        }
+    }
 
     public void logOut() {
         Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(new ResultCallback<Status>() {

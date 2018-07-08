@@ -3,8 +3,6 @@ package br.com.projetofragmeto.clinup.helper;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import java.util.HashMap;
-
 public class Preferencias {
 
     private Context contexto;
