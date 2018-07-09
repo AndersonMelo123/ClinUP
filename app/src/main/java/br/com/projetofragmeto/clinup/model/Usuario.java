@@ -172,6 +172,22 @@ public class Usuario implements Serializable {
         this.senha = senha;
     }
 
+    public String getNomePlano() {
+        return nomePlano;
+    }
+
+    public void setNomePlano(String nomePlano) {
+        this.nomePlano = nomePlano;
+    }
+
+    public String getNumPlano() {
+        return numPlano;
+    }
+
+    public void setNumPlano(String numPlano) {
+        this.numPlano = numPlano;
+    }
+
     public void salvar(){
         DatabaseReference referenciaFirebase = ConfiguracaoFirebase.getFirebase();
         referenciaFirebase.child("usuarios").child( getId() ).setValue( this );

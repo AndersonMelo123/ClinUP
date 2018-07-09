@@ -32,6 +32,9 @@ import br.com.projetofragmeto.clinup.model.Usuario;
 
 public class CadastroUsuarioActivity extends AppCompatActivity {
 
+    // Atributos para serem utilizados nessa classe
+    private Button botaoCadastrar;
+
     private EditText nome;
     private EditText email;
     private EditText senha;
@@ -43,13 +46,10 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
     private EditText numEstado;
     private EditText numTelefone;
 
-    private Button botaoCadastrar;
-
-    private Usuario usuario;
-
     private PlanoDeSaude planoDeSaude;
     private PlanoDeSaudeImplements Plano;
 
+    private Usuario usuario;
 
     private FirebaseAuth autenticacao;
 
@@ -58,6 +58,7 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro_usuario);
 
+        // Instanciando os ID do "activity_cadastro_usuario.xml"
         nome = findViewById(R.id.edit_cadastro_nomeID);
         email = findViewById(R.id.edit_cadastro_emailID);
         senha = findViewById(R.id.edit_cadastro_senhaID);
@@ -74,12 +75,13 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
 
         botaoCadastrar.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-
+            public void onClick(View v) { /* Criando o evento para esperar o clique no botão
+                                             , caso clicado ele entra e executa o conteúdo*/
                 usuario = new Usuario();
                 planoDeSaude = new PlanoDeSaude();
                 Plano = new PlanoDeSaudeImplements(getApplicationContext());
 
+                // Coletando os dados inseridos no "layout" e setando no usuário e plano de saude
                 usuario.setNome( nome.getText().toString() );
                 usuario.setEmail( email.getText().toString() );
                 usuario.setSenha( senha.getText().toString() );
@@ -91,8 +93,10 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
                 String idUsuarioLogado = Base64Custom.codificarBase64( usuario.getEmail() );
                 usuario.setId( idUsuarioLogado );
 
+                // Salvando no banco o plano de saúde
                 Plano.inserirPlanodeSaude(planoDeSaude, usuario.getId(),nomePlano.getText().toString(), numPlano.getText().toString());
 
+                // Salvando no banco o usuário
                 cadastrarUsuario();
 
             }
@@ -112,19 +116,16 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
                 if( task.isSuccessful() ){
                     Toast.makeText(CadastroUsuarioActivity.this, "Sucesso ao cadastrar usuário", Toast.LENGTH_LONG ).show();
 
-                    /* FIREBASE OBS: senha deve conter no minimo 6 caracteres
-                                     E-mail tem que ser um e-mail valido
-                     */
+                    usuario.salvar(); // Salva no banco o usuário
 
-                    usuario.salvar();
-
+                    // Salva o ID do usuárioLogado para ser consutado em outras telas
                     Preferencias preferencias = new Preferencias( CadastroUsuarioActivity.this );
                     preferencias.salvarDados( usuario.getId(), usuario.getNome() );
                     salvarPreferencias("id", usuario.getId());
 
                     abrirLogadoUsuario();
 
-                }else {
+                }else { // Alguns testes
 
                     String erroExcecao = "";
 
@@ -132,6 +133,7 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
                         throw task.getException();
 
                     }catch (FirebaseAuthWeakPasswordException e){
+                        // Firebase solicita uma senha com mais de 6 digitos
                         erroExcecao = "Digite uma senha mais forte, contento mais caracteres e com letras e números!";
 
                     } catch (FirebaseAuthInvalidCredentialsException e) {
@@ -149,10 +151,10 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
         });
     }
 
-    private void abrirLogadoUsuario(){
+    private void abrirLogadoUsuario(){ // Criando a atividade para ir para outra tela
         Intent intent = new Intent(CadastroUsuarioActivity.this, LoginActivity.class);
         startActivity(intent);
-        finish();
+        finish(); // Finalizando essa activity
     }
 
     //Método que salva o id do usuário nas preferências para login automático ao abrir aplicativo

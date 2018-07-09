@@ -15,10 +15,10 @@ import br.com.projetofragmeto.clinup.model.PlanoDeSaude;
 
 public class PlanoDeSaudeImplements implements PlanoDeSaudeDatabase {
 
-    private DatabaseReference ReferenciaFirebase;
-    private final Context Contexto;
+    private DatabaseReference ReferenciaFirebase; //Referenciando o banco de dados do firebase
+    private final Context Contexto; // Váriavel para coletar qual a classe que ele está atualmente
 
-    public PlanoDeSaudeImplements(Context mContexto) {
+    public PlanoDeSaudeImplements(Context mContexto) { // Construtor
             this.ReferenciaFirebase = ConfiguracaoFirebase.getFirebase();
             this.Contexto = mContexto;
         }
@@ -29,19 +29,17 @@ public class PlanoDeSaudeImplements implements PlanoDeSaudeDatabase {
 
             //Método para salvar endereço no banco de dados do Firebase
 
-            planoDeSaude.setIdUsuario( idUsuarioLogado );
+            planoDeSaude.setIdUsuario( idUsuarioLogado ); //Setando o identificador do usuario logado como identificador no plano de saúde
             planoDeSaude.setNumPlano( numPlano );
             planoDeSaude.setNomePlano( nomePlano );
+            planoDeSaude.setId(idUsuarioLogado);
 
-            //O método push() cria uma chave exclusiva para cada endereço cadastrado
 
-            ReferenciaFirebase = ReferenciaFirebase.child("planodesaude").push();
-            final String id = ReferenciaFirebase.getKey();
-            planoDeSaude.setId(id);
+            ReferenciaFirebase = ReferenciaFirebase.child("planodesaude").child(idUsuarioLogado); // Consultando o banco
 
             ReferenciaFirebase.setValue(planoDeSaude).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
-                public void onComplete(@NonNull Task<Void> task) {
+                public void onComplete(@NonNull Task<Void> task) {  // "SetValue" enviando um valor ao banco se já existir apenas atualiza senão ele cria
                     if(task.isSuccessful()){
                         Toast.makeText(Contexto, "Sucesso ao cadastrar plano de saúde", Toast.LENGTH_SHORT).show();
                     }
@@ -51,7 +49,6 @@ public class PlanoDeSaudeImplements implements PlanoDeSaudeDatabase {
                 }
             });
         }
-
 
         private Context getContexto(){
             return this.Contexto;

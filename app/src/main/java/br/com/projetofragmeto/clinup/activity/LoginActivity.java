@@ -58,6 +58,7 @@ import br.com.projetofragmeto.clinup.model.Usuario;
 
 public class LoginActivity extends AppCompatActivity {
 
+    // Atributos para serem utilizados nessa classe
     private EditText email;
     private EditText senha;
 
@@ -85,6 +86,7 @@ public class LoginActivity extends AppCompatActivity {
         verificarUsuarioLogado(); /* Verifica se o usuario está logado,
                                      se estiver ele redireciona para a tela principal*/
 
+        // Instanciando os ID do "activity_login.xml"
         email = findViewById(R.id.edit_login_emailID);
         senha = findViewById(R.id.edit_login_senhaID);
         Button botaoLogar = findViewById(R.id.botao_logarID);
@@ -95,7 +97,8 @@ public class LoginActivity extends AppCompatActivity {
 
         botaoLogar.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) {/* Criando o evento para esperar o clique no botão
+                                             , caso clicado ele entra e executa o conteúdo*/
 
                 usuario = new Usuario();
                 usuario.setEmail(email.getText().toString());
@@ -182,17 +185,20 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+
+    // Método chamado assim que é inicializado essa activity
     @Override
     public void onStart() {
         super.onStart();
-        autenticacao.addAuthStateListener(mAuthListener);
+        autenticacao.addAuthStateListener(mAuthListener); // Atualiza e começa a ouvir se a alguma mudança no usuário atual
     }
 
+    // Método chamado assim que saí do aplicativo sem fecha-lo
     @Override
     public void onStop() {
         super.onStop();
         if (mAuthListener != null) {
-            autenticacao.removeAuthStateListener(mAuthListener);
+            autenticacao.removeAuthStateListener(mAuthListener); // Para de ouvir se a alguma mudança no usuário atual
         }
     }
 
@@ -204,13 +210,11 @@ public class LoginActivity extends AppCompatActivity {
             abrirTelaPrincipal();
         }*/
         //Se já estiver logado pelo Google
-        if (autenticacao.getCurrentUser() != null){
+        if (autenticacao.getCurrentUser() != null){ //Verificando se existe usuário logado
             abrirTelaPrincipal();
         }
         //Se já estiver logado pelo Facebook
-        if(isLoggedIn()){
-            abrirTelaPrincipal();
-        }
+        if(isLoggedIn()) abrirTelaPrincipal(); // Verificando se existe algum usuário logado com o facebook
     }
 
     private void validarLogin(){
@@ -273,12 +277,14 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    // Abrir tela principal
     private void abrirTelaPrincipal(){
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity( intent );
         finish();
     }
 
+    // Abrir tela para cadastrar o usuário EMAIL e SENHA
     public void abrirCadastroUsuario(View view){
 
         Intent intent = new Intent(LoginActivity.this, CadastroUsuarioActivity.class);
@@ -314,7 +320,7 @@ public class LoginActivity extends AppCompatActivity {
                 preferencias.salvarDados( idUsuario, usuario.getNome() );
                 salvarPreferencias("id", idUsuario);
 
-                Toast.makeText(LoginActivity.this, "Sucesso ao fazer login!", Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this, "Sucesso ao fazer login!", Toast.LENGTH_LONG).show(); // Mensagem na tela do usuário
                 abrirTelaPrincipal();
 
                 //Se o login pelo Google foi realizado com sucesso pela primeira vez na sessão
@@ -338,6 +344,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    // Autenticando o usuário do Google com o firebase
     private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
 
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
@@ -352,11 +359,12 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
+    // Coleta o perfil do facebook logado no app do FACEBOOK ou entrar com um novo usuário do FACEBOOK
     private void clickBotaoFacebook() {
         botaoLoginFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                firebaseLogin(loginResult.getAccessToken());
+                firebaseLogin(loginResult.getAccessToken()); // Verificando se existe um token do facebook
                 //verificarUsuarioLogado();
 
             }
@@ -441,6 +449,7 @@ public class LoginActivity extends AppCompatActivity {
     //Método para salvar usuário no banco de dados do Firebase
     public void inserirUsuario(final Usuario usuario) {
 
+        // Criando uma segurança para salvar o usuário no banco de dados
         final String idUsuarioLogado = Base64Custom.codificarBase64(usuario.getEmail());
 
         firebase.child("usuarios").child(idUsuarioLogado).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -451,6 +460,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 if (dataSnapshot.exists()) {
 
+                    // Mensagem na tela do celular
                     Toast.makeText(LoginActivity.this, "Sucesso ao fazer login!", Toast.LENGTH_LONG).show();
                 }
                 //Senão, salva o novo usuário no banco

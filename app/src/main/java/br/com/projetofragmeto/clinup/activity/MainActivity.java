@@ -46,11 +46,11 @@ public class MainActivity extends AppCompatActivity {
     private Button botaoDelete;
     private TextView texto;
     private TextView texto2;
+    private Button alterarConta;
 
     private FirebaseAuth autenticacaoUsuario;
     private GoogleApiClient googleApiClient;
     private FirebaseUser user;
-    private Usuario usuario;
 
     private TextView nomeText;
     private TextView emailText;
@@ -68,11 +68,57 @@ public class MainActivity extends AppCompatActivity {
         autenticacaoUsuario = ConfiguracaoFirebase.getFirebaseAutenticacao();
         user = ConfiguracaoFirebase.getUsuarioLogado(); // retorna o usuário que está logado no momento
 
+        // Instanciando os ID do "activity_main.xml"
         logout = findViewById(R.id.logoutID);
+        alterarConta = findViewById(R.id.AlterarContaButton);
         botaoDelete = findViewById(R.id.excluirContaButton);
-        texto = findViewById(R.id.idUser);
-        texto2 = findViewById(R.id.emailUser);
 
+        nomeText = findViewById(R.id.text_nomeID);
+        emailText = findViewById(R.id.emailUser);
+        idUsuario = findViewById(R.id.idUser);
+
+        Preferencias preferencesUser = new Preferencias(MainActivity.this);
+        String idUsuarios = preferencesUser.getIdentificador();
+
+        firebase = ConfiguracaoFirebase.getFirebase()
+                .child("usuarios")
+                .child(idUsuarios);
+
+        Log.i("IdUsuario",idUsuarios);
+
+        //OUVINTE: ele escuta os valores do banco, caso tenha alteração ele vai alterar os dados que foram coletados no conteúdo do ouvinte
+        valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot != null){
+
+                    Usuario usuario = dataSnapshot.getValue(Usuario.class);
+
+                     if (usuario.getNome() != null && usuario.getEmail() != null) {
+
+                         String nome = usuario.getNome();
+                         String email = usuario.getEmail();
+
+                         Log.i("MEUNOME",nome);
+                         Log.i("MEUEMAIL",email);
+
+                         nomeText.setText(nome);
+                         emailText.setText(email);
+                     }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w("Ouvinte Cancelado", "loadUsuario:onCancelled", databaseError.toException());
+                // ...
+            }
+        };
+        firebase.addValueEventListener(valueEventListener);
+
+
+    //#################################################################################
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -92,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 logOut();
                 autenticacaoUsuario.signOut();
                 FirebaseAuth.getInstance().signOut();
@@ -114,6 +161,17 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        //#################################################################################
+
+        alterarConta.setOnClickListener(new View.OnClickListener() { // Botão para ir para a tela de alterar dados do usuario
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, AlterarCadastroUsuario.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
 
