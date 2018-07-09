@@ -149,9 +149,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-        texto2.setText("Email User: " + user.getEmail());
-        texto.setText("Id User: " + user.getUid());
+        if(user!= null) {
+            nomeText.setText("Email User: " + user.getEmail());
+            idUsuario.setText("Id User: " + user.getUid());
+        }
         botaoDelete.setOnClickListener(new View.OnClickListener() { // Botão para deletar contas
             @Override
             public void onClick(View view) {
@@ -244,8 +245,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(!email.getText().toString().isEmpty() && !senha.getText().toString().isEmpty()){//se o email e senha forem preenchidos
-
-
 
                     AuthCredential credential = EmailAuthProvider
                             .getCredential(email.getText().toString(), senha.getText().toString());//cria credencial com o email e senha informados no dialog
