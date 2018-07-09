@@ -316,8 +316,8 @@ public class LoginActivity extends AppCompatActivity {
                 firebaseAuthWithGoogle(account);
 
                 String idUsuario = Base64Custom.codificarBase64(account.getEmail());
-                Preferencias preferencias = new Preferencias(this);
-                preferencias.salvarDados( idUsuario, usuario.getNome() );
+                Preferencias preferencias = new Preferencias( LoginActivity.this );
+                preferencias.salvarDados( idUsuario, account.getDisplayName() );
                 salvarPreferencias("id", idUsuario);
 
                 Toast.makeText(LoginActivity.this, "Sucesso ao fazer login!", Toast.LENGTH_LONG).show(); // Mensagem na tela do usuário
@@ -331,8 +331,9 @@ public class LoginActivity extends AppCompatActivity {
                 firebaseAuthWithGoogle(account);
 
                 String idUsuario = Base64Custom.codificarBase64(account.getEmail());
-                Preferencias preferencias = new Preferencias(this);
-                preferencias.salvarDados("id",idUsuario);
+                Preferencias preferencias = new Preferencias( LoginActivity.this );
+                preferencias.salvarDados( idUsuario, account.getDisplayName() );
+
                 salvarPreferencias("idGoogle", idUsuario);
 
                 salvarUsuarioGoogle(account);
