@@ -2,11 +2,13 @@ package br.com.projetofragmeto.clinup.activity;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +23,8 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -83,28 +87,15 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        //texto2.setText("Email User: " + user.getEmail());
-        //texto.setText("Id User: " + user.getUid());
+        texto2.setText("Email User: " + user.getEmail());
+        texto.setText("Id User: " + user.getUid());
         botaoDelete.setOnClickListener(new View.OnClickListener() { // Botão para deletar contas
             @Override
             public void onClick(View view) {
-                if(user != null) {
+
+                excluirConta(user);
 
 
-                    user.delete()
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        Log.d("DeleteUser", "User account deleted.");
-                                        goLogInScreen();
-                                    }
-                                }
-                            });
-                }
-                else{
-                    Log.d("DeleteUser", "Não foi possível deletar a conta.");
-                }
             }
         });
     }
@@ -157,5 +148,63 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+    }
+
+    private void excluirConta(final FirebaseUser user){ //método que valida o email e senha e exclui a conta do usuário
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = getLayoutInflater().inflate(R.layout.dialog_excluir_conta, null);
+        final EditText email = view.findViewById(R.id.dialog_email);
+        final EditText senha = view.findViewById(R.id.dialog_senha);
+        Button validar = view.findViewById(R.id.dialog_bt_validar);
+
+        validar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!email.getText().toString().isEmpty() && !senha.getText().toString().isEmpty()){//se o email e senha forem preenchidos
+
+
+
+                    AuthCredential credential = EmailAuthProvider
+                            .getCredential(email.getText().toString(), senha.getText().toString());//cria credencial com o email e senha informados no dialog
+
+                    user.reauthenticate(credential) // reautentica o usuário utilizando o email e senha para verificar se é o dono da conta
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+
+
+                                    if(task.isSuccessful()){ // o usuário foi reautenticado e é possível deletar a conta
+
+                                        user.delete()// deleta a conta do usuário
+                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        if (task.isSuccessful()) {
+                                                            Toast.makeText(getApplicationContext(), "Conta deletada com sucesso", Toast.LENGTH_SHORT).show();
+                                                            goLogInScreen();
+                                                        }
+                                                        else {
+                                                            Toast.makeText(getApplicationContext(), "Não foi possível deletar a conta", Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    }
+                                                });
+
+                                    }
+                                    else{
+                                        Toast.makeText(getApplicationContext(), "E-mail ou senha incorreto!", Toast.LENGTH_SHORT).show();//msg de erro
+
+                                    }
+                                }
+                            });
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "Digite o Email e Senha", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        builder.setView(view);
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

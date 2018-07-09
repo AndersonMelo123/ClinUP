@@ -208,7 +208,9 @@ public class LoginActivity extends AppCompatActivity {
             abrirTelaPrincipal();
         }
         //Se já estiver logado pelo Facebook
-        if(isLoggedIn()) abrirTelaPrincipal();
+        if(isLoggedIn()){
+            abrirTelaPrincipal();
+        }
     }
 
     private void validarLogin(){

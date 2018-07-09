@@ -18,4 +18,9 @@
 
     <string name="facebook_app_id">478683035902050</string>
     <string name="fb_login_protocol_scheme">fb478683035902050</string>
+    <string name="msg_dialog_excluir_conta">Para sua segurança, precisamos confirmar o seu e-mail e senha</string>
+    <string name="titulo_dialog_excluir_conta">Excluir Conta</string>
+    <string name="text_email">E-mail</string>
+    <string name="text_senha">Senha</string>
+
 </resources>
