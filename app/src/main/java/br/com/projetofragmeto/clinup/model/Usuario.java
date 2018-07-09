@@ -1,5 +1,10 @@
 package br.com.projetofragmeto.clinup.model;
 
+import android.support.annotation.NonNull;
+import android.util.Log;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
@@ -172,5 +177,10 @@ public class Usuario implements Serializable {
         referenciaFirebase.child("usuarios").child( getId() ).setValue( this );
     }
 
+    public void deletarConta(FirebaseUser user){
+
+
+
+    }
 
 }

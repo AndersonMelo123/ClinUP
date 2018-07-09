@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
@@ -39,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth autenticacaoUsuario;
     private GoogleApiClient googleApiClient;
     private FirebaseUser user;
+    private Usuario usuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,12 +82,29 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+        //texto2.setText("Email User: " + user.getEmail());
+        //texto.setText("Id User: " + user.getUid());
         botaoDelete.setOnClickListener(new View.OnClickListener() { // Botão para deletar contas
             @Override
             public void onClick(View view) {
-                texto.setText("Id User: "+user.getUid());
-                texto2.setText("Email User: "+user.getEmail());
+                if(user != null) {
 
+
+                    user.delete()
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Log.d("DeleteUser", "User account deleted.");
+                                        goLogInScreen();
+                                    }
+                                }
+                            });
+                }
+                else{
+                    Log.d("DeleteUser", "Não foi possível deletar a conta.");
+                }
             }
         });
     }
