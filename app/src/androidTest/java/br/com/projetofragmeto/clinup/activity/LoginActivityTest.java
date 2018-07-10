@@ -9,13 +9,13 @@ public class LoginActivityTest {
     @Test
     public void onCreate() {
         String email = "franciscolejes@gmail.com";
-        String senha = "qualqueruma"
+        String senha = "qualqueruma";
     }
 
     @Test
     public void onCreate() {
         String email = "franciscolejes";
-        String senha = "qualqueruma"
+        String senha = "qualqueruma";
     }
 
     @Test
