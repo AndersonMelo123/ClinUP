@@ -133,10 +133,6 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    public void metodoTeste(){
-        String nome = "Ihago";
-        int idade = 23;
-    }
 }
 
 
