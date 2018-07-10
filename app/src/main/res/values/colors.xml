@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#0b6156</color>
-    <color name="colorPrimaryDark">#0a5048</color>
-    <color name="colorPrimaryDarker">#023933</color>
+    <color name="colorPrimaryDark">#16185e</color>
+    <color name="colorPrimaryDarker">#00012d</color>
     <color name="textColorPrimary">#FFFFFF</color>
     <color name="ColorAccent">#3d958a</color>
-    <color name="Cinza">#CCCCCC</color>
+    <color name="Cinza">#cccccc</color>
 
 </resources>

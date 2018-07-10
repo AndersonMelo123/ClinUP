@@ -1,5 +1,7 @@
 package br.com.projetofragmeto.clinup.activity;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -22,16 +24,31 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
+import br.com.projetofragmeto.clinup.database.PlanoDeSaudeImplements;
 import br.com.projetofragmeto.clinup.helper.Base64Custom;
 import br.com.projetofragmeto.clinup.helper.Preferencias;
+import br.com.projetofragmeto.clinup.model.PlanoDeSaude;
 import br.com.projetofragmeto.clinup.model.Usuario;
 
 public class CadastroUsuarioActivity extends AppCompatActivity {
 
+    // Atributos para serem utilizados nessa classe
+    private Button botaoCadastrar;
+
     private EditText nome;
     private EditText email;
     private EditText senha;
-    private Button botaoCadastrar;
+    private EditText cpf;
+    private EditText nomePlano;
+    private EditText numPlano;
+    private EditText dataNascimento;
+    private EditText numPais;
+    private EditText numEstado;
+    private EditText numTelefone;
+
+    private PlanoDeSaude planoDeSaude;
+    private PlanoDeSaudeImplements Plano;
+
     private Usuario usuario;
 
     private FirebaseAuth autenticacao;
@@ -41,21 +58,47 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro_usuario);
 
+        // Instanciando os ID do "activity_cadastro_usuario.xml"
         nome = findViewById(R.id.edit_cadastro_nomeID);
         email = findViewById(R.id.edit_cadastro_emailID);
         senha = findViewById(R.id.edit_cadastro_senhaID);
+        cpf = findViewById(R.id.edit_cadastro_cpfID);
+        dataNascimento = findViewById(R.id.edit_dataNascimentoID);
+        numPais = findViewById(R.id.edit_numPaisID);
+        numEstado = findViewById(R.id.edit_numEstadoID);
+        numTelefone = findViewById(R.id.edit_numTelefoneID);
+
+        nomePlano = findViewById(R.id.edit_nomePlanoID);
+        numPlano = findViewById(R.id.edit_numPlanoID);
+
         botaoCadastrar = findViewById(R.id.bt_cadastrarID);
 
         botaoCadastrar.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-
+            public void onClick(View v) { /* Criando o evento para esperar o clique no botão
+                                             , caso clicado ele entra e executa o conteúdo*/
                 usuario = new Usuario();
-                usuario.setNome( nome.getText().toString() );
-                usuario.setEmail( email.getText().toString());
-                usuario.setSenha( senha.getText().toString());
+                planoDeSaude = new PlanoDeSaude();
+                Plano = new PlanoDeSaudeImplements(getApplicationContext());
 
+                // Coletando os dados inseridos no "layout" e setando no usuário e plano de saude
+                usuario.setNome( nome.getText().toString() );
+                usuario.setEmail( email.getText().toString() );
+                usuario.setSenha( senha.getText().toString() );
+                usuario.setCpf( cpf.getText().toString() );
+                usuario.setNumPais( numPais.getText().toString() );
+                usuario.setNumEstado( numEstado.getText().toString() );
+                usuario.setNumTelefone( numTelefone.getText().toString() );
+                usuario.setDataNascimento( dataNascimento.getText().toString());
+                String idUsuarioLogado = Base64Custom.codificarBase64( usuario.getEmail() );
+                usuario.setId( idUsuarioLogado );
+
+                // Salvando no banco o plano de saúde
+                Plano.inserirPlanodeSaude(planoDeSaude, usuario.getId(),nomePlano.getText().toString(), numPlano.getText().toString());
+
+                // Salvando no banco o usuário
                 cadastrarUsuario();
+
             }
         });
     }
@@ -73,22 +116,16 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
                 if( task.isSuccessful() ){
                     Toast.makeText(CadastroUsuarioActivity.this, "Sucesso ao cadastrar usuário", Toast.LENGTH_LONG ).show();
 
-                    /* FIREBASE OBS: senha deve conter no minimo 6 caracteres
-                                     E-mail tem que ser um e-mail valido
-                     */
+                    usuario.salvar(); // Salva no banco o usuário
 
-                    String identificadorUsuario = Base64Custom.codificarBase64( usuario.getEmail() );
-
-                    usuario.setId( identificadorUsuario );
-                    usuario.salvar();
-
+                    // Salva o ID do usuárioLogado para ser consutado em outras telas
                     Preferencias preferencias = new Preferencias( CadastroUsuarioActivity.this );
-                    preferencias.salvarDados( identificadorUsuario, usuario.getNome() );
-
+                    preferencias.salvarDados( usuario.getId(), usuario.getNome() );
+                    salvarPreferencias("id", usuario.getId());
 
                     abrirLogadoUsuario();
 
-                }else {
+                }else { // Alguns testes
 
                     String erroExcecao = "";
 
@@ -96,6 +133,7 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
                         throw task.getException();
 
                     }catch (FirebaseAuthWeakPasswordException e){
+                        // Firebase solicita uma senha com mais de 6 digitos
                         erroExcecao = "Digite uma senha mais forte, contento mais caracteres e com letras e números!";
 
                     } catch (FirebaseAuthInvalidCredentialsException e) {
@@ -113,10 +151,18 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
         });
     }
 
-    private void abrirLogadoUsuario(){
+    private void abrirLogadoUsuario(){ // Criando a atividade para ir para outra tela
         Intent intent = new Intent(CadastroUsuarioActivity.this, LoginActivity.class);
         startActivity(intent);
-        finish();
+        finish(); // Finalizando essa activity
+    }
+
+    //Método que salva o id do usuário nas preferências para login automático ao abrir aplicativo
+    private void salvarPreferencias(String key, String value) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(key, value);
+        editor.commit();
     }
 
 }
