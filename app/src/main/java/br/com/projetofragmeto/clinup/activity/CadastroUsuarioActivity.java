@@ -15,6 +15,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.github.rtoshiro.util.format.MaskFormatter;
+import com.github.rtoshiro.util.format.SimpleMaskFormatter;
+import com.github.rtoshiro.util.format.pattern.MaskPattern;
+import com.github.rtoshiro.util.format.text.MaskTextWatcher;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -35,16 +39,7 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
     // Atributos para serem utilizados nessa classe
     private Button botaoCadastrar;
 
-    private EditText nome;
-    private EditText email;
-    private EditText senha;
-    private EditText cpf;
-    private EditText nomePlano;
-    private EditText numPlano;
-    private EditText dataNascimento;
-    private EditText numPais;
-    private EditText numEstado;
-    private EditText numTelefone;
+    private EditText nome, email, senha, cpf, nomePlano, numPlano, dataNascimento, numTelefone;
 
     private PlanoDeSaude planoDeSaude;
     private PlanoDeSaudeImplements Plano;
@@ -64,14 +59,41 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
         senha = findViewById(R.id.edit_cadastro_senhaID);
         cpf = findViewById(R.id.edit_cadastro_cpfID);
         dataNascimento = findViewById(R.id.edit_dataNascimentoID);
-        numPais = findViewById(R.id.edit_numPaisID);
-        numEstado = findViewById(R.id.edit_numEstadoID);
         numTelefone = findViewById(R.id.edit_numTelefoneID);
 
         nomePlano = findViewById(R.id.edit_nomePlanoID);
         numPlano = findViewById(R.id.edit_numPlanoID);
 
-        botaoCadastrar = findViewById(R.id.bt_cadastrarID);
+        botaoCadastrar = findViewById(R.id.bt_alterarID);
+
+        // Criando as mascaras
+        SimpleMaskFormatter nCpf = new SimpleMaskFormatter("NNN.NNN.NNN-NN");
+        MaskTextWatcher mCpf = new MaskTextWatcher(cpf,nCpf);
+        cpf.addTextChangedListener(mCpf);
+        //FIM DA MÁSCARA
+
+        // Criando as mascaras
+
+        MaskPattern mp03 = new MaskPattern("[0-3]");
+        MaskPattern mp09 = new MaskPattern("[0-9]");
+        MaskPattern mp01 = new MaskPattern("[0-1]");
+
+        MaskFormatter mf = new MaskFormatter("[0-3][0-9]/[0-1][0-9]/[0-9][0-9][0-9][0-9]");
+
+        mf.registerPattern(mp01);
+        mf.registerPattern(mp03);
+        mf.registerPattern(mp09);
+
+        dataNascimento.addTextChangedListener(new MaskTextWatcher(dataNascimento, mf));
+        //FIM DA MÁSCARA
+
+        // Criando as mascaras
+        SimpleMaskFormatter nNumTelefone = new SimpleMaskFormatter("(NN)NNNNN-NNNN");
+        MaskTextWatcher mNumTelefone = new MaskTextWatcher(numTelefone,nNumTelefone);
+        numTelefone.addTextChangedListener(mNumTelefone);
+        //FIM DA MÁSCARA
+
+
 
         botaoCadastrar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,8 +108,6 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
                 usuario.setEmail( email.getText().toString() );
                 usuario.setSenha( senha.getText().toString() );
                 usuario.setCpf( cpf.getText().toString() );
-                usuario.setNumPais( numPais.getText().toString() );
-                usuario.setNumEstado( numEstado.getText().toString() );
                 usuario.setNumTelefone( numTelefone.getText().toString() );
                 usuario.setDataNascimento( dataNascimento.getText().toString());
                 String idUsuarioLogado = Base64Custom.codificarBase64( usuario.getEmail() );

@@ -9,6 +9,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.github.rtoshiro.util.format.MaskFormatter;
+import com.github.rtoshiro.util.format.SimpleMaskFormatter;
+import com.github.rtoshiro.util.format.pattern.MaskPattern;
+import com.github.rtoshiro.util.format.text.MaskTextWatcher;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -27,15 +31,7 @@ import br.com.projetofragmeto.clinup.model.Usuario;
 public class AlterarCadastroUsuario extends AppCompatActivity {
 
     // Atributos para serem utilizados nessa classe
-    private EditText nome;
-    private EditText email;
-    private EditText cpf;
-    private EditText nomePlano;
-    private EditText numPlano;
-    private EditText dataNascimento;
-    private EditText numPais;
-    private EditText numEstado;
-    private EditText numTelefone;
+    private EditText nome, email, senha, cpf, nomePlano, numPlano, dataNascimento, numTelefone;
 
     private Button botaoSalvar;
     private FirebaseUser user;
@@ -61,18 +57,43 @@ public class AlterarCadastroUsuario extends AppCompatActivity {
         user = ConfiguracaoFirebase.getUsuarioLogado(); // retorna o usuário que está logado no momento
 
         // Instanciando os ID do "activity_alterar_cadastro_usuario.xml"
-        botaoSalvar = findViewById(R.id.bt_alterarCadastroID);
+        botaoSalvar = findViewById(R.id.bt_alterarID);
 
         nome = findViewById(R.id.edit_cadastro_nomeID);
         email = findViewById(R.id.edit_cadastro_emailID);
         cpf = findViewById(R.id.edit_cadastro_cpfID);
         dataNascimento = findViewById(R.id.edit_dataNascimentoID);
-        numPais = findViewById(R.id.edit_numPaisID);
-        numEstado = findViewById(R.id.edit_numEstadoID);
         numTelefone = findViewById(R.id.edit_numTelefoneID);
 
         nomePlano = findViewById(R.id.edit_nomePlanoID);
         numPlano = findViewById(R.id.edit_numPlanoID);
+
+        // Criando as mascaras
+        SimpleMaskFormatter nCpf = new SimpleMaskFormatter("NNN.NNN.NNN-NN");
+        MaskTextWatcher mCpf = new MaskTextWatcher(cpf,nCpf);
+        cpf.addTextChangedListener(mCpf);
+        //FIM DA MÁSCARA
+
+        // Criando as mascaras
+
+        MaskPattern mp03 = new MaskPattern("[0-9]");
+        MaskPattern mp09 = new MaskPattern("[0-3]");
+        MaskPattern mp01 = new MaskPattern("[0-1]");
+
+        MaskFormatter mf = new MaskFormatter("[0-3][0-9]/[0-1][0-9]/[0-9][0-9][0-9][0-9]");
+
+        mf.registerPattern(mp01);
+        mf.registerPattern(mp03);
+        mf.registerPattern(mp09);
+
+        dataNascimento.addTextChangedListener(new MaskTextWatcher(dataNascimento, mf));
+        //FIM DA MÁSCARA
+
+        // Criando as mascaras
+        SimpleMaskFormatter nNumTelefone = new SimpleMaskFormatter("+NN(NN)NNNNN-NNNN");
+        MaskTextWatcher mNumTelefone = new MaskTextWatcher(numTelefone,nNumTelefone);
+        numTelefone.addTextChangedListener(mNumTelefone);
+        //FIM DA MÁSCARA
 
         Preferencias preferencesUser = new Preferencias(AlterarCadastroUsuario.this);
         String idUsuarios = preferencesUser.getIdentificador(); // Obter o identificador do usuário que está logado
@@ -98,8 +119,6 @@ public class AlterarCadastroUsuario extends AppCompatActivity {
                         nome.setText(usuario.getNome());
                         email.setText(usuario.getEmail());
                         cpf.setText(usuario.getCpf());
-                        numPais.setText(usuario.getNumPais());
-                        numEstado.setText(usuario.getNumEstado());
                         numTelefone.setText(usuario.getNumTelefone());
                         dataNascimento.setText(usuario.getDataNascimento());
                     }
@@ -161,8 +180,6 @@ public class AlterarCadastroUsuario extends AppCompatActivity {
                 usuario.setNome( nome.getText().toString() );
                 usuario.setEmail( email.getText().toString() );
                 usuario.setCpf( cpf.getText().toString() );
-                usuario.setNumPais( numPais.getText().toString() );
-                usuario.setNumEstado( numEstado.getText().toString() );
                 usuario.setNumTelefone( numTelefone.getText().toString() );
                 usuario.setDataNascimento( dataNascimento.getText().toString());
                 String idUsuarioLogado = Base64Custom.codificarBase64( usuario.getEmail() );
@@ -177,10 +194,6 @@ public class AlterarCadastroUsuario extends AppCompatActivity {
         });
 
     }
-
-
-
-
 
 
     @Override

@@ -41,19 +41,15 @@ import br.com.projetofragmeto.clinup.model.Usuario;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button logout;
-    private Button botaoDelete;
-    private TextView texto;
-    private TextView texto2;
+    private Button logout, botaoDelete;
+    private TextView texto, texto2;
     private Button alterarConta;
 
     private FirebaseAuth autenticacaoUsuario;
     private GoogleApiClient googleApiClient;
     private FirebaseUser user;
 
-    private TextView nomeText;
-    private TextView emailText;
-    private TextView idUsuario;
+    private TextView nomeText, emailText, idUsuario;
 
     private DatabaseReference firebase;
     private ValueEventListener valueEventListener;

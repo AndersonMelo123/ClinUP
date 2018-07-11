@@ -15,28 +15,14 @@ import br.com.projetofragmeto.clinup.database.PlanoDeSaudeImplements;
 
 public class Usuario implements Serializable {
 
-    private String idUsuario;
-    private String id;
+    private String idUsuario, id;
 
-    private String nome;//
-    private String email;//
-    private String senha;//
-
-    private String cpf;//
-    private String telefone;//
-    private String dataNascimento;//
-    private String estadoCivil;
-    private String foto;
-
-    private String numPais;
-    private String numEstado;
-    private String numTelefone;
+    private String nome, email, senha, cpf, telefone,
+            dataNascimento, estadoCivil, foto, numTelefone, nomePlano, numPlano;
 
     private Endereco endereco;
 
-    private PlanoDeSaude plano;//
-    private String nomePlano;//
-    private String numPlano;//
+    private PlanoDeSaude plano;
 
     public Usuario(String nome, String email, String foto) {
         this.nome = nome;
@@ -68,22 +54,6 @@ public class Usuario implements Serializable {
 
     public void setFoto(String foto) {
         this.foto = foto;
-    }
-
-    public String getNumPais() {
-        return numPais;
-    }
-
-    public void setNumPais(String numPais) {
-        this.numPais = numPais;
-    }
-
-    public String getNumEstado() {
-        return numEstado;
-    }
-
-    public void setNumEstado(String numEstado) {
-        this.numEstado = numEstado;
     }
 
     public String getNumTelefone() {

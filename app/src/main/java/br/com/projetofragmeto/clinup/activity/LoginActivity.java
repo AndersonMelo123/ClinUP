@@ -59,8 +59,7 @@ import br.com.projetofragmeto.clinup.model.Usuario;
 public class LoginActivity extends AppCompatActivity {
 
     // Atributos para serem utilizados nessa classe
-    private EditText email;
-    private EditText senha;
+    private EditText email, senha;
 
     private LoginButton botaoLoginFacebook;
     private CallbackManager callbackManager;
