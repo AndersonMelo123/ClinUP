@@ -24,10 +24,12 @@ dependencies {
     testImplementation 'junit:junit:4.12'
 
     androidTestCompile 'com.android.support.test.espresso:espresso-core:3.0.1'
-    androidTestCompile 'com.android.support.test:runner:1.0.1'
+    androidTestCompile 'com.android.support.test.espresso:espresso-intents:3.0.1'
+    androidTestCompile 'com.android.support.test.espresso:espresso-web:3.0.1'
+    androidTestCompile 'com.android.support.test.espresso:espresso-contrib:3.0.1'
+    androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.0.0'
 
-    androidTestCompile 'com.android.support.test:runner:0.4'
-    // Set this dependency to use JUnit 4 rules
+    androidTestCompile 'com.android.support.test:runner:1.0.1'
     androidTestCompile 'com.android.support.test:rules:0.4'
 
 

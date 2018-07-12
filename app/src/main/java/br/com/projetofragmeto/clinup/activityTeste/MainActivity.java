@@ -1,4 +1,4 @@
-package br.com.projetofragmeto.clinup.activity;
+package br.com.projetofragmeto.clinup.activityTeste;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
