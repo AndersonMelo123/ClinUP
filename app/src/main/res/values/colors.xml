@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#16185e</color>
     <color name="colorPrimaryDarker">#00012d</color>
     <color name="textColorPrimary">#FFFFFF</color>
-    <color name="ColorAccent">#3d958a</color>
+    <color name="ColorAccent">#16185e</color>
     <color name="Cinza">#cccccc</color>
 
 </resources>

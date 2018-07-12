@@ -1,6 +1,7 @@
 package br.com.projetofragmeto.clinup.activity;
 
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.rtoshiro.util.format.MaskFormatter;
@@ -36,6 +38,16 @@ import br.com.projetofragmeto.clinup.model.Usuario;
 
 public class CadastroUsuarioActivity extends AppCompatActivity {
 
+    TextView textDummyHintNome;
+    TextView textDummyHintSenha;
+    TextView textDummyHintEmail;
+    TextView textDummyHintCpf;
+    TextView textDummyHintDataNascimento;
+    TextView textDummyHintNumTelefone;
+    TextView textDummyHintNumPlano;
+    TextView textDummyHintNomePlano;
+
+
     // Atributos para serem utilizados nessa classe
     private Button botaoCadastrar;
 
@@ -54,17 +66,35 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cadastro_usuario);
 
         // Instanciando os ID do "activity_cadastro_usuario.xml"
-        nome = findViewById(R.id.edit_cadastro_nomeID);
-        email = findViewById(R.id.edit_cadastro_emailID);
-        senha = findViewById(R.id.edit_cadastro_senhaID);
-        cpf = findViewById(R.id.edit_cadastro_cpfID);
-        dataNascimento = findViewById(R.id.edit_dataNascimentoID);
-        numTelefone = findViewById(R.id.edit_numTelefoneID);
+        textDummyHintNome = (TextView) findViewById(R.id.text_dummy_hint_nome);
+        textDummyHintSenha = (TextView) findViewById(R.id.text_dummy_hint_senha);
+        textDummyHintEmail = (TextView) findViewById(R.id.text_dummy_hint_email);
+        textDummyHintCpf = (TextView) findViewById(R.id.text_dummy_hint_cpf);
+        textDummyHintDataNascimento = (TextView) findViewById(R.id.text_dummy_hint_nascimento);
+        textDummyHintNumTelefone = (TextView) findViewById(R.id.text_dummy_hint_numTelefone);
+        textDummyHintNumPlano = (TextView) findViewById(R.id.text_dummy_hint_numPlano);
+        textDummyHintNomePlano = (TextView) findViewById(R.id.text_dummy_hint_nomePlano);
 
-        nomePlano = findViewById(R.id.edit_nomePlanoID);
-        numPlano = findViewById(R.id.edit_numPlanoID);
+        nome = (EditText) findViewById(R.id.edit_cadastro_nomeID);
+        senha = (EditText) findViewById(R.id.edit_cadastro_senhaID);
+        email = (EditText) findViewById(R.id.edit_cadastro_emailID);
+        cpf = (EditText) findViewById(R.id.edit_cadastro_cpfID);
+        dataNascimento = (EditText) findViewById(R.id.edit_dataNascimentoID);
+        numTelefone = (EditText) findViewById(R.id.edit_numTelefoneID);
+        numPlano = (EditText) findViewById(R.id.edit_numPlanoID);
+        nomePlano = (EditText) findViewById(R.id.edit_nomePlanoID);
 
-        botaoCadastrar = findViewById(R.id.bt_alterarID);
+        campoText(textDummyHintNome,nome);
+        campoText(textDummyHintSenha,senha);
+        campoText(textDummyHintEmail,email);
+        campoText(textDummyHintCpf,cpf);
+        campoText(textDummyHintDataNascimento,dataNascimento);
+        campoText(textDummyHintNumTelefone,numTelefone);
+        campoText(textDummyHintNumPlano,numPlano);
+        campoText(textDummyHintNomePlano,nomePlano);
+
+
+        botaoCadastrar = findViewById(R.id.botao_cadastrar);
 
         // Criando as mascaras
         SimpleMaskFormatter nCpf = new SimpleMaskFormatter("NNN.NNN.NNN-NN");
@@ -121,6 +151,7 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
 
             }
         });
+
     }
 
     private void cadastrarUsuario(){
@@ -183,6 +214,33 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(key, value);
         editor.commit();
+    }
+
+    private void campoText(final TextView textDummyHint, final EditText editText) {
+        // Username
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+
+                if (hasFocus) {
+                    new Handler().postDelayed(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            // Show white background behind floating label
+                            textDummyHint.setVisibility(View.VISIBLE);
+                        }
+                    }, 100);
+                } else {
+                    // Required to show/hide white background behind floating label during focus change
+                    if (editText.getText().length() > 0)
+                        textDummyHint.setVisibility(View.VISIBLE);
+                    else
+                        textDummyHint.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
     }
 
 }

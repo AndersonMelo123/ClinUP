@@ -9,11 +9,19 @@
 
     </style>
 
+    <style name="HintTextStyle" parent="TextAppearance.Design.Hint">
+        <!-- Flutuação do hint do EditTextInput -->
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+
     <style name="botaoPadrao" parent="Theme.AppCompat.Light">
 
         <item name="colorButtonNormal">@color/colorPrimaryDarker</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="colorControlHighlight">@color/colorPrimary</item>
+        <item name="android:radius">8dp</item>
 
     </style>
 
