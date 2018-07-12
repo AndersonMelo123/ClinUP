@@ -38,7 +38,6 @@ import static org.hamcrest.core.AllOf.allOf;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 
 /**
- * Created by raul on 06/12/17.
  * Essa classe é responsavel por armazenar os métodos que são utilizados nos testes do espresso
  * que independem da activity que está sendo utilizada.
  */
