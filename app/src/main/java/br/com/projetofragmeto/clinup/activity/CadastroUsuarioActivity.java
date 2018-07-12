@@ -64,7 +64,7 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
         nomePlano = findViewById(R.id.edit_nomePlanoID);
         numPlano = findViewById(R.id.edit_numPlanoID);
 
-        botaoCadastrar = findViewById(R.id.bt_alterarID);
+        botaoCadastrar = findViewById(R.id.bt_cadastrarID);
 
         // Criando as mascaras
         SimpleMaskFormatter nCpf = new SimpleMaskFormatter("NNN.NNN.NNN-NN");

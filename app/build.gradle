@@ -23,10 +23,11 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     testImplementation 'junit:junit:4.12'
 
-    androidTestCompile 'com.android.support.test:runner:0.4'
+    androidTestImplementation 'com.android.support.test:runner:0.4'
     // Set this dependency to use JUnit 4 rules
-    androidTestCompile 'com.android.support.test:rules:0.4'
+    androidTestImplementation 'com.android.support.test:rules:1.0.2'
 
+    implementation 'com.rengwuxian.materialedittext:library:2.1.4'
 
     implementation 'com.github.rtoshiro.mflibrary:mflibrary:1.0.0'
 
