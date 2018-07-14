@@ -2,6 +2,7 @@ package br.com.projetofragmeto.clinup.activity;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -10,10 +11,12 @@ import br.com.projetofragmeto.clinup.R;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
 
 import com.github.rtoshiro.util.format.MaskFormatter;
 import com.github.rtoshiro.util.format.SimpleMaskFormatter;
@@ -41,6 +44,8 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
 
     private EditText nome, email, senha, cpf, nomePlano, numPlano, dataNascimento, numTelefone;
 
+    private TextInputLayout nomeIn, emailIn, senhaIn, cpfIn, nomePlanoIn, numPlanoIn, dataNascimentoIn, numTelefoneIn;
+
     private PlanoDeSaude planoDeSaude;
     private PlanoDeSaudeImplements Plano;
 
@@ -66,14 +71,25 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
 
         botaoCadastrar = findViewById(R.id.bt_cadastrarID);
 
+        // Instanciando os ID da "activity_cadastro_usuario.xml"
+        nomeIn = findViewById(R.id.textInput_NomeID);
+        emailIn = findViewById(R.id.textInput_EmailID);
+        senhaIn = findViewById(R.id.textInput_SenhaID);
+        cpfIn = findViewById(R.id.textInput_CpfID);
+        dataNascimentoIn = findViewById(R.id.textInput_nascimentoID);
+        numTelefoneIn = findViewById(R.id.textInput_TelefoneID);
+
+        nomePlanoIn = findViewById(R.id.textInput_NomPlanoID);
+        numPlanoIn = findViewById(R.id.textInput_NumPlanoID);
+
+
         // Criando as mascaras
         SimpleMaskFormatter nCpf = new SimpleMaskFormatter("NNN.NNN.NNN-NN");
-        MaskTextWatcher mCpf = new MaskTextWatcher(cpf,nCpf);
+        MaskTextWatcher mCpf = new MaskTextWatcher(cpf, nCpf);
         cpf.addTextChangedListener(mCpf);
         //FIM DA MÁSCARA
 
-        // Criando as mascaras
-
+        // Criando as mascara
         MaskPattern mp03 = new MaskPattern("[0-3]");
         MaskPattern mp09 = new MaskPattern("[0-9]");
         MaskPattern mp01 = new MaskPattern("[0-1]");
@@ -89,41 +105,42 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
 
         // Criando as mascaras
         SimpleMaskFormatter nNumTelefone = new SimpleMaskFormatter("(NN)NNNNN-NNNN");
-        MaskTextWatcher mNumTelefone = new MaskTextWatcher(numTelefone,nNumTelefone);
+        MaskTextWatcher mNumTelefone = new MaskTextWatcher(numTelefone, nNumTelefone);
         numTelefone.addTextChangedListener(mNumTelefone);
         //FIM DA MÁSCARA
-
 
 
         botaoCadastrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { /* Criando o evento para esperar o clique no botão
                                              , caso clicado ele entra e executa o conteúdo*/
-                usuario = new Usuario();
-                planoDeSaude = new PlanoDeSaude();
-                Plano = new PlanoDeSaudeImplements(getApplicationContext());
 
-                // Coletando os dados inseridos no "layout" e setando no usuário e plano de saude
-                usuario.setNome( nome.getText().toString() );
-                usuario.setEmail( email.getText().toString() );
-                usuario.setSenha( senha.getText().toString() );
-                usuario.setCpf( cpf.getText().toString() );
-                usuario.setNumTelefone( numTelefone.getText().toString() );
-                usuario.setDataNascimento( dataNascimento.getText().toString());
-                String idUsuarioLogado = Base64Custom.codificarBase64( usuario.getEmail() );
-                usuario.setId( idUsuarioLogado );
+                if (validarCadastro()) {
+                    usuario = new Usuario();
+                    planoDeSaude = new PlanoDeSaude();
+                    Plano = new PlanoDeSaudeImplements(getApplicationContext());
 
-                // Salvando no banco o plano de saúde
-                Plano.inserirPlanodeSaude(planoDeSaude, usuario.getId(),nomePlano.getText().toString(), numPlano.getText().toString());
+                    // Coletando os dados inseridos no "layout" e setando no usuário e plano de saude
+                    usuario.setNome(nome.getText().toString());
+                    usuario.setEmail(email.getText().toString());
+                    usuario.setSenha(senha.getText().toString());
+                    usuario.setCpf(cpf.getText().toString());
+                    usuario.setNumTelefone(numTelefone.getText().toString());
+                    usuario.setDataNascimento(dataNascimento.getText().toString());
+                    String idUsuarioLogado = Base64Custom.codificarBase64(usuario.getEmail());
+                    usuario.setId(idUsuarioLogado);
 
-                // Salvando no banco o usuário
-                cadastrarUsuario();
+                    // Salvando no banco o plano de saúde
+                    Plano.inserirPlanodeSaude(planoDeSaude, usuario.getId(), nomePlano.getText().toString(), numPlano.getText().toString());
 
+                    // Salvando no banco o usuário
+                    cadastrarUsuario();
+                }
             }
         });
     }
 
-    private void cadastrarUsuario(){
+    private void cadastrarUsuario() {
 
         autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
         autenticacao.createUserWithEmailAndPassword(
@@ -133,26 +150,26 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
 
-                if( task.isSuccessful() ){
-                    Toast.makeText(CadastroUsuarioActivity.this, "Sucesso ao cadastrar usuário", Toast.LENGTH_LONG ).show();
+                if (task.isSuccessful()) {
+                    Toast.makeText(CadastroUsuarioActivity.this, "Sucesso ao cadastrar usuário", Toast.LENGTH_LONG).show();
 
                     usuario.salvar(); // Salva no banco o usuário
 
                     // Salva o ID do usuárioLogado para ser consutado em outras telas
-                    Preferencias preferencias = new Preferencias( CadastroUsuarioActivity.this );
-                    preferencias.salvarDados( usuario.getId(), usuario.getNome() );
+                    Preferencias preferencias = new Preferencias(CadastroUsuarioActivity.this);
+                    preferencias.salvarDados(usuario.getId(), usuario.getNome());
                     salvarPreferencias("id", usuario.getId());
 
                     abrirLogadoUsuario();
 
-                }else { // Alguns testes
+                } else { // Alguns testes
 
                     String erroExcecao = "";
 
                     try {
                         throw task.getException();
 
-                    }catch (FirebaseAuthWeakPasswordException e){
+                    } catch (FirebaseAuthWeakPasswordException e) {
                         // Firebase solicita uma senha com mais de 6 digitos
                         erroExcecao = "Digite uma senha mais forte, contento mais caracteres e com letras e números!";
 
@@ -165,13 +182,13 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
-                    Toast.makeText(CadastroUsuarioActivity.this, "Erro: " + erroExcecao, Toast.LENGTH_LONG ).show();
+                    Toast.makeText(CadastroUsuarioActivity.this, "Erro: " + erroExcecao, Toast.LENGTH_LONG).show();
                 }
             }
         });
     }
 
-    private void abrirLogadoUsuario(){ // Criando a atividade para ir para outra tela
+    private void abrirLogadoUsuario() { // Criando a atividade para ir para outra tela
         Intent intent = new Intent(CadastroUsuarioActivity.this, LoginActivity.class);
         startActivity(intent);
         finish(); // Finalizando essa activity
@@ -183,6 +200,49 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(key, value);
         editor.commit();
+    }
+
+    //Validar Cadastro
+    private Boolean validarCadastro() {
+        String nNome = nome.getText().toString().trim(), nEmail = email.getText().toString().trim(),
+                nSenha = senha.getText().toString().trim(), nCpf = cpf.getText().toString().trim(),
+                nDataNascimento = dataNascimento.getText().toString().trim(), nNumTelefone = numTelefone.getText().toString().trim();
+
+        Boolean valor = true;
+
+        //checking if email and passwords are empty
+        if (TextUtils.isEmpty(nNome)) {
+            nomeIn.setError("Campo obrigatório");
+            valor = false;
+        }
+
+        if (TextUtils.isEmpty(nSenha)) {
+            senhaIn.setError("Campo obrigatório");
+            valor = false;
+        }
+
+        if (TextUtils.isEmpty(nEmail)) {
+            emailIn.setError("Campo obrigatório");
+            valor = false;
+        }
+
+        if (TextUtils.isEmpty(nCpf)) {
+            cpfIn.setError("Campo obrigatório");
+            valor = false;
+        }
+
+        if (TextUtils.isEmpty(nDataNascimento)) {
+            nomePlanoIn.setError("Campo obrigatório");
+            valor = false;
+        }
+
+        if (TextUtils.isEmpty(nNumTelefone)) {
+            numPlanoIn.setError("Campo obrigatório");
+            valor = false;
+        }
+
+
+        return valor;
     }
 
 }

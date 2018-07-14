@@ -7,8 +7,13 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="android:windowBackground">@android:color/white</item>
 
-    </style>
+        <!-- Configurações para o EditText -->
+        <item name="android:textColorHint">@color/Cinza</item>
+        <item name="colorControlNormal">#000000</item>
+        <item name="colorControlActivated">@color/ColorAccent</item>
+        <item name="colorControlHighlight">@color/ColorAccent</item>
 
+    </style>
 
 
     <style name="botaoPadrao" parent="Theme.AppCompat.Light">

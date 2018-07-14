@@ -57,7 +57,7 @@ public class AlterarCadastroUsuario extends AppCompatActivity {
         user = ConfiguracaoFirebase.getUsuarioLogado(); // retorna o usuário que está logado no momento
 
         // Instanciando os ID do "activity_alterar_cadastro_usuario.xml"
-        botaoSalvar = findViewById(R.id.bt_alterarID);
+        botaoSalvar = findViewById(R.id.botao_alterar);
 
         nome = findViewById(R.id.edit_cadastro_nomeID);
         email = findViewById(R.id.edit_cadastro_emailID);

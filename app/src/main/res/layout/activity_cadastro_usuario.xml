@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -6,193 +7,233 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_cadastro"
     tools:context=".activity.CadastroUsuarioActivity"
-    tools:layout_editor_absoluteY="25dp"
+    tools:layout_editor_absoluteY="25dp">
 
-    >
 
-    <View
-        android:id="@+id/view"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="7dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="7dp"
-        android:background="@drawable/rounded"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/bt_cadastrarID"
+    <ScrollView
+        android:id="@+id/scrollView4"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="26dp"
-        android:layout_marginStart="26dp"
-        android:text="@string/botao_cadastrar"
-        android:theme="@style/botaoPadrao"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_dataNascimentoID" />
-
-
-    <!-- Data Nascimento -->
-    <com.rengwuxian.materialedittext.MaterialEditText
-        android:id="@+id/edit_dataNascimentoID"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="31dp"
-        android:layout_marginStart="31dp"
-        android:hint="dd/mm/aaaa"
-        android:inputType="date"
-        android:textColor="@color/textColorPrimary"
-        android:textSize="15dp"
-        app:layout_constraintBottom_toTopOf="@+id/bt_cadastrarID"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_cadastro_nomeID"
-        app:met_floatingLabel="highlight" />
-
-
-    <!-- Nome -->
-    <com.rengwuxian.materialedittext.MaterialEditText
-        android:id="@+id/edit_cadastro_nomeID"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginEnd="31dp"
-        android:layout_marginStart="31dp"
-        android:hint="Nome"
-        android:inputType="text"
-        android:textColor="@color/textColorPrimary"
-        android:textSize="15dp"
-        app:layout_constraintBottom_toTopOf="@+id/edit_dataNascimentoID"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_cadastro_emailID"
-        app:met_floatingLabel="highlight" />
-
-
-    <!-- E-mail -->
-    <com.rengwuxian.materialedittext.MaterialEditText
-        android:id="@+id/edit_cadastro_emailID"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginEnd="31dp"
-        android:layout_marginStart="31dp"
-        android:hint="Digite seu e-mail"
-        android:inputType="textEmailAddress"
-        android:textColor="@color/textColorPrimary"
-        android:textSize="15dp"
-        app:layout_constraintBottom_toTopOf="@+id/edit_cadastro_nomeID"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_numTelefoneID"
-        app:met_floatingLabel="highlight" />
-
-
-    <!-- Senha -->
-    <com.rengwuxian.materialedittext.MaterialEditText
-        android:id="@+id/edit_cadastro_senhaID"
-        android:layout_width="0dp"
-        android:layout_height="66dp"
-        android:layout_marginEnd="31dp"
-        android:layout_marginStart="31dp"
-        android:layout_marginTop="16dp"
-        android:hint="Senha"
-        android:inputType="textPassword"
-        android:textColor="@color/textColorPrimary"
-        android:textSize="15dp"
-        app:layout_constraintBottom_toTopOf="@+id/edit_cadastro_cpfID"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:met_errorColor="@android:color/holo_red_light"
-        app:met_floatingLabel="highlight"
-        app:met_minCharacters="6"
-        app:passwordToggleEnabled="true" />
+        app:layout_constraintVertical_bias="1.0">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/rounded"
+            android:orientation="vertical">
+
+            <!-- Nome -->
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/textInput_NomeID"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="31dp"
+                android:layout_marginStart="31dp"
+                android:layout_marginTop="28dp"
+                app:layout_constraintBottom_toTopOf="@+id/textInput_EmailID"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edit_cadastro_nomeID"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Nome"
+                    android:inputType="text"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <!-- Data Nascimento -->
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/textInput_nascimentoID"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="31dp"
+                android:layout_marginStart="31dp"
+                app:layout_constraintBottom_toTopOf="@+id/textInput_TelefoneID"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textInput_EmailID">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edit_dataNascimentoID"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="dd/mm/aaaa"
+                    android:inputType="date"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <!-- Cpf -->
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/textInput_CpfID"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="31dp"
+                android:layout_marginStart="31dp"
+                app:layout_constraintBottom_toTopOf="@+id/textInput_NomPlanoID"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textInput_TelefoneID">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edit_cadastro_cpfID"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="CPF"
+                    android:inputType="number"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp" />
+
+            </android.support.design.widget.TextInputLayout>
 
 
-    <!-- Cpf -->
-    <com.rengwuxian.materialedittext.MaterialEditText
-        android:id="@+id/edit_cadastro_cpfID"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="53dp"
-        android:layout_marginEnd="31dp"
-        android:layout_marginStart="31dp"
-        android:hint="CPF"
-        android:inputType="date"
-        android:textColor="@color/textColorPrimary"
-        android:textSize="15dp"
-        app:layout_constraintBottom_toTopOf="@+id/edit_numPlanoID"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_cadastro_senhaID"
-        app:met_floatingLabel="highlight" />
+            <!-- Nome do Plano de Saúde -->
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/textInput_NomPlanoID"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="31dp"
+                android:layout_marginStart="31dp"
+                app:layout_constraintBottom_toTopOf="@+id/textInput_NumPlanoID"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textInput_CpfID">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edit_nomePlanoID"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Plano de Saúde (Opicional)"
+                    android:inputType="text"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp" />
+
+            </android.support.design.widget.TextInputLayout>
 
 
-    <!-- Nome do Plano de Saúde -->
-    <com.rengwuxian.materialedittext.MaterialEditText
-        android:id="@+id/edit_nomePlanoID"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="53dp"
-        android:layout_marginEnd="31dp"
-        android:layout_marginStart="31dp"
-        android:layout_marginTop="61dp"
-        android:hint="Plano de Saúde (Opicional)"
-        android:inputType="date"
-        android:textColor="@color/textColorPrimary"
-        android:textSize="15dp"
-        app:layout_constraintBottom_toBottomOf="@+id/edit_numPlanoID"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/edit_cadastro_cpfID"
-        app:met_floatingLabel="highlight" />
+            <!-- Número do Plano de Saúde -->
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/textInput_NumPlanoID"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="31dp"
+                android:layout_marginStart="31dp"
+                app:layout_constraintBottom_toTopOf="@+id/textInput_SenhaID"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textInput_NomPlanoID">
 
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edit_numPlanoID"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Nº Plano de Saúde"
+                    android:inputType="number"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp" />
 
-    <!-- Número do Plano de Saúde -->
-    <com.rengwuxian.materialedittext.MaterialEditText
-        android:id="@+id/edit_numPlanoID"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginEnd="31dp"
-        android:layout_marginStart="31dp"
-        android:hint="Nº Plano de Saúde"
-        android:inputType="date"
-        android:textColor="@color/textColorPrimary"
-        android:textSize="15dp"
-        app:layout_constraintBottom_toTopOf="@+id/edit_numTelefoneID"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_cadastro_cpfID"
-        app:met_floatingLabel="highlight" />
+            </android.support.design.widget.TextInputLayout>
 
+            <!-- Telefone -->
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/textInput_TelefoneID"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="31dp"
+                android:layout_marginStart="31dp"
+                app:layout_constraintBottom_toTopOf="@+id/textInput_CpfID"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textInput_nascimentoID">
 
-    <!-- Telefone -->
-    <com.rengwuxian.materialedittext.MaterialEditText
-        android:id="@+id/edit_numTelefoneID"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginEnd="31dp"
-        android:layout_marginStart="31dp"
-        android:hint="(87)99999-9999"
-        android:inputType="date"
-        android:textColor="@color/textColorPrimary"
-        android:textSize="15dp"
-        app:layout_constraintBottom_toTopOf="@+id/edit_cadastro_emailID"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_numPlanoID"
-        app:met_floatingLabel="highlight" />
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edit_numTelefoneID"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="(87)99999-9999"
+                    android:inputType="number"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp" />
+            </android.support.design.widget.TextInputLayout>
 
-    />
+            <!-- E-mail -->
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/textInput_EmailID"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="31dp"
+                android:layout_marginStart="31dp"
+                app:layout_constraintBottom_toTopOf="@+id/textInput_nascimentoID"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textInput_NomeID">
 
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edit_cadastro_emailID"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Digite seu e-mail"
+                    android:inputType="textEmailAddress"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp" />
 
+            </android.support.design.widget.TextInputLayout>
+
+            <!-- Senha -->
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/textInput_SenhaID"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="31dp"
+                android:layout_marginStart="31dp"
+                app:errorEnabled="true"
+                app:layout_constraintBottom_toTopOf="@+id/bt_cadastrarID"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textInput_NumPlanoID"
+                app:passwordToggleEnabled="true"
+                app:passwordToggleTint="@color/Cinza">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edit_cadastro_senhaID"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Senha"
+                    android:inputType="textPassword"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/bt_cadastrarID"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="14dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="0dp"
+                android:text="@string/botao_cadastrar"
+                android:theme="@style/botaoPadrao" />
+
+        </LinearLayout>
+    </ScrollView>
 </android.support.constraint.ConstraintLayout>
