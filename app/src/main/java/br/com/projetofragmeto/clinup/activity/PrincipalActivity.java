@@ -1,5 +1,6 @@
 package br.com.projetofragmeto.clinup.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -16,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,13 +29,15 @@ import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
 import br.com.projetofragmeto.clinup.fragments.HomeFragment;
 import br.com.projetofragmeto.clinup.fragments.PerfilFragment;
 import br.com.projetofragmeto.clinup.helper.Preferencias;
+import br.com.projetofragmeto.clinup.model.Usuario;
 
 public class PrincipalActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private TextView nomeUser;
     private TextView emailUser;
-
+    private String idUsuarios;
+    private Usuario usuario = new Usuario();
     private DatabaseReference usuarioReferencia;
 
     @Override
@@ -71,11 +75,13 @@ public class PrincipalActivity extends AppCompatActivity
         nomeUser = mParent.findViewById(R.id.nome_user_nav_drawer); // pega o id do nome_user do nav_header_principal
         emailUser = mParent.findViewById(R.id.email_user_nav_drawer);// pega o id do email_user do nav_header_principal
 
-        //exibirInfoUser(navigationView); // exibe o email e senha do usuário na navigation view
+        // exibe o email e senha do usuário na navigation view
 
         Preferencias preferencesUser = new Preferencias(this);
-        String idUsuarios = preferencesUser.getIdentificador(); // Obter o identificador do usuário que está logado
-        // Essa funcão pega o identificador salvo em outra activity(tela)
+        idUsuarios = preferencesUser.getIdentificador(); // Obter o identificador do usuário que está logado
+
+
+
 
         usuarioReferencia = ConfiguracaoFirebase.getFirebase() // Consultando o usuário no banco de dados se existir ele pega
                 .child("usuarios").child(idUsuarios);
@@ -84,10 +90,8 @@ public class PrincipalActivity extends AppCompatActivity
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {// método chamado sempre que os dados forem alterados no banco
 
-                String nome = dataSnapshot.child("nome").getValue().toString();//consulta o banco e pega o nome do usuário
-                String email = dataSnapshot.child("email").getValue().toString();//consulta o banco e pega o email do usuário
-                nomeUser.setText(nome);//seta o nome do usuário no Navigation Drawer
-                emailUser.setText(email);//seta o email do usuário no Navigation Drawer
+                nomeUser.setText(dataSnapshot.child("nome").getValue().toString());
+                emailUser.setText(dataSnapshot.child("email").getValue().toString());
 
             }
 
@@ -96,7 +100,6 @@ public class PrincipalActivity extends AppCompatActivity
 
             }
         });
-
 
 
 
@@ -153,9 +156,9 @@ public class PrincipalActivity extends AppCompatActivity
 
                 break;
             case R.id.nav_Perfil:
-                PerfilFragment perfilFragment = new PerfilFragment();
-                getSupportFragmentManager().beginTransaction().replace(R.id.conteudo_fragment,perfilFragment).commit();
 
+                Intent intent = new Intent(getApplicationContext(),PerfilActivity.class);
+                startActivity(intent);
                 break;
         }
 

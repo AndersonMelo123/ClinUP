@@ -3,6 +3,9 @@ package br.com.projetofragmeto.clinup.helper;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import br.com.projetofragmeto.clinup.activity.MainActivity;
+import br.com.projetofragmeto.clinup.activity.PrincipalActivity;
+
 public class Preferencias {
 
     private Context contexto;
@@ -14,7 +17,7 @@ public class Preferencias {
     private final String CHAVE_IDENTIFICADOR = "identificadorUsuarioLogado"; //Variável para identificar usuário logado
     private final String CHAVE_NOME = "nomeUsuarioLogado"; //Nome do usuário logado
 
-    public Preferencias( Context contextoParametro){
+    public Preferencias(Context contextoParametro){
 
         contexto = contextoParametro;
         preferences = contexto.getSharedPreferences(NOME_ARQUIVO, MODE );
