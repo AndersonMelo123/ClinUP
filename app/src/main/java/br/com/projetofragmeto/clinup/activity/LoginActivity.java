@@ -49,6 +49,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.Principal;
 
 import br.com.projetofragmeto.clinup.R;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
@@ -278,7 +279,7 @@ public class LoginActivity extends AppCompatActivity {
 
     // Abrir tela principal
     private void abrirTelaPrincipal(){
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        Intent intent = new Intent(LoginActivity.this, PrincipalActivity.class);
         startActivity( intent );
         finish();
     }
