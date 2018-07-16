@@ -3,16 +3,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.HomeFragment">
+    tools:context=".FavoritosFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Fragment Mapa"
-        android:textAlignment="center"
-        android:textColor="@color/cast_expanded_controller_background_color"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+        android:text="@string/hello_blank_fragment" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
+        android:text="Favoritos"
+        android:textColor="@color/Black"
+        android:textSize="30sp" />
 
 </FrameLayout>

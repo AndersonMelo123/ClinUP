@@ -1,4 +1,4 @@
-package br.com.projetofragmeto.clinup.fragments;
+package br.com.projetofragmeto.clinup;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -6,14 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import br.com.projetofragmeto.clinup.R;
 
+public class ListaFragment extends Fragment {
 
-public class HomeFragment extends Fragment {
+    public ListaFragment() {
 
-
-    public HomeFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -25,7 +22,6 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        return inflater.inflate(R.layout.fragment_lista, container, false);
     }
-
 }
