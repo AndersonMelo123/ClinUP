@@ -49,7 +49,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.Principal;
 
 import br.com.projetofragmeto.clinup.R;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
@@ -62,14 +61,16 @@ public class LoginActivity extends AppCompatActivity {
     // Atributos para serem utilizados nessa classe
     private EditText email, senha;
 
+    private String identificadorUsuarioLogado;
+
     private LoginButton botaoLoginFacebook;
     private CallbackManager callbackManager;
 
     private Usuario usuario;
-    private FirebaseAuth autenticacao;//autenticação do firebase
-    private String identificadorUsuarioLogado;
     private ValueEventListener valueEventListenerUsuario;
+
     private DatabaseReference firebase;
+    private FirebaseAuth autenticacao;//autenticação do firebase
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     //private static Boolean loginAutomatico = false;
@@ -135,20 +136,35 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (AccessToken.getCurrentAccessToken() != null && user != null){
-                    Log.i("TAGUE",AccessToken.getCurrentAccessToken().getExpires().toString());
+                if (AccessToken.getCurrentAccessToken() != null && user != null) {
 
-                    Log.e("Aceita", "onAuthStateChanged:signed_in" + user.getUid());
-                    String userId = AccessToken.getCurrentAccessToken().getUserId(); // Pegar o id do facebook do usuário para coletar a imagem do perfil
-                    usuario = new Usuario(user.getDisplayName(),user.getEmail(),"https://graph.facebook.com/" + userId + "/picture?type=large");
+                    //Se o login pelo Facebook foi realizado com sucesso pela segunda vez na mesma sessão
+                    if (getPreferencesKeyUsuarioFacebook(LoginActivity.this)) {
 
-                    inserirUsuario(usuario);
+                        String idUsuario = Base64Custom.codificarBase64(user.getEmail());
+                        Preferencias preferencias = new Preferencias(LoginActivity.this);
+                        preferencias.salvarDados(idUsuario, usuario.getNome());
+                        salvarPreferencias("id", idUsuario);
 
-                    String idUsuario = Base64Custom.codificarBase64(user.getEmail());
-                    Preferencias preferencias = new Preferencias( LoginActivity.this );
-                    preferencias.salvarDados( idUsuario, usuario.getNome() );
-                    salvarPreferencias("id", idUsuario);
-                    //salvarPreferencias("idFacebook", idUsuario);
+                        Toast.makeText(LoginActivity.this, "Sucesso ao fazer login!", Toast.LENGTH_LONG).show(); // Mensagem na tela do usuário
+                        abrirTelaPrincipal();
+
+
+                        //Se o login pelo Facebook foi realizado com sucesso pela primeira vez na sessão
+                    } else if (!getPreferencesKeyUsuarioFacebook(LoginActivity.this)) {
+                        String userId = AccessToken.getCurrentAccessToken().getUserId(); // Pegar o id do facebook do usuário para coletar a imagem do perfil
+                        usuario = new Usuario(user.getDisplayName(), user.getEmail(), "https://graph.facebook.com/" + userId + "/picture?type=large");
+
+                        String idUsuario = Base64Custom.codificarBase64(user.getEmail());
+                        Preferencias preferencias = new Preferencias(LoginActivity.this);
+                        preferencias.salvarDados(idUsuario, usuario.getNome());
+                        salvarPreferencias("idFacebook", idUsuario);
+
+                        inserirUsuario(usuario);
+                        abrirTelaPrincipal();
+
+                    }
+
 
                 } else {
                     Log.d("TG", "SIGNED OUT");
@@ -170,7 +186,7 @@ public class LoginActivity extends AppCompatActivity {
                 .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
                     @Override
                     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        Toast.makeText(LoginActivity.this, "Login inválido",Toast.LENGTH_LONG).show();
+                        Toast.makeText(LoginActivity.this, "Login inválido", Toast.LENGTH_LONG).show();
                     }
                 })
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
@@ -205,31 +221,28 @@ public class LoginActivity extends AppCompatActivity {
     private void verificarUsuarioLogado() {
 
         autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
-        //Se já estiver logado pelo Google
-       /* if (autenticacao.getCurrentUser() != null && getPreferencesKeyConsumidorVerificarLogado(this)) {
-            abrirTelaPrincipal();
-        }*/
-        //Se já estiver logado pelo Google
-        if (autenticacao.getCurrentUser() != null){ //Verificando se existe usuário logado
+
+        if (autenticacao.getCurrentUser() != null) { //Verificando se existe usuário logado
             abrirTelaPrincipal();
         }
         //Se já estiver logado pelo Facebook
-        if(isLoggedIn()) abrirTelaPrincipal(); // Verificando se existe algum usuário logado com o facebook
+        if (isLoggedIn())
+            abrirTelaPrincipal(); // Verificando se existe algum usuário logado com o facebook
     }
 
-    private void validarLogin(){
+    private void validarLogin() {
 
         String Email = email.getText().toString().trim();
-        String password  = senha.getText().toString().trim();
+        String password = senha.getText().toString().trim();
 
         //checking if email and passwords are empty
-        if(TextUtils.isEmpty(Email)){
-            Toast.makeText(this,"Por favor entre com o e-mail",Toast.LENGTH_LONG).show();
+        if (TextUtils.isEmpty(Email)) {
+            Toast.makeText(this, "Por favor entre com o e-mail", Toast.LENGTH_LONG).show();
             return;
         }
 
-        if(TextUtils.isEmpty(password)){
-            Toast.makeText(this,"Por favor entre com a senha",Toast.LENGTH_LONG).show();
+        if (TextUtils.isEmpty(password)) {
+            Toast.makeText(this, "Por favor entre com a senha", Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -241,22 +254,22 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
 
-                if (task.isSuccessful()){
+                if (task.isSuccessful()) {
 
-                    identificadorUsuarioLogado = Base64Custom.codificarBase64( usuario.getEmail() );
+                    identificadorUsuarioLogado = Base64Custom.codificarBase64(usuario.getEmail());
 
                     firebase = ConfiguracaoFirebase.getFirebase()
                             .child("usuarios")
-                            .child( identificadorUsuarioLogado );
+                            .child(identificadorUsuarioLogado);
 
                     valueEventListenerUsuario = new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
 
-                            Usuario usuarioRecuperado = dataSnapshot.getValue( Usuario.class );
+                            Usuario usuarioRecuperado = dataSnapshot.getValue(Usuario.class);
 
-                            Preferencias preferencias = new Preferencias( LoginActivity.this );
-                            preferencias.salvarDados( identificadorUsuarioLogado, usuarioRecuperado.getNome() );
+                            Preferencias preferencias = new Preferencias(LoginActivity.this);
+                            preferencias.salvarDados(identificadorUsuarioLogado, usuarioRecuperado.getNome());
 
                         }
 
@@ -266,11 +279,11 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     };
 
-                    firebase.addListenerForSingleValueEvent( valueEventListenerUsuario ); // Única consulta
+                    firebase.addListenerForSingleValueEvent(valueEventListenerUsuario); // Única consulta
 
                     Toast.makeText(LoginActivity.this, "Sucesso ao fazer login!", Toast.LENGTH_LONG).show();
                     abrirTelaPrincipal();
-                }else{
+                } else {
                     Toast.makeText(LoginActivity.this, "Falha ao fazer login!", Toast.LENGTH_LONG).show();
                 }
             }
@@ -278,14 +291,14 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     // Abrir tela principal
-    private void abrirTelaPrincipal(){
+    private void abrirTelaPrincipal() {
         Intent intent = new Intent(LoginActivity.this, PrincipalActivity.class);
-        startActivity( intent );
+        startActivity(intent);
         finish();
     }
 
     // Abrir tela para cadastrar o usuário EMAIL e SENHA
-    public void abrirCadastroUsuario(View view){
+    public void abrirCadastroUsuario(View view) {
 
         Intent intent = new Intent(LoginActivity.this, CadastroUsuarioActivity.class);
         startActivity(intent);
@@ -301,7 +314,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        callbackManager.onActivityResult(requestCode,resultCode,data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == RC_SIGN_IN) {
@@ -309,30 +322,28 @@ public class LoginActivity extends AppCompatActivity {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
 
             //Se o login pelo Google foi realizado com sucesso pela segunda vez na mesma sessão
-            if (result.isSuccess() && getPreferencesKeyConsumidorGoogle(this)) {
+            if (result.isSuccess() && getPreferencesKeyUsuarioGoogle(this)) {
 
-                Log.i("ResultadoPreference", String.valueOf(getPreferencesKeyConsumidorGoogle(this)));
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
 
                 String idUsuario = Base64Custom.codificarBase64(account.getEmail());
-                Preferencias preferencias = new Preferencias( LoginActivity.this );
-                preferencias.salvarDados( idUsuario, account.getDisplayName() );
+                Preferencias preferencias = new Preferencias(LoginActivity.this);
+                preferencias.salvarDados(idUsuario, account.getDisplayName());
                 salvarPreferencias("id", idUsuario);
 
                 Toast.makeText(LoginActivity.this, "Sucesso ao fazer login!", Toast.LENGTH_LONG).show(); // Mensagem na tela do usuário
                 abrirTelaPrincipal();
 
                 //Se o login pelo Google foi realizado com sucesso pela primeira vez na sessão
-            } else if (result.isSuccess() && !getPreferencesKeyConsumidorGoogle(this)) {
+            } else if (result.isSuccess() && !getPreferencesKeyUsuarioGoogle(this)) {
 
-                Log.i("ResultadoPreference", String.valueOf(getPreferencesKeyConsumidorGoogle(this)));
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
 
                 String idUsuario = Base64Custom.codificarBase64(account.getEmail());
-                Preferencias preferencias = new Preferencias( LoginActivity.this );
-                preferencias.salvarDados( idUsuario, account.getDisplayName() );
+                Preferencias preferencias = new Preferencias(LoginActivity.this);
+                preferencias.salvarDados(idUsuario, account.getDisplayName());
 
                 salvarPreferencias("idGoogle", idUsuario);
 
@@ -389,29 +400,31 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             abrirTelaPrincipal();
-                        }else {
+                        } else {
                             alert("Erro de autenticação com Firebase");
                         }
                     }
                 });
     }
 
-    private void alert(String texto){
+    private void alert(String texto) {
         Toast.makeText(this, texto, Toast.LENGTH_SHORT).show();
     }
 
-    //Método que recupera o id do usuário logado para acessar seus dados e salvar suas informações no banco
-    public static boolean getPreferencesKeyConsumidorVerificarLogado(Context context) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.contains("id");
-    }
 
     //Método que recupera o id do usuário logado pelo Google
-    public static boolean getPreferencesKeyConsumidorGoogle(Context context) {
+    public static boolean getPreferencesKeyUsuarioGoogle(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         return preferences.contains("idGoogle");
+    }
+
+
+    //Método que recupera o id do usuário logado pelo Google
+    public static boolean getPreferencesKeyUsuarioFacebook(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.contains("idFacebook");
     }
 
     //Método que salva o id do usuário nas preferências para login automático ao abrir aplicativo
@@ -429,8 +442,8 @@ public class LoginActivity extends AppCompatActivity {
             usuario = new Usuario(account.getId(), account.getDisplayName(), account.getEmail(), account.getPhotoUrl().toString());
 
             String idUsuario = Base64Custom.codificarBase64(usuario.getEmail());
-            Preferencias preferencias = new Preferencias( LoginActivity.this );
-            preferencias.salvarDados( idUsuario, usuario.getNome() );
+            Preferencias preferencias = new Preferencias(LoginActivity.this);
+            preferencias.salvarDados(idUsuario, usuario.getNome());
             salvarPreferencias("id", idUsuario);
 
             //Chamada do DAO para salvar no banco

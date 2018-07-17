@@ -1,171 +1,273 @@
 package br.com.projetofragmeto.clinup.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.util.Log;
 import android.view.View;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.facebook.login.LoginManager;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IProfile;
+import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader;
+import com.mikepenz.materialdrawer.util.DrawerImageLoader;
+import com.squareup.picasso.Picasso;
 
 import br.com.projetofragmeto.clinup.R;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
+import br.com.projetofragmeto.clinup.database.OnGetDataListener;
 import br.com.projetofragmeto.clinup.fragments.HomeFragment;
-import br.com.projetofragmeto.clinup.fragments.PerfilFragment;
 import br.com.projetofragmeto.clinup.helper.Preferencias;
 import br.com.projetofragmeto.clinup.model.Usuario;
 
-public class PrincipalActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
 
-    private TextView nomeUser;
-    private TextView emailUser;
-    private String idUsuarios;
-    private Usuario usuario = new Usuario();
-    private DatabaseReference usuarioReferencia;
+public class PrincipalActivity extends AppCompatActivity {
+
+    //save our header or result
+    private AccountHeader headerResult = null;
+    private Drawer result = null;
+
+    private String nomeUser, emailUser, fotoUser;
+
+    private ProgressDialog mProgressDialog;
+
+    private FirebaseAuth autenticacaoUsuario;
+    private GoogleApiClient googleApiClient;
+    private FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        autenticacaoUsuario = ConfiguracaoFirebase.getFirebaseAutenticacao();
+        user = ConfiguracaoFirebase.getUsuarioLogado(); // retorna o usuário que está logado no momento
+
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        homeFragment(); // Instancia o fragment home
+
+        Preferencias preferencesUser = new Preferencias(PrincipalActivity.this);
+        String idUsuarios = preferencesUser.getIdentificador();
+
+        //initialize and create the image loader logic
+        DrawerImageLoader.init(new AbstractDrawerImageLoader() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-        HomeFragment homeFragment = new HomeFragment(); // instancia o fragment home
-        getSupportFragmentManager().beginTransaction().replace(R.id.conteudo_fragment,homeFragment).commit(); // exibe o fragmentHome
-        //############################################################################################################################
-
-
-        // pega o id do navigation view; com ele eu vou poder setar o nome, email e foto do usuário conectado
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        LinearLayout mParent = ( LinearLayout ) navigationView.getHeaderView( 0 );
-        nomeUser = mParent.findViewById(R.id.nome_user_nav_drawer); // pega o id do nome_user do nav_header_principal
-        emailUser = mParent.findViewById(R.id.email_user_nav_drawer);// pega o id do email_user do nav_header_principal
-
-        // exibe o email e senha do usuário na navigation view
-
-        Preferencias preferencesUser = new Preferencias(this);
-        idUsuarios = preferencesUser.getIdentificador(); // Obter o identificador do usuário que está logado
-
-
-
-
-        usuarioReferencia = ConfiguracaoFirebase.getFirebase() // Consultando o usuário no banco de dados se existir ele pega
-                .child("usuarios").child(idUsuarios);
-
-        usuarioReferencia.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {// método chamado sempre que os dados forem alterados no banco
-
-                nomeUser.setText(dataSnapshot.child("nome").getValue().toString());
-                emailUser.setText(dataSnapshot.child("email").getValue().toString());
-
+            public void set(ImageView imageView, Uri uri, Drawable placeholder) {
+                Picasso.with(imageView.getContext()).load(uri).placeholder(placeholder).into(imageView);
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
+            public void cancel(ImageView imageView) {
+                Picasso.with(imageView.getContext()).cancelRequest(imageView);
             }
         });
 
 
+        mReadDataOnce(idUsuarios, new OnGetDataListener() {
+            @Override
+            public void onStart() {
 
+                if (mProgressDialog == null) {
+                    mProgressDialog = new ProgressDialog(PrincipalActivity.this);
+                    mProgressDialog.setMessage(getString(R.string.carregando));
+                    mProgressDialog.setIndeterminate(true);
+                }
+                mProgressDialog.show();
+            }
+
+            @Override
+            public void onSuccess(DataSnapshot dataSnapshot) {
+
+                if (mProgressDialog != null && mProgressDialog.isShowing()) {
+                    mProgressDialog.dismiss();
+                }
+
+                if (dataSnapshot.getValue() != null) {
+                    Usuario usuario = dataSnapshot.getValue(Usuario.class);
+
+                    nomeUser = usuario.getNome();
+                    emailUser = usuario.getEmail();
+
+                    IProfile profile;
+
+                    if (usuario.getFoto() != null) {
+                        fotoUser = usuario.getFoto();
+                        profile = new ProfileDrawerItem().withEmail(emailUser).withName(nomeUser).withIcon(fotoUser);
+
+                    } else {
+                        profile = new ProfileDrawerItem().withEmail(emailUser).withName(nomeUser).withIcon(R.mipmap.ic_launcher);
+                    }
+
+                    //################################# - Google - ################################################
+                    GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                            .requestEmail()
+                            .build();
+
+                    googleApiClient = new GoogleApiClient.Builder(PrincipalActivity.this)
+                            .enableAutoManage(PrincipalActivity.this, new GoogleApiClient.OnConnectionFailedListener() {
+                                @Override
+                                public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+                                    Toast.makeText(PrincipalActivity.this, "Login inválido", Toast.LENGTH_LONG).show();
+                                }
+                            })
+                            .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                            .build();
+                    //################################# - Google - ################################################
+
+
+                    //################################# -  - ################################################
+
+                    // Create the AccountHeader
+                    AccountHeader headerResult = new AccountHeaderBuilder()
+                            .withActivity(PrincipalActivity.this)
+                            .withHeaderBackground(R.drawable.background_cadastro)
+                            .addProfiles(profile)
+                            .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
+                                @Override
+                                public boolean onProfileChanged(View view, IProfile profile, boolean currentProfile) {
+                                    return false;
+                                }
+                            })
+                            .build();
+
+
+                    //if you want to update the items at a later time it is recommended to keep it in a variable
+                    PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName("Home").withIcon(FontAwesome.Icon.faw_home);
+                    PrimaryDrawerItem item2 = new PrimaryDrawerItem().withIdentifier(2).withName("Perfil").withIcon(FontAwesome.Icon.faw_user);
+
+                    //Cria o drawer e lembra o 'Drawer' resulto objeto
+                    Drawer result = new DrawerBuilder()
+                            .withAccountHeader(headerResult)
+                            .withActivity(PrincipalActivity.this)
+                            .withToolbar(toolbar)
+                            .addDrawerItems(
+                                    item1,
+                                    item2
+                            )
+                            .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                                @Override
+                                public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                                    if (drawerItem != null) {
+                                        Intent intent = null;
+                                        if (drawerItem.getIdentifier() == 1) {
+
+                                            homeFragment(); //Vai para a frament HomeFragment
+                                        }
+
+                                        if (drawerItem.getIdentifier() == 2) {
+
+                                            intent = new Intent(PrincipalActivity.this, PerfilActivity.class);
+                                            startActivity(intent);
+                                        }
+
+                                        if (drawerItem.getIdentifier() == 3) {
+                                            logout();
+                                        }
+                                    }
+                                    return false;
+                                }
+                            })
+                            .build();
+
+                    result.addStickyFooterItem(new PrimaryDrawerItem().withIdentifier(3).withName("Sair").withIcon(FontAwesome.Icon.faw_sign_out_alt));
+                }
+            }
+
+            @Override
+            public void onFailed(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void mReadDataOnce(String child, final OnGetDataListener listener) {
+        listener.onStart();
+        FirebaseDatabase.getInstance().getReference().child("usuarios").child(child).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                listener.onSuccess(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                listener.onFailed(databaseError);
+            }
+        });
+    }
+
+    private void logout() {
+
+        logOutGoogle();
+        autenticacaoUsuario.signOut();
+        FirebaseAuth.getInstance().signOut();
+        LoginManager.getInstance().logOut(); // Faz o logOut do facebook
+
+        goLogInScreen(); //Vai para a tela de login
 
     }
 
+    public void logOutGoogle() {
+        Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(new ResultCallback<Status>() {
+            @Override
+            public void onResult(@NonNull Status status) {
+                if (status.isSuccess()) {
+                    goLogInScreen();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Sessão não foi fechada", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void goLogInScreen() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
+    }
+
+    private void homeFragment() {
+
+        HomeFragment homeFragment = new HomeFragment(); // instancia o fragment home
+        getSupportFragmentManager().beginTransaction().replace(R.id.conteudo_fragment, homeFragment).commit(); // exibe o fragmentHome
+
+    }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+        //handle the back press :D close the drawer first and if the drawer is closed close the activity
+        if (result != null && result.isDrawerOpen()) {
+            result.closeDrawer();
         } else {
             super.onBackPressed();
         }
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.principal, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-
-
-
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        switch (id){
-            case R.id.nav_home:
-                HomeFragment homeFragment = new HomeFragment(); // instancia o fragment home
-                getSupportFragmentManager().beginTransaction().replace(R.id.conteudo_fragment,homeFragment).commit(); // exibe o fragmentHome
-
-
-                break;
-            case R.id.nav_Perfil:
-
-                Intent intent = new Intent(getApplicationContext(),PerfilActivity.class);
-                startActivity(intent);
-                break;
-        }
-
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
 }

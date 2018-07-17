@@ -31,7 +31,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:background="@drawable/rounded"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            >
 
             <!-- Nome -->
             <android.support.design.widget.TextInputLayout
@@ -44,7 +45,9 @@
                 app:layout_constraintBottom_toTopOf="@+id/textInput_EmailID"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                android:theme="@style/StyleEditText"
+                >
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/edit_cadastro_nomeID"
@@ -63,6 +66,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="31dp"
+                android:theme="@style/StyleEditText"
                 android:layout_marginStart="31dp"
                 app:layout_constraintBottom_toTopOf="@+id/textInput_TelefoneID"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -83,6 +87,7 @@
             <!-- Cpf -->
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/textInput_CpfID"
+                android:theme="@style/StyleEditText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="31dp"
@@ -108,6 +113,7 @@
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/textInput_NomPlanoID"
                 android:layout_width="match_parent"
+                android:theme="@style/StyleEditText"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="31dp"
                 android:layout_marginStart="31dp"
@@ -132,6 +138,7 @@
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/textInput_NumPlanoID"
                 android:layout_width="match_parent"
+                android:theme="@style/StyleEditText"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="31dp"
                 android:layout_marginStart="31dp"
@@ -156,6 +163,7 @@
                 android:id="@+id/textInput_TelefoneID"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:theme="@style/StyleEditText"
                 android:layout_marginEnd="31dp"
                 android:layout_marginStart="31dp"
                 app:layout_constraintBottom_toTopOf="@+id/textInput_CpfID"
@@ -178,6 +186,7 @@
                 android:id="@+id/textInput_EmailID"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:theme="@style/StyleEditText"
                 android:layout_marginEnd="31dp"
                 android:layout_marginStart="31dp"
                 app:layout_constraintBottom_toTopOf="@+id/textInput_nascimentoID"
@@ -204,6 +213,7 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="31dp"
                 android:layout_marginStart="31dp"
+                android:theme="@style/StyleEditText"
                 app:errorEnabled="true"
                 app:layout_constraintBottom_toTopOf="@+id/bt_cadastrarID"
                 app:layout_constraintEnd_toEndOf="parent"

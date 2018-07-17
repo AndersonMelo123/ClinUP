@@ -2,17 +2,18 @@ package br.com.projetofragmeto.clinup.activity;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.github.rtoshiro.util.format.MaskFormatter;
-import com.github.rtoshiro.util.format.SimpleMaskFormatter;
-import com.github.rtoshiro.util.format.pattern.MaskPattern;
-import com.github.rtoshiro.util.format.text.MaskTextWatcher;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -27,18 +28,20 @@ import br.com.projetofragmeto.clinup.helper.Base64Custom;
 import br.com.projetofragmeto.clinup.helper.Preferencias;
 import br.com.projetofragmeto.clinup.model.PlanoDeSaude;
 import br.com.projetofragmeto.clinup.model.Usuario;
+import br.com.projetofragmeto.clinup.utils.MaskUtil;
 
 public class AlterarCadastroUsuario extends AppCompatActivity {
 
     // Atributos para serem utilizados nessa classe
-    private EditText nome, email, senha, cpf, nomePlano, numPlano, dataNascimento, numTelefone;
+    private EditText nome, email, cpf, nomePlano, numPlano, dataNascimento, numTelefone;
+    private TextInputLayout nomeIn, emailIn, cpfIn, nomePlanoIn, numPlanoIn, dataNascimentoIn, numTelefoneIn;
 
     private Button botaoSalvar;
     private FirebaseUser user;
 
     private DatabaseReference firebase;
     private DatabaseReference firebasePlano;
-    private ValueEventListener valueEventListener;
+    private ValueEventListener valueEventListenerUsuario;
     private ValueEventListener valueEventListenerPlano;
     private FirebaseAuth autenticacaoUsuario;
 
@@ -68,32 +71,23 @@ public class AlterarCadastroUsuario extends AppCompatActivity {
         nomePlano = findViewById(R.id.edit_nomePlanoID);
         numPlano = findViewById(R.id.edit_numPlanoID);
 
-        // Criando as mascaras
-        SimpleMaskFormatter nCpf = new SimpleMaskFormatter("NNN.NNN.NNN-NN");
-        MaskTextWatcher mCpf = new MaskTextWatcher(cpf,nCpf);
-        cpf.addTextChangedListener(mCpf);
-        //FIM DA MÁSCARA
 
-        // Criando as mascaras
+        // Instanciando os ID da "activity_cadastro_usuario.xml"
+        nomeIn = findViewById(R.id.textInput_NomeID);
+        emailIn = findViewById(R.id.textInput_EmailID);
+        cpfIn = findViewById(R.id.textInput_CpfID);
+        dataNascimentoIn = findViewById(R.id.textInput_nascimentoID);
+        numTelefoneIn = findViewById(R.id.textInput_TelefoneID);
 
-        MaskPattern mp03 = new MaskPattern("[0-9]");
-        MaskPattern mp09 = new MaskPattern("[0-3]");
-        MaskPattern mp01 = new MaskPattern("[0-1]");
+        nomePlanoIn = findViewById(R.id.textInput_NomPlanoID);
+        numPlanoIn = findViewById(R.id.textInput_NumPlanoID);
 
-        MaskFormatter mf = new MaskFormatter("[0-3][0-9]/[0-1][0-9]/[0-9][0-9][0-9][0-9]");
+        // Máscara para os valores dos campos
+        MaskUtil maskUtil = new MaskUtil();
 
-        mf.registerPattern(mp01);
-        mf.registerPattern(mp03);
-        mf.registerPattern(mp09);
-
-        dataNascimento.addTextChangedListener(new MaskTextWatcher(dataNascimento, mf));
-        //FIM DA MÁSCARA
-
-        // Criando as mascaras
-        SimpleMaskFormatter nNumTelefone = new SimpleMaskFormatter("+NN(NN)NNNNN-NNNN");
-        MaskTextWatcher mNumTelefone = new MaskTextWatcher(numTelefone,nNumTelefone);
-        numTelefone.addTextChangedListener(mNumTelefone);
-        //FIM DA MÁSCARA
+        maskUtil.maskCPF(cpf);
+        maskUtil.maskDATA(dataNascimento);
+        maskUtil.maskTelefone(numTelefone);
 
         Preferencias preferencesUser = new Preferencias(AlterarCadastroUsuario.this);
         String idUsuarios = preferencesUser.getIdentificador(); // Obter o identificador do usuário que está logado
@@ -108,14 +102,14 @@ public class AlterarCadastroUsuario extends AppCompatActivity {
             COLETANDO E OUVINDO OS DADOS DO USUÁRIO LOGADO
         */
         //OUVINTE: ele escuta os valores do banco, caso tenha alteração ele vai alterar os dados que foram coletados no conteúdo do ouvinte
-        valueEventListener = new ValueEventListener() {
+        valueEventListenerUsuario = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot != null){
+                if (dataSnapshot != null) {
 
                     Usuario usuario = dataSnapshot.getValue(Usuario.class);
 
-                    if (usuario != null ) {
+                    if (usuario != null) {
                         nome.setText(usuario.getNome());
                         email.setText(usuario.getEmail());
                         cpf.setText(usuario.getCpf());
@@ -133,7 +127,7 @@ public class AlterarCadastroUsuario extends AppCompatActivity {
             }
         };
 
-        firebase.addValueEventListener(valueEventListener);
+        firebase.addValueEventListener(valueEventListenerUsuario);
 
         /* #################################################################################################################
             COLETANDO E OUVINDO OS DADOS DO PLANO DE SAÚDE DO USUÁRIO SE TIVER
@@ -146,7 +140,7 @@ public class AlterarCadastroUsuario extends AppCompatActivity {
         valueEventListenerPlano = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot != null){
+                if (dataSnapshot != null) {
 
                     PlanoDeSaude plano = dataSnapshot.getValue(PlanoDeSaude.class);
 
@@ -173,22 +167,23 @@ public class AlterarCadastroUsuario extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                usuario = new Usuario();
-                planoDeSaude = new PlanoDeSaude();
-                Plano = new PlanoDeSaudeImplements(getApplicationContext());
+                if (submitForm()) {
+                    usuario = new Usuario();
+                    planoDeSaude = new PlanoDeSaude();
+                    Plano = new PlanoDeSaudeImplements(getApplicationContext());
 
-                usuario.setNome( nome.getText().toString() );
-                usuario.setEmail( email.getText().toString() );
-                usuario.setCpf( cpf.getText().toString() );
-                usuario.setNumTelefone( numTelefone.getText().toString() );
-                usuario.setDataNascimento( dataNascimento.getText().toString());
-                String idUsuarioLogado = Base64Custom.codificarBase64( usuario.getEmail() );
-                usuario.setId( idUsuarioLogado );
+                    usuario.setNome(nome.getText().toString());
+                    usuario.setEmail(email.getText().toString());
+                    usuario.setCpf(cpf.getText().toString());
+                    usuario.setNumTelefone(numTelefone.getText().toString());
+                    usuario.setDataNascimento(dataNascimento.getText().toString());
+                    String idUsuarioLogado = Base64Custom.codificarBase64(usuario.getEmail());
+                    usuario.setId(idUsuarioLogado);
 
-                usuario.salvar();
+                    usuario.salvar();
 
-                Plano.inserirPlanodeSaude(planoDeSaude, usuario.getId(),nomePlano.getText().toString(), numPlano.getText().toString());
-
+                    Plano.inserirPlanodeSaude(planoDeSaude, usuario.getId(), nomePlano.getText().toString(), numPlano.getText().toString());
+                }
 
             }
         });
@@ -200,7 +195,7 @@ public class AlterarCadastroUsuario extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        firebase.addValueEventListener(valueEventListener);
+        firebase.addValueEventListener(valueEventListenerUsuario);
         firebasePlano.addValueEventListener(valueEventListenerPlano);
 
     }
@@ -208,8 +203,8 @@ public class AlterarCadastroUsuario extends AppCompatActivity {
     @Override
     public void onStop() {
         super.onStop();
-        if (valueEventListener != null) {
-            firebase.removeEventListener(valueEventListener);
+        if (valueEventListenerUsuario != null) {
+            firebase.removeEventListener(valueEventListenerUsuario);
         }
 
         if (valueEventListenerPlano != null) {
@@ -223,5 +218,101 @@ public class AlterarCadastroUsuario extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(key, value);
         editor.commit();
+    }
+
+
+    private boolean submitForm() {
+        if (!validarNome()) {
+            return false;
+        }
+
+        if (!validarEmail()) {
+            return false;
+        }
+
+        if (!validarCpf()) {
+            return false;
+        }
+        return true;
+
+    }
+
+    private boolean validarNome() {
+        if (nome.getText().toString().trim().isEmpty()) {
+            nomeIn.setError(getString(R.string.err_msg_name));
+            requestFocus(nomeIn);
+            return false;
+        } else {
+            nomeIn.setErrorEnabled(false);
+        }
+
+        return true;
+    }
+
+    private boolean validarEmail() {
+        String nEmail = email.getText().toString().trim();
+
+        if (nEmail.isEmpty() || !isValidEmail(nEmail)) {
+            emailIn.setError(getString(R.string.err_msg_email));
+            requestFocus(email);
+            return false;
+        } else {
+            emailIn.setErrorEnabled(false);
+        }
+
+        return true;
+    }
+
+
+    private boolean validarCpf() {
+        if (cpf.getText().toString().trim().isEmpty()) {
+            cpfIn.setError(getString(R.string.err_msg_cpf));
+            requestFocus(cpf);
+            return false;
+        } else {
+            cpfIn.setErrorEnabled(false);
+        }
+
+        return true;
+    }
+
+
+    private static boolean isValidEmail(String email) {
+        return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
+    private void requestFocus(View view) {
+        if (view.requestFocus()) {
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        }
+    }
+
+    private class MyTextWatcher implements TextWatcher {
+
+        private View view;
+
+        private MyTextWatcher(View view) {
+            this.view = view;
+        }
+
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
+
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
+
+        public void afterTextChanged(Editable editable) {
+            switch (view.getId()) {
+                case R.id.edit_cadastro_nomeID:
+                    validarNome();
+                    break;
+                case R.id.edit_cadastro_cpfID:
+                    validarCpf();
+                    break;
+                case R.id.edit_cadastro_emailID:
+                    validarEmail();
+                    break;
+            }
+        }
     }
 }

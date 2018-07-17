@@ -18,6 +18,7 @@ import com.google.firebase.database.ValueEventListener;
 import br.com.projetofragmeto.clinup.R;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
 import br.com.projetofragmeto.clinup.helper.Preferencias;
+import br.com.projetofragmeto.clinup.model.Usuario;
 
 public class PerfilActivity extends AppCompatActivity {
     private TextView nome;
@@ -37,7 +38,7 @@ public class PerfilActivity extends AppCompatActivity {
         toolbar.setTitle("Perfil");
         setSupportActionBar(toolbar);
 
-        if(getSupportActionBar() != null){//setinha de voltar
+        if (getSupportActionBar() != null) {//setinha de voltar
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
@@ -61,12 +62,14 @@ public class PerfilActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {// método chamado sempre que os dados forem alterados no banco
 
+                Usuario usuario = dataSnapshot.getValue(Usuario.class);
 
-                nome.setText(dataSnapshot.child("nome").getValue().toString());
-                email.setText(dataSnapshot.child("email").getValue().toString());
-                dataNascimento.setText(dataSnapshot.child("dataNascimento").getValue().toString());
-                telefone.setText(dataSnapshot.child("numTelefone").getValue().toString());
-
+                if (usuario != null) {
+                    nome.setText(usuario.getNome());
+                    email.setText(usuario.getEmail());
+                    dataNascimento.setText(usuario.getDataNascimento());
+                    telefone.setText(usuario.getNumTelefone());
+                }
             }
 
             @Override
@@ -78,7 +81,7 @@ public class PerfilActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) { //método para finalizar a activity caso seja apertado a setinha de voltar
-        if(item.getItemId() == android.R.id.home)
+        if (item.getItemId() == android.R.id.home)
             finish();
         return super.onOptionsItemSelected(item);
     }

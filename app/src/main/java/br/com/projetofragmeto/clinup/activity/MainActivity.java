@@ -94,9 +94,6 @@ public class MainActivity extends AppCompatActivity {
                          String nome = usuario.getNome();
                          String email = usuario.getEmail();
 
-                         Log.i("MEUNOME",nome);
-                         Log.i("MEUEMAIL",email);
-
                          nomeText.setText(nome);
                          emailText.setText(email);
                      }

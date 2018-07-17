@@ -11,17 +11,16 @@ import br.com.projetofragmeto.clinup.R;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 
-import com.github.rtoshiro.util.format.MaskFormatter;
-import com.github.rtoshiro.util.format.SimpleMaskFormatter;
-import com.github.rtoshiro.util.format.pattern.MaskPattern;
-import com.github.rtoshiro.util.format.text.MaskTextWatcher;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -36,6 +35,7 @@ import br.com.projetofragmeto.clinup.helper.Base64Custom;
 import br.com.projetofragmeto.clinup.helper.Preferencias;
 import br.com.projetofragmeto.clinup.model.PlanoDeSaude;
 import br.com.projetofragmeto.clinup.model.Usuario;
+import br.com.projetofragmeto.clinup.utils.MaskUtil;
 
 public class CadastroUsuarioActivity extends AppCompatActivity {
 
@@ -82,40 +82,19 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
         nomePlanoIn = findViewById(R.id.textInput_NomPlanoID);
         numPlanoIn = findViewById(R.id.textInput_NumPlanoID);
 
+        // Máscara para os valores dos campos
+        MaskUtil maskUtil = new MaskUtil();
 
-        // Criando as mascaras
-        SimpleMaskFormatter nCpf = new SimpleMaskFormatter("NNN.NNN.NNN-NN");
-        MaskTextWatcher mCpf = new MaskTextWatcher(cpf, nCpf);
-        cpf.addTextChangedListener(mCpf);
-        //FIM DA MÁSCARA
-
-        // Criando as mascara
-        MaskPattern mp03 = new MaskPattern("[0-3]");
-        MaskPattern mp09 = new MaskPattern("[0-9]");
-        MaskPattern mp01 = new MaskPattern("[0-1]");
-
-        MaskFormatter mf = new MaskFormatter("[0-3][0-9]/[0-1][0-9]/[0-9][0-9][0-9][0-9]");
-
-        mf.registerPattern(mp01);
-        mf.registerPattern(mp03);
-        mf.registerPattern(mp09);
-
-        dataNascimento.addTextChangedListener(new MaskTextWatcher(dataNascimento, mf));
-        //FIM DA MÁSCARA
-
-        // Criando as mascaras
-        SimpleMaskFormatter nNumTelefone = new SimpleMaskFormatter("(NN)NNNNN-NNNN");
-        MaskTextWatcher mNumTelefone = new MaskTextWatcher(numTelefone, nNumTelefone);
-        numTelefone.addTextChangedListener(mNumTelefone);
-        //FIM DA MÁSCARA
-
+        maskUtil.maskCPF(cpf);
+        maskUtil.maskDATA(dataNascimento);
+        maskUtil.maskTelefone(numTelefone);
 
         botaoCadastrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { /* Criando o evento para esperar o clique no botão
                                              , caso clicado ele entra e executa o conteúdo*/
 
-                if (validarCadastro()) {
+                if (submitForm()) {
                     usuario = new Usuario();
                     planoDeSaude = new PlanoDeSaude();
                     Plano = new PlanoDeSaudeImplements(getApplicationContext());
@@ -171,6 +150,7 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
 
                     } catch (FirebaseAuthWeakPasswordException e) {
                         // Firebase solicita uma senha com mais de 6 digitos
+                        senha.setError("Digite uma senha mais forte, contento mais caracteres e com letras e números!");
                         erroExcecao = "Digite uma senha mais forte, contento mais caracteres e com letras e números!";
 
                     } catch (FirebaseAuthInvalidCredentialsException e) {
@@ -204,46 +184,146 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
 
     //Validar Cadastro
     private Boolean validarCadastro() {
-        String nNome = nome.getText().toString().trim(), nEmail = email.getText().toString().trim(),
-                nSenha = senha.getText().toString().trim(), nCpf = cpf.getText().toString().trim(),
-                nDataNascimento = dataNascimento.getText().toString().trim(), nNumTelefone = numTelefone.getText().toString().trim();
 
         Boolean valor = true;
 
-        //checking if email and passwords are empty
-        if (TextUtils.isEmpty(nNome)) {
-            nomeIn.setError("Campo obrigatório");
-            valor = false;
-        }
-
-        if (TextUtils.isEmpty(nSenha)) {
-            senhaIn.setError("Campo obrigatório");
-            valor = false;
-        }
-
-        if (TextUtils.isEmpty(nEmail)) {
-            emailIn.setError("Campo obrigatório");
-            valor = false;
-        }
-
-        if (TextUtils.isEmpty(nCpf)) {
-            cpfIn.setError("Campo obrigatório");
-            valor = false;
-        }
-
-        if (TextUtils.isEmpty(nDataNascimento)) {
-            nomePlanoIn.setError("Campo obrigatório");
-            valor = false;
-        }
-
-        if (TextUtils.isEmpty(nNumTelefone)) {
-            numPlanoIn.setError("Campo obrigatório");
-            valor = false;
-        }
-
+        valor = campoVazioValidar(nome, nomeIn);
+        valor = campoVazioValidar(email, emailIn);
+        valor = campoVazioValidar(dataNascimento, dataNascimentoIn);
+        valor = campoVazioValidar(cpf, cpfIn);
+        valor = campoVazioValidar(senha, senhaIn);
 
         return valor;
     }
 
+    private boolean campoVazioValidar(EditText EditTexto, final TextInputLayout campo) {
+
+        final String nTexto = EditTexto.getText().toString().trim();
+
+        boolean valor = true;
+        // Checa se o campo está vázio
+        if (TextUtils.isEmpty(nTexto)) {
+            campo.setError("Campo obrigatório");
+            valor = false;
+        }
+
+        return valor;
+
+    }
+
+    private boolean submitForm() {
+        if (!validarNome()) {
+            return false;
+        }
+
+        if (!validarEmail()) {
+            return false;
+        }
+
+        if (!validarSenha()) {
+            return false;
+        }
+
+        if (!validarCpf()) {
+            return false;
+        }
+        return true;
+
+    }
+
+    private boolean validarNome() {
+        if (nome.getText().toString().trim().isEmpty()) {
+            nomeIn.setError(getString(R.string.err_msg_name));
+            requestFocus(nomeIn);
+            return false;
+        } else {
+            nomeIn.setErrorEnabled(false);
+        }
+
+        return true;
+    }
+
+    private boolean validarEmail() {
+        String nEmail = email.getText().toString().trim();
+
+        if (nEmail.isEmpty() || !isValidEmail(nEmail)) {
+            emailIn.setError(getString(R.string.err_msg_email));
+            requestFocus(email);
+            return false;
+        } else {
+            emailIn.setErrorEnabled(false);
+        }
+
+        return true;
+    }
+
+    private boolean validarSenha() {
+        if (senha.getText().toString().trim().isEmpty()) {
+            senhaIn.setError(getString(R.string.err_msg_password));
+            requestFocus(senha);
+            return false;
+        } else {
+            senhaIn.setErrorEnabled(false);
+        }
+
+        return true;
+    }
+
+    private boolean validarCpf(){
+        if (cpf.getText().toString().trim().isEmpty()) {
+            cpfIn.setError(getString(R.string.err_msg_cpf));
+            requestFocus(cpf);
+            return false;
+        } else {
+            cpfIn.setErrorEnabled(false);
+        }
+
+        return true;
+    }
+
+
+    private static boolean isValidEmail(String email) {
+        return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
+    private void requestFocus(View view) {
+        if (view.requestFocus()) {
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        }
+    }
+
+    private class MyTextWatcher implements TextWatcher {
+
+        private View view;
+
+        private MyTextWatcher(View view) {
+            this.view = view;
+        }
+
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
+
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
+
+        public void afterTextChanged(Editable editable) {
+            switch (view.getId()) {
+                case R.id.edit_cadastro_nomeID:
+                    validarNome();
+                    break;
+                case R.id.edit_cadastro_cpfID:
+                    validarCpf();
+                    break;
+                case R.id.edit_cadastro_emailID:
+                    validarEmail();
+                    break;
+                case R.id.edit_cadastro_senhaID:
+                    validarSenha();
+                    break;
+            }
+        }
+    }
 }
+
+
 
