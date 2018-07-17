@@ -28,6 +28,12 @@
             android:title="Perfil"
             android:checked="false"
             />
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/ic_keyboard_backspace"
+            android:title="Logout"
+            android:checked="false"
+            />
 
 
     </group>

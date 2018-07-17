@@ -159,6 +159,12 @@ public class PrincipalActivity extends AppCompatActivity
                 Intent intent = new Intent(getApplicationContext(),PerfilActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.nav_buscar:
+                goToBuscaActivity();
+                break;
+            case R.id.nav_logout:
+
+                break;
         }
 
 

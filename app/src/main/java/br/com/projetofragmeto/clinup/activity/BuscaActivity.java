@@ -1,13 +1,19 @@
 package br.com.projetofragmeto.clinup.activity;
 
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import br.com.projetofragmeto.clinup.R;
+import br.com.projetofragmeto.clinup.adapter.TabBuscarAdapter;
+import br.com.projetofragmeto.clinup.helper.SlidingTabLayout;
 
 public class BuscaActivity extends AppCompatActivity {
     private android.support.v7.widget.Toolbar toolbar;
+    private SlidingTabLayout slidingTabLayout;
+    private ViewPager viewPager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,6 +27,17 @@ public class BuscaActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
+
+        slidingTabLayout = findViewById(R.id.stl_tabs);
+        viewPager = findViewById(R.id.vp_busca);
+
+        //Configurar Adapter
+        TabBuscarAdapter tabBuscarAdapter = new TabBuscarAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(tabBuscarAdapter);
+
+        slidingTabLayout.setViewPager(viewPager);
+
+
     }
 
     @Override
