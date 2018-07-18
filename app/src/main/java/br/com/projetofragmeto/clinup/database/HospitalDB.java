@@ -1,9 +1,23 @@
 package br.com.projetofragmeto.clinup.database;
 
-public class HospitalDB implements Database {
-    @Override
-    public void adicionarDados() {
+import android.widget.ArrayAdapter;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+
+import java.util.ArrayList;
+
+import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
+import br.com.projetofragmeto.clinup.model.Hospital;
+import br.com.projetofragmeto.clinup.model.Laboratorio;
+
+public class HospitalDB implements Database {
+    private DatabaseReference firebase;
+
+    @Override
+    public void adicionarDados(Object object, String id) {
+        firebase = ConfiguracaoFirebase.getFirebase().child("hospitais");
+        firebase.child(id).setValue(object);
     }
 
     @Override
@@ -12,8 +26,16 @@ public class HospitalDB implements Database {
     }
 
     @Override
-    public void buscarDados() {
+    public ArrayList buscarDados(DataSnapshot data, ArrayList arrayList) {
 
+        arrayList.clear();
+        for(DataSnapshot dados: data.getChildren()){
+            Hospital h = dados.getValue(Hospital.class);
+            String nome = h.getNome();
+            arrayList.add(nome);
+        }
+
+        return arrayList;
     }
 
     @Override

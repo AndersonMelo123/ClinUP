@@ -3,17 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.BuscarProfissionalFragment">
+    tools:context=".fragments.BuscarProfissionalFragment"
+
+    >
 
     <!-- TODO: Update blank fragment layout -->
 
-    <TextView
-        android:id="@+id/textView"
+    <ListView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Buscar Profissional"
-        android:textAlignment="center"
-        android:textColor="@color/cardview_dark_background"
-        android:textSize="@dimen/nameTitle"
-        android:textStyle="bold" />
+        android:layout_height="match_parent"
+        android:id="@+id/lv_profissional"
+        android:layout_gravity="center_horizontal|top"
+
+        />
 </FrameLayout>
