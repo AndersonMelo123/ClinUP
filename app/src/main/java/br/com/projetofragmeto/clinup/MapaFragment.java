@@ -23,7 +23,7 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
     MapView mMapView;
     View mView;
 
-    private Marker currentLocationMarker;
+    private Marker currentLocationMaker;
     private LatLng currentLocationLatLong;
 
     public MapaFragment() {
@@ -35,6 +35,20 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
         super.onCreate(savedInstanceState);
     }
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
+        MapsInitializer.initialize(getContext());
+
+        mGoogleMap = googleMap;
+        googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+
+        googleMap.addMarker(new MarkerOptions().position(new LatLng(-8.521736, -36.451802)).title("Local").snippet("Estou aqui"));
+
+        CameraPosition Liberty = CameraPosition.builder().target(new LatLng(-8.521736, -36.451802)).zoom(16).bearing(0).tilt(45).build();
+
+        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(Liberty));
+    }
 
 
     @Override
@@ -58,21 +72,6 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-
-        MapsInitializer.initialize(getContext());
-
-        mGoogleMap = googleMap;
-        googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-
-        googleMap.addMarker(new MarkerOptions().position(new LatLng(-8.521736, -36.451802)).title("Local").snippet("Estou aqui"));
-
-        CameraPosition Liberty = CameraPosition.builder().target(new LatLng(-8.521736, -36.451802)).zoom(16).bearing(0).tilt(45).build();
-
-        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(Liberty));
-    }
 
 
 }

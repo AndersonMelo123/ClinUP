@@ -11,15 +11,16 @@
         android:layout_height="match_parent"
         android:text="@string/hello_blank_fragment" />
 
-
-    <TextView
-        android:id="@+id/textView"
+    <CalendarView
+        android:id="@+id/calendarView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
-        android:text="Lista"
-        android:textColor="@color/Black"
-        android:textSize="30sp" />
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="160dp"
+        android:background="@color/Black"
+        android:weekSeparatorLineColor="@color/Black"
+        android:weekNumberColor="@color/Cinza"
+        android:theme="@style/AppTheme.AppBarOverlay" />
 
 
 </FrameLayout>
