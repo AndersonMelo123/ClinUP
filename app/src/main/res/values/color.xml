@@ -30,4 +30,7 @@
     <color name="material_drawer_selected_text">#2196F3</color>
     <color name="material_drawer_header_selection_text">#FFF</color>
 
+    <!-- Cor para as datas disponíveis -->
+    <color name="Ativas">#3dc964</color>
+
 </resources>

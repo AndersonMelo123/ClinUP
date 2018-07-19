@@ -1,11 +1,14 @@
 package br.com.projetofragmeto.clinup.activity;
 
+import android.graphics.drawable.Drawable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
 import com.roomorama.caldroid.CaldroidFragment;
+import com.roomorama.caldroid.CaldroidListener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,11 +16,15 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
 
 import br.com.projetofragmeto.clinup.R;
 
 public class AgendarActivity extends FragmentActivity {
 
+    private ArrayList<Date> DesativarDatas = new ArrayList<Date>();
+    private ArrayList<Date> AtivarDatas = new ArrayList<Date>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,43 +46,20 @@ public class AgendarActivity extends FragmentActivity {
         t.replace(R.id.calendar1, caldroidFragment);
         t.commit();
 
-
-        ArrayList<Date> datasDesativadas = new ArrayList<Date>();
-        ArrayList<Date> datasAtivadas = new ArrayList<Date>();
-
-        try {
-            datasAtivadas.add(getDate("31/07/2018"));
-            datasAtivadas.add(getDate("28/07/2018"));
-            datasAtivadas.add(getDate("25/07/2018"));
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        // Colocando o background nas datas ativas
+        // Create a hash map
+        Map<Date, Drawable> hm = new HashMap<>();
 
 
-        try {
-            String anoAtual = String.valueOf(anoAtual());
-            String mesAtual = String.valueOf(mesAtual());
-            if (mesAtual()<10){
-                mesAtual = "0"+mesAtual;
-            }
-            int Dia;
-            int ultimoDiaMes = ultimoDiaMes();
-            Log.i("MesAtual",mesAtual);
-            Log.i("AnoAtual",anoAtual);
+        try { //Pegar as datas válidas para agendar
+            // Put nas datas ATIVAS
+            hm.put(getDate("31/07/2018"), getDrawable(R.color.Ativas));
+            hm.put(getDate("28/07/2018"), getDrawable(R.color.Ativas));
+            hm.put(getDate("25/07/2018"), getDrawable(R.color.Ativas));
 
-            for(Dia = 1; Dia == ultimoDiaMes + 1; Dia++){
-                String data = String.valueOf(Dia)+"/"+mesAtual+"/"+anoAtual;
-
-                Log.i("DataAtual", data);
-                if (datasAtivadas.contains(data)){
-                    Log.i("DataAtivda", String.valueOf(Dia));
-                }else {
-                    datasDesativadas.add(getDate(data));
-
-                    Log.i("Dias", String.valueOf(Dia));
-                }
-            }
+            AtivarDatas.add(getDate("31/07/2018"));
+            AtivarDatas.add(getDate("28/07/2018"));
+            AtivarDatas.add(getDate("25/07/2018"));
 
 
         } catch (ParseException e) {
@@ -83,17 +67,37 @@ public class AgendarActivity extends FragmentActivity {
         }
 
 
+        int Dia;
+
+        for (Dia = 1; Dia < ultimoDiaMes() + 1; Dia++) {
+
+            Date data = getDate(anoAtual(), mesAtual(), Dia);
+
+            if (!AtivarDatas.contains(data)) {
+
+                DesativarDatas.add(data);
+            }
+
+        }
+        caldroidFragment.setBackgroundDrawableForDates(hm);
 
         caldroidFragment.setMinDate(calendar.getTime()); //Setando a data minima
 
-        int i = ultimoDiaMes();
-        Log.i("UltimoDIa", String.valueOf(i));
+        caldroidFragment.setDisableDates(DesativarDatas);
 
-        // Customize
-        caldroidFragment.setDisableDates(datasDesativadas);
-        // Refresh
-        caldroidFragment.refreshView();
+        caldroidFragment.refreshView(); // Refresh
 
+
+        CaldroidListener calendario = new CaldroidListener() {
+            @Override
+            public void onSelectDate(Date date, View view) {
+                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                String dataSelecionada = format.format(date);
+            }
+
+        };
+
+        caldroidFragment.setCaldroidListener(calendario);
 
     }
 
@@ -107,6 +111,23 @@ public class AgendarActivity extends FragmentActivity {
         return calendar.getTime();
     }
 
+    private Date dataAtual(Date data) {
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = null;
+        try {
+            date = format.parse(String.valueOf(data));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.clear();
+
+        calendar.setTime(date);
+
+        return calendar.getTime();
+
+    }
 
     private Date getDate(String strDate) throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
@@ -123,7 +144,7 @@ public class AgendarActivity extends FragmentActivity {
     // Pega o dia da semana atual
     private int mesAtual() {
         Calendar c = Calendar.getInstance();
-        return c.get(Calendar.MONTH)+1;
+        return c.get(Calendar.MONTH) + 1;
                /*  O valor do mês, vale respectivamente:
             Janeiro = 0
             Fevereiro = 1
@@ -141,7 +162,7 @@ public class AgendarActivity extends FragmentActivity {
 
     }
 
-    private int anoAtual(){
+    private int anoAtual() {
         Calendar calendar = Calendar.getInstance();
         int ano = calendar.get(Calendar.YEAR);
         return ano;
@@ -180,7 +201,6 @@ public class AgendarActivity extends FragmentActivity {
         return ultimoDia;
 
     }
-
 
 }
 
