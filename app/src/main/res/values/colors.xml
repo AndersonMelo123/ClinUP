@@ -7,5 +7,6 @@
     <color name="ColorAccent">#3d958a</color>
     <color name="Cinza">#878787</color>
     <color name="Black">#000000</color>
+    <color name="White">#FFF</color>
 
 </resources>

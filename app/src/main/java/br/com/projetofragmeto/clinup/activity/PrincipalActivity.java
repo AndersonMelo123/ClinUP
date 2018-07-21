@@ -1,5 +1,6 @@
 package br.com.projetofragmeto.clinup.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -21,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -38,49 +40,29 @@ import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
 import br.com.projetofragmeto.clinup.fragments.HomeFragment;
 import br.com.projetofragmeto.clinup.fragments.PerfilFragment;
 import br.com.projetofragmeto.clinup.helper.Preferencias;
+import br.com.projetofragmeto.clinup.model.Usuario;
 
 public class PrincipalActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private TextView nomeUser;
     private TextView emailUser;
-
-    private Toolbar toolbar;
-    private TabLayout tabLayout;
-    private ViewPager viewPager;
-
-    private int[] tabIcons = {
-            R.drawable.ic_tab_mapa,
-            R.drawable.ic_tab_agenda,
-            R.drawable.ic_tab_favoritos
-    };
-
+    private String idUsuarios;
+    private Usuario usuario = new Usuario();
     private DatabaseReference usuarioReferencia;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
-        setupViewPager(viewPager);
-
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
-
-        setupTabIcons();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                goToBuscaActivity();
             }
         });
 
@@ -103,11 +85,13 @@ public class PrincipalActivity extends AppCompatActivity
         nomeUser = mParent.findViewById(R.id.nome_user_nav_drawer); // pega o id do nome_user do nav_header_principal
         emailUser = mParent.findViewById(R.id.email_user_nav_drawer);// pega o id do email_user do nav_header_principal
 
-        //exibirInfoUser(navigationView); // exibe o email e senha do usuário na navigation view
+        // exibe o email e senha do usuário na navigation view
 
         Preferencias preferencesUser = new Preferencias(this);
-        String idUsuarios = preferencesUser.getIdentificador(); // Obter o identificador do usuário que está logado
-        // Essa funcão pega o identificador salvo em outra activity(tela)
+        idUsuarios = preferencesUser.getIdentificador(); // Obter o identificador do usuário que está logado
+
+
+
 
         usuarioReferencia = ConfiguracaoFirebase.getFirebase() // Consultando o usuário no banco de dados se existir ele pega
                 .child("usuarios").child(idUsuarios);
@@ -116,10 +100,8 @@ public class PrincipalActivity extends AppCompatActivity
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {// método chamado sempre que os dados forem alterados no banco
 
-                String nome = dataSnapshot.child("nome").getValue().toString();//consulta o banco e pega o nome do usuário
-                String email = dataSnapshot.child("email").getValue().toString();//consulta o banco e pega o email do usuário
-                nomeUser.setText(nome);//seta o nome do usuário no Navigation Drawer
-                emailUser.setText(email);//seta o email do usuário no Navigation Drawer
+                nomeUser.setText(dataSnapshot.child("nome").getValue().toString());
+                emailUser.setText(dataSnapshot.child("email").getValue().toString());
 
             }
 
@@ -133,60 +115,8 @@ public class PrincipalActivity extends AppCompatActivity
 
 
 
-    private void setupTabIcons() {
 
-        TextView tabOne = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
-        tabOne.setText("Localização");
-        tabOne.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_tab_mapa, 0, 0);
-        tabLayout.getTabAt(0).setCustomView(tabOne);
 
-        TextView tabTwo = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
-        tabTwo.setText("Consultas");
-        tabTwo.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_tab_agenda, 0, 0);
-        tabLayout.getTabAt(1).setCustomView(tabTwo);
-
-        TextView tabThree = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
-        tabThree.setText("Favoritos");
-        tabThree.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_tab_favoritos, 0, 0);
-        tabLayout.getTabAt(2).setCustomView(tabThree);
-    }
-
-    private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new MapaFragment(), "Localização");
-        adapter.addFragment(new ListaFragment(), "Consultas");
-        adapter.addFragment(new FavoritosFragment(), "Favoritos");
-        viewPager.setAdapter(adapter);
-    }
-
-    class ViewPagerAdapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
-
-        public ViewPagerAdapter(FragmentManager manager) {
-            super(manager);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragmentList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
-
-        public void addFragment(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
-        }
-    }
 
 
     @Override
@@ -238,8 +168,14 @@ public class PrincipalActivity extends AppCompatActivity
 
                 break;
             case R.id.nav_Perfil:
-                PerfilFragment perfilFragment = new PerfilFragment();
-                getSupportFragmentManager().beginTransaction().replace(R.id.conteudo_fragment,perfilFragment).commit();
+
+                Intent intent = new Intent(getApplicationContext(),PerfilActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.nav_buscar:
+                goToBuscaActivity();
+                break;
+            case R.id.nav_logout:
 
                 break;
         }
@@ -250,4 +186,8 @@ public class PrincipalActivity extends AppCompatActivity
         return true;
     }
 
+    public void goToBuscaActivity() {
+        Intent intent = new Intent(getApplicationContext(),BuscaActivity.class);
+        startActivity(intent);
+    }
 }
