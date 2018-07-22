@@ -89,8 +89,8 @@ public class PrincipalActivity extends AppCompatActivity
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {// método chamado sempre que os dados forem alterados no banco
 
-                nomeUser.setText(dataSnapshot.child("nome").getValue().toString());
-                emailUser.setText(dataSnapshot.child("email").getValue().toString());
+                //nomeUser.setText(dataSnapshot.child("nome").getValue().toString());
+                //emailUser.setText(dataSnapshot.child("email").getValue().toString());
 
             }
 

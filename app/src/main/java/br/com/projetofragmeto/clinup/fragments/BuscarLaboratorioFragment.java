@@ -59,7 +59,7 @@ public class BuscarLaboratorioFragment extends Fragment {
 
         // listner para recuperar contatos
 
-        firebase.addValueEventListener(new ValueEventListener() {
+        /*firebase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.getValue() != null){
@@ -72,7 +72,41 @@ public class BuscarLaboratorioFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        });*/
+        String[] filtro = {"default","nome"};
+        String filtragem = filtro[0];
+        final String nome = "LabClin";
+
+        switch (filtragem){
+            case("default"):
+                firebase.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.getValue() != null){
+                            laboratorios = laboratorioDB.buscarDados(dataSnapshot,laboratorios);
+                            adapter.notifyDataSetChanged();
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });
+                break;
+            case("nome"):
+
+                firebase.orderByChild("nome").equalTo(nome).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        laboratorios = laboratorioDB.filtroNome(nome,dataSnapshot,laboratorios);
+                        adapter.notifyDataSetChanged();
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });
+                break;
+
+        }
         return view;
     }
 

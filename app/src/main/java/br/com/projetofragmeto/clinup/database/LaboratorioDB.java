@@ -42,4 +42,36 @@ public class LaboratorioDB implements Database {
     public void alterarDados() {
 
     }
+
+    public ArrayList filtroNome(String nome,DataSnapshot data, final ArrayList arrayList){
+
+
+        if(data.exists()) {
+            for(DataSnapshot dados: data.getChildren()){
+                Laboratorio l = dados.getValue(Laboratorio.class);
+
+                arrayList.add(l.getNome());
+
+            }
+        }
+
+
+
+        return arrayList;
+
+    }
+    public ArrayList filtroExame(String especialidade,DataSnapshot data, final ArrayList arrayList){
+
+
+        if(data.exists()) {
+            for(DataSnapshot dados: data.getChildren()){
+                Laboratorio l = dados.getValue(Laboratorio.class);
+
+                arrayList.add(l.getNome());
+
+            }
+        }
+
+        return arrayList;
+    }
 }

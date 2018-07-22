@@ -8,6 +8,7 @@ public class Profissional {
     private String nome;
     private String num_registro;
     private String id;
+    private Dias dias;
 
 
 
@@ -18,6 +19,14 @@ public class Profissional {
         this.formacao = formacao;
         this.nome = nome;
         this.num_registro = num_registro;
+    }
+
+    public Dias getDias() {
+        return dias;
+    }
+
+    public void setDias(Dias dias) {
+        this.dias = dias;
     }
 
     public String getId() {

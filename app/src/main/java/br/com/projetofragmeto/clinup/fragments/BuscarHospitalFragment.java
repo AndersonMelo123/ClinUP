@@ -60,7 +60,7 @@ public class BuscarHospitalFragment extends Fragment {
 
         // listner para recuperar contatos
 
-        firebase.addValueEventListener(new ValueEventListener() {
+        /*firebase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.getValue() != null){
@@ -73,7 +73,41 @@ public class BuscarHospitalFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        });*/
+        String[] filtro = {"default","nome","exame"};
+        String filtragem = filtro[0];
+        final String nome = "Dom Moura";
+
+        switch (filtragem){
+            case("default"):
+                firebase.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.getValue() != null){
+                            hospitais = hospitalDB.buscarDados(dataSnapshot,hospitais);
+                            adapter.notifyDataSetChanged();
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });
+                break;
+            case("nome"):
+
+                firebase.orderByChild("nome").equalTo(nome).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        hospitais = hospitalDB.filtroNome(nome,dataSnapshot,hospitais);
+                        adapter.notifyDataSetChanged();
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });
+                break;
+
+        }
 
         return view;
     }

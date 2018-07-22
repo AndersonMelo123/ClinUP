@@ -56,7 +56,7 @@ public class BuscarClinicaFragment extends Fragment {
 
         // listner para recuperar contatos
 
-        firebase.addValueEventListener(new ValueEventListener() {
+        /*firebase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.getValue() != null){
@@ -69,7 +69,53 @@ public class BuscarClinicaFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        });*/
+
+        String[] filtro = {"default","nome","exame"};
+        String filtragem = filtro[0];
+        final String nome = "CEM";
+        final String exame = "sangue";
+        switch (filtragem){
+            case("default"):
+                firebase.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.getValue() != null){
+                            clinicas = clinicaDB.buscarDados(dataSnapshot,clinicas);
+                            adapter.notifyDataSetChanged();
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });
+                break;
+            case("nome"):
+
+                firebase.orderByChild("nome").equalTo(nome).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        clinicas = clinicaDB.filtroNome(nome,dataSnapshot,clinicas);
+                        adapter.notifyDataSetChanged();
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });
+                break;
+            case("exame")://não tá funcionando esta merda! CORREGE
+                firebase.child("exames").orderByChild("nome").equalTo(exame).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        clinicas = clinicaDB.filtroExame(exame,dataSnapshot,clinicas);
+                        adapter.notifyDataSetChanged();
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });
+        }
+
 
 
         return view;
