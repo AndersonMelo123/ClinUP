@@ -3,9 +3,6 @@ package br.com.projetofragmeto.clinup.helper;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import br.com.projetofragmeto.clinup.activity.MainActivity;
-import br.com.projetofragmeto.clinup.activity.PrincipalActivity;
-
 public class Preferencias {
 
     private Context contexto;

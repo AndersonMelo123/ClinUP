@@ -1,10 +1,5 @@
 package br.com.projetofragmeto.clinup.model;
 
-import android.support.annotation.NonNull;
-import android.util.Log;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
@@ -12,7 +7,6 @@ import com.google.firebase.database.Exclude;
 import java.io.Serializable;
 
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
-import br.com.projetofragmeto.clinup.database.PlanoDeSaudeImplements;
 
 /*Adicionando a interface serializable será possível transformar o objeto num formato que poderá ser salvo num arquivo.
  Por exemplo, para utilizar um ObjectOutputStream e salvar um objeto num arquivo do disco será necessário implementar essa interface.*/
@@ -36,11 +30,9 @@ public class Usuario implements Serializable {
     private String numEstado;
     private String numTelefone;
 
-    private Endereco endereco;
+    private String endereco;
 
-    private PlanoDeSaude plano;//
-    private String nomePlano;//
-    private String numPlano;//
+    private String planoDeSaude;//
 
     public Usuario(String nome, String email, String foto) {
         this.nome = nome;
@@ -130,12 +122,20 @@ public class Usuario implements Serializable {
         this.estadoCivil = estadoCivil;
     }
 
-    public Endereco getEndereco() {
+    public String getEndereco() {
         return endereco;
     }
 
-    public void setEndereco(Endereco endereco) {
+    public void setEndereco(String endereco) {
         this.endereco = endereco;
+    }
+
+    public String getPlanoDeSaude() {
+        return planoDeSaude;
+    }
+
+    public void setPlanoDeSaude(String planoDeSaude) {
+        this.planoDeSaude = planoDeSaude;
     }
 
 
@@ -172,22 +172,6 @@ public class Usuario implements Serializable {
         this.senha = senha;
     }
 
-    public String getNomePlano() {
-        return nomePlano;
-    }
-
-    public void setNomePlano(String nomePlano) {
-        this.nomePlano = nomePlano;
-    }
-
-    public String getNumPlano() {
-        return numPlano;
-    }
-
-    public void setNumPlano(String numPlano) {
-        this.numPlano = numPlano;
-    }
-
     public void salvar(){
         DatabaseReference referenciaFirebase = ConfiguracaoFirebase.getFirebase();
         referenciaFirebase.child("usuarios").child( getId() ).setValue( this );
@@ -198,5 +182,6 @@ public class Usuario implements Serializable {
 
 
     }
+
 
 }

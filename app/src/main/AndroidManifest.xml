@@ -80,10 +80,10 @@
             android:value="@string/google_maps_key" />
 
         <uses-library android:name="com.google.android.maps" />
-
-            android:theme="@style/AppTheme" />
+        android:theme="@style/AppTheme" />
         <activity android:name=".activity.PerfilActivity" />
-        <activity android:name=".activity.BuscaActivity"></activity>
+        <activity android:name=".activity.BuscaActivity" />
+        <activity android:name=".AgendamentoPerfilCliente"></activity>
     </application>
 
 </manifest>

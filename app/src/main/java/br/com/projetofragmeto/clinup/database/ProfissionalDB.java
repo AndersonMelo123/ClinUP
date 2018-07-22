@@ -1,12 +1,7 @@
 package br.com.projetofragmeto.clinup.database;
 
-import android.support.annotation.NonNull;
-import android.widget.ArrayAdapter;
-
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -35,7 +30,9 @@ public class ProfissionalDB implements Database {
         for(DataSnapshot dados: data.getChildren()){
             Profissional p = dados.getValue(Profissional.class);
             String nome = p.getNome();
+            //String end = p.getEndereco();
             arrayList.add(nome);
+            //arrayList.add(end);
         }
 
         return arrayList;

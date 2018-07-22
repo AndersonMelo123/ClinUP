@@ -1,7 +1,6 @@
 package br.com.projetofragmeto.clinup.fragments;
 
 import android.os.Bundle;
-
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -20,7 +19,6 @@ import java.util.ArrayList;
 import br.com.projetofragmeto.clinup.R;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
 import br.com.projetofragmeto.clinup.database.ProfissionalDB;
-import br.com.projetofragmeto.clinup.model.Profissional;
 
 public class BuscarProfissionalFragment extends Fragment {
 
@@ -53,6 +51,7 @@ public class BuscarProfissionalFragment extends Fragment {
                 R.layout.lista_busca, //layout da lista
                 profissionais //array list contendo todos os contados
         );
+
         listView.setAdapter(adapter); //seta o adaptados
 
         firebase = ConfiguracaoFirebase.getFirebase().child("profissionais");

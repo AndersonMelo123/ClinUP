@@ -4,7 +4,7 @@ public class Endereço {
     private String bairro;
     private String cidade;
     private String estado;
-    private int numero;
+    private String numero;
     private String rua;
     private int id;
 
@@ -40,11 +40,11 @@ public class Endereço {
         this.estado = estado;
     }
 
-    public int getNumero() {
+    public String getNumero() {
         return numero;
     }
 
-    public void setNumero(int numero) {
+    public void setNumero(String numero) {
         this.numero = numero;
     }
 

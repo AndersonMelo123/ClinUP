@@ -1,14 +1,11 @@
 package br.com.projetofragmeto.clinup.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -18,6 +15,7 @@ import com.google.firebase.database.ValueEventListener;
 import br.com.projetofragmeto.clinup.R;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
 import br.com.projetofragmeto.clinup.helper.Preferencias;
+import br.com.projetofragmeto.clinup.model.Usuario;
 
 public class PerfilActivity extends AppCompatActivity {
     private TextView nome;
@@ -61,12 +59,14 @@ public class PerfilActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {// método chamado sempre que os dados forem alterados no banco
 
+                Usuario usuario = dataSnapshot.getValue(Usuario.class);
 
-                nome.setText(dataSnapshot.child("nome").getValue().toString());
-                email.setText(dataSnapshot.child("email").getValue().toString());
-                dataNascimento.setText(dataSnapshot.child("dataNascimento").getValue().toString());
-                telefone.setText(dataSnapshot.child("numTelefone").getValue().toString());
-
+                if(usuario != null) {
+                    nome.setText(usuario.getNome());
+                    email.setText(usuario.getEmail());
+                    dataNascimento.setText(usuario.getDataNascimento());
+                    telefone.setText(usuario.getTelefone());
+                }
             }
 
             @Override

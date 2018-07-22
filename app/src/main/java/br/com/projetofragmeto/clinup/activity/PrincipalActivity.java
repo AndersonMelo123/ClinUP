@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -22,7 +21,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,18 +30,17 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.projetofragmeto.clinup.AgendamentoPerfilCliente;
 import br.com.projetofragmeto.clinup.FavoritosFragment;
 import br.com.projetofragmeto.clinup.ListaFragment;
 import br.com.projetofragmeto.clinup.MapaFragment;
 import br.com.projetofragmeto.clinup.R;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
 import br.com.projetofragmeto.clinup.fragments.HomeFragment;
-import br.com.projetofragmeto.clinup.fragments.PerfilFragment;
 import br.com.projetofragmeto.clinup.helper.Preferencias;
 import br.com.projetofragmeto.clinup.model.Usuario;
 
-public class PrincipalActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class PrincipalActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private TextView nomeUser;
     private TextView emailUser;
@@ -51,12 +48,32 @@ public class PrincipalActivity extends AppCompatActivity
     private Usuario usuario = new Usuario();
     private DatabaseReference usuarioReferencia;
 
+    private Toolbar toolbar;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+
+    private int[] tabIcons = {
+            R.drawable.ic_tab_mapa,
+            R.drawable.ic_tab_agenda,
+            R.drawable.ic_tab_favoritos
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        setupViewPager(viewPager);
+
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
+
+        setupTabIcons();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -88,10 +105,7 @@ public class PrincipalActivity extends AppCompatActivity
         // exibe o email e senha do usuário na navigation view
 
         Preferencias preferencesUser = new Preferencias(this);
-        idUsuarios = preferencesUser.getIdentificador(); // Obter o identificador do usuário que está logado
-
-
-
+        String idUsuarios = preferencesUser.getIdentificador(); // Obter o identificador do usuário que está logado
 
         usuarioReferencia = ConfiguracaoFirebase.getFirebase() // Consultando o usuário no banco de dados se existir ele pega
                 .child("usuarios").child(idUsuarios);
@@ -111,13 +125,69 @@ public class PrincipalActivity extends AppCompatActivity
             }
         });
 
+        //Button testa = (Button) findViewById(R.id.button3);
+
     }
 
+    private void setupTabIcons() {
 
+        TextView tabOne = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
+        tabOne.setText("Localização");
+        tabOne.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_tab_mapa, 0, 0);
+        tabLayout.getTabAt(0).setCustomView(tabOne);
 
+        TextView tabTwo = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
+        tabTwo.setText("Consultas");
+        tabTwo.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_tab_agenda, 0, 0);
+        tabLayout.getTabAt(1).setCustomView(tabTwo);
 
+        TextView tabThree = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
+        tabThree.setText("Favoritos");
+        tabThree.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_tab_favoritos, 0, 0);
+        tabLayout.getTabAt(2).setCustomView(tabThree);
+    }
 
+    private void setupViewPager(ViewPager viewPager) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new MapaFragment(), "Localização");
+        adapter.addFragment(new ListaFragment(), "Consultas");
+        adapter.addFragment(new FavoritosFragment(), "Favoritos");
+        viewPager.setAdapter(adapter);
+    }
 
+    class ViewPagerAdapter extends FragmentPagerAdapter {
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
+
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
+
+        public void addFragment(Fragment fragment, String title) {
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitleList.get(position);
+        }
+    }
+
+    public void proximatela(View view){
+        Intent i = new Intent(this, AgendamentoPerfilCliente.class);
+        startActivity(i);
+    }
 
     @Override
     public void onBackPressed() {

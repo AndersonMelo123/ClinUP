@@ -1,7 +1,5 @@
 package br.com.projetofragmeto.clinup.database;
 
-import android.widget.ArrayAdapter;
-
 import com.google.firebase.database.DataSnapshot;
 
 import java.util.ArrayList;
