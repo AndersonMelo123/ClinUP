@@ -30,7 +30,7 @@ public class Permissao {
                 }
             }
 
-            // Caso a lista esteja vazia, não é necessário solicitar permissao
+            // Caso a layout_listview esteja vazia, não é necessário solicitar permissao
             if (listaPermissoes.isEmpty()) return true;
 
             String[] novasPermissoes = new String[ listaPermissoes.size() ];
