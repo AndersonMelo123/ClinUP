@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools"
@@ -12,13 +12,18 @@
         layout="@layout/toolbar_activity"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="40dp"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+
+        />
+
 
     <br.com.projetofragmeto.clinup.helper.SlidingTabLayout
         android:id="@+id/stl_tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary" />
+        android:background="@color/colorPrimary"
+        />
+
 
     <android.support.v4.view.ViewPager
         android:id="@+id/vp_busca"
@@ -26,4 +31,4 @@
         android:layout_height="0dp"
         android:layout_weight="1"/>
 
-</LinearLayout>
+</android.support.v7.widget.LinearLayoutCompat>
