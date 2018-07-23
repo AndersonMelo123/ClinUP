@@ -1,6 +1,7 @@
 package br.com.projetofragmeto.clinup.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -16,16 +18,20 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import br.com.projetofragmeto.clinup.R;
+import br.com.projetofragmeto.clinup.activity.AgendarActivity;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
 import br.com.projetofragmeto.clinup.database.ClinicaDB;
+import br.com.projetofragmeto.clinup.model.Clinica;
+import br.com.projetofragmeto.clinup.model.Profissional;
 
-public class BuscarClinicaFragment extends Fragment {
+public class BuscarClinicaFragment extends Fragment implements Serializable {
     private ListView listView;
     private ArrayAdapter adapter;
-    private ArrayList clinicas;
+    private ArrayList<Clinica> clinicas;
     private DatabaseReference firebase;
     private ClinicaDB clinicaDB;
 
@@ -67,6 +73,32 @@ public class BuscarClinicaFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Intent intent = new Intent(getActivity(), AgendarActivity.class);
+
+                // Recuperar dados a serem passados
+                Clinica clinica = clinicas.get( position );
+
+                // Enviando dados para conversa activity
+
+                //String email = Base64Custom.decodificarBase64( conversa.getIdUsuario() );
+
+                intent.putExtra("email", clinica.getEmail() );
+                intent.putExtra("nome", clinica.getNome() );
+                intent.putExtra("id", clinica.getCnpj() );
+
+                intent.putExtra("cliente","clinica");
+                intent.putExtra("classe",Clinica.class);
+
+                startActivity(intent);
 
             }
         });

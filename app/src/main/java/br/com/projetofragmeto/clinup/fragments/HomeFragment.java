@@ -29,17 +29,6 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_home, container, false);
 
-        bt_Agendar = view.findViewById(R.id.bt_agendarID);
-
-        bt_Agendar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), AgendarActivity.class);
-                startActivity(intent);
-
-            }
-        });
-
 
         return view;
 

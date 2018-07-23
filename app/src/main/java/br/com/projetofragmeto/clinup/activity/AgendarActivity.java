@@ -1,15 +1,21 @@
 package br.com.projetofragmeto.clinup.activity;
 
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.roomorama.caldroid.CaldroidFragment;
 import com.roomorama.caldroid.CaldroidListener;
 
+import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,20 +26,36 @@ import java.util.HashMap;
 import java.util.Map;
 
 import br.com.projetofragmeto.clinup.R;
+import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
 
 public class AgendarActivity extends FragmentActivity {
 
     private ArrayList<Date> DesativarDatas = new ArrayList<Date>();
     private ArrayList<Date> AtivarDatas = new ArrayList<Date>();
 
+    private String id, cliente;
+
+    ArrayList diasDaSemana = new ArrayList();
+
+    Object classe;
+
+    DatabaseReference firebase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agendar);
 
+        id = getIntent().getExtras().getString("id"); // Pegar o ID do cliente do fragment_Buscar...
+        cliente = getIntent().getExtras().getString("cliente");
+        classe = getIntent().getSerializableExtra("classe");
+        classe = classe.getClass();
+
+        final ArrayList diasDaSemana = new ArrayList();
+
         Calendar calendar = Calendar.getInstance();
 
-        CaldroidFragment caldroidFragment = new CaldroidFragment();
+        final CaldroidFragment caldroidFragment = new CaldroidFragment();
 
         Bundle args = new Bundle();
         Calendar cal = Calendar.getInstance();
@@ -50,52 +72,64 @@ public class AgendarActivity extends FragmentActivity {
         // Create a hash map
         Map<Date, Drawable> hm = new HashMap<>();
 
+        firebase = ConfiguracaoFirebase.getFirebase().child(cliente).child("001").child("dias");
 
-        try { //Pegar as datas válidas para agendar
-            // Put nas datas ATIVAS
-            hm.put(getDate("31/07/2018"), getDrawable(R.color.Ativas));
-            hm.put(getDate("28/07/2018"), getDrawable(R.color.Ativas));
-            hm.put(getDate("25/07/2018"), getDrawable(R.color.Ativas));
+        firebase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-            AtivarDatas.add(getDate("31/07/2018"));
-            AtivarDatas.add(getDate("28/07/2018"));
-            AtivarDatas.add(getDate("25/07/2018"));
+                int vagas;
+                int mesAtual = mesAtual();
+                int anoAtual = anoAtual();
 
+                diasDaSemana.clear();
 
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+                if (dataSnapshot.exists()) {
 
+                    for (DataSnapshot dias : dataSnapshot.getChildren()) {
 
-        int Dia;
+                        diasDaSemana.add(dias);
 
-        for (Dia = 1; Dia < ultimoDiaMes() + 1; Dia++) {
+                    }
 
-            Date data = getDate(anoAtual(), mesAtual(), Dia);
+                }
+                try {
+                    AtivarDatas = setCalendario(diasDaSemana);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
 
-            if (!AtivarDatas.contains(data)) {
+                DesativarDatas = datasDesativadas();
+                caldroidFragment.setDisableDates(DesativarDatas);
 
-                DesativarDatas.add(data);
+                caldroidFragment.setBackgroundDrawableForDates(colorirDatasAtivas(AtivarDatas));
+
+                caldroidFragment.refreshView();
+
             }
 
-        }
-        caldroidFragment.setBackgroundDrawableForDates(hm);
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         caldroidFragment.setMinDate(calendar.getTime()); //Setando a data minima
 
-        caldroidFragment.setDisableDates(DesativarDatas);
-
         caldroidFragment.refreshView(); // Refresh
-
 
         CaldroidListener calendario = new CaldroidListener() {
             @Override
             public void onSelectDate(Date date, View view) {
                 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
                 String dataSelecionada = format.format(date);
+                Toast.makeText(AgendarActivity.this, dataSelecionada, Toast.LENGTH_SHORT).show();
+
+
             }
 
         };
+
 
         caldroidFragment.setCaldroidListener(calendario);
 
@@ -169,38 +203,176 @@ public class AgendarActivity extends FragmentActivity {
     }
 
     // Pega o dia da semana atual
-    private int diaSemana(String strDate) throws ParseException {
+    private String diaSemana(String strDate) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         Date ontem = sdf.parse(strDate);
         GregorianCalendar gc = new GregorianCalendar();
         gc.setTime(ontem);
         int diaDaSemana = gc.get(GregorianCalendar.DAY_OF_WEEK);
+        String dia = null;
+        switch (diaDaSemana) {
+            case 1:
+                return dia = "domingo";
+            case 2:
+                return dia = "segunda";
+            case 3:
+                return dia = "terca";
+            case 4:
+                return dia = "quarta";
+            case 5:
+                return dia = "quinta";
+            case 6:
+                return dia = "sexta";
+            case 7:
+                return dia = "sabado";
 
-        return diaDaSemana;
-
-        /* O resultado do valor, vale respectivamente:
-            1 = domingo
-            2 = segunda
-            3 = terça
-            4 = quarta
-            5 = quinta
-            6 = sexta
-            7 = sabado
-        */
-
+        }
+        return dia;
     }
 
     // Pega o último dia do MÊS atual
-    private int ultimoDiaMes() {
-        Calendar c = Calendar.getInstance();
+    private int ultimoDiaMes(Calendar c) {
+
+        c = Calendar.getInstance();
         int mes = c.get(Calendar.MONTH) + 1;
         c.set(Calendar.MONTH, mes); //setando o mês para janeiro
 
-        int ultimoDia = c.getActualMaximum(Calendar.DAY_OF_MONTH);
-
-        return ultimoDia;
+        return c.getActualMaximum(Calendar.DAY_OF_MONTH);
 
     }
 
-}
+    private ArrayList<Date> datasDesativadas() {
 
+        ArrayList<Date> Desativar = new ArrayList<Date>();
+
+        Calendar calendario = Calendar.getInstance();
+
+        int mes = calendario.get(Calendar.MONTH) + 1;
+        int Dia = diaAtual();
+
+        for (; mes < 13; mes++) {
+            calendario.set(Calendar.MONTH, mes);
+            int ultimoDiaMes = ultimoDiaMes(calendario);
+            int anoAtual = anoAtual();
+            if (Dia + 1 > ultimoDiaMes) {
+                Dia = 1;
+            }
+
+            for (; ultimoDiaMes > Dia + 1; Dia++) {
+
+                if (!AtivarDatas.contains(getDate(anoAtual, mes, Dia))) {
+                    Desativar.add(getDate(anoAtual, mes, Dia));
+                }
+            }
+            Dia = 1;
+        }
+
+        return Desativar;
+    }
+
+    private int diaAtual() {
+        Calendar calendar = Calendar.getInstance();
+        return calendar.get(Calendar.DATE);
+
+    }
+
+    private String diaDaSemana(Calendar cal) {
+        return new DateFormatSymbols().getWeekdays()[cal.get(Calendar.DAY_OF_WEEK)];
+    }
+
+    private ArrayList percorrerAno(int mesAtual, int diaAtual, int anoAtual) {
+
+        ArrayList<String> datas = new ArrayList<String>();
+
+        int intervalo = 0;
+        int i = 0;
+
+        Calendar periodo1 = Calendar.getInstance();
+        periodo1.set(anoAtual, mesAtual, diaAtual - 1);
+        Calendar periodo2 = Calendar.getInstance();
+        periodo2.set(anoAtual, 11, 31);
+
+        intervalo = (periodo2.get(periodo2.DAY_OF_YEAR) - periodo1.get(periodo1.DAY_OF_YEAR));
+
+        for (; i < intervalo; i++) {
+            periodo1.add(periodo1.DATE, 1);
+
+            datas.add(periodo1.get(periodo1.DATE) + "/" + (periodo1.get(periodo1.MONTH) + 1) + "/" + periodo1.get(periodo1.YEAR));
+        }
+
+        return datas;
+    }
+
+    private ArrayList<Date> setCalendario(ArrayList<DataSnapshot> datas) throws ParseException {
+
+        ArrayList<Date> Ativas = new ArrayList<Date>();
+
+        for (DataSnapshot data : datas) {
+
+            String diaDaSemana = String.valueOf(data.getKey());
+            int vagas = Integer.parseInt(String.valueOf(data.getValue()));
+
+            ArrayList<String> dias = percorrerAno(mesAtual() - 1, diaAtual(), anoAtual());
+
+            for (String days : dias) {
+
+                if (diaDaSemana.equals("segunda") && vagas != 0) {
+
+                    String diaAtual = diaSemana(days);
+                    if (diaAtual.equals("segunda")) {
+                        Ativas.add(getDate(days));
+                    }
+                } else if (diaDaSemana.equals("terca") && vagas != 0) {
+
+                    String diaAtual = diaSemana(days);
+                    if (diaAtual.equals("terca")) {
+                        Ativas.add(getDate(days));
+                    }
+                } else if (diaDaSemana.equals("quarta") && vagas != 0) {
+
+                    String diaAtual = diaSemana(days);
+                    if (diaAtual.equals("quarta")) {
+                        Ativas.add(getDate(days));
+                    }
+                } else if (diaDaSemana.equals("quinta") && vagas != 0) {
+
+                    String diaAtual = diaSemana(days);
+                    if (diaAtual.equals("quinta")) {
+                        Ativas.add(getDate(days));
+                    }
+                } else if (diaDaSemana.equals("sexta") && vagas != 0) {
+
+                    String diaAtual = diaSemana(days);
+                    if (diaAtual.equals("sexta")) {
+                        Ativas.add(getDate(days));
+                    }
+                } else if (diaDaSemana.equals("sabado") && vagas != 0) {
+
+                    String diaAtual = diaSemana(days);
+                    if (diaAtual.equals("sabado")) {
+                        Ativas.add(getDate(days));
+                    }
+                } else if (diaDaSemana.equals("domingo") && vagas != 0) {
+
+                    String diaAtual = diaSemana(days);
+                    if (diaAtual.equals("domingo")) {
+                        Ativas.add(getDate(days));
+                    }
+                }
+            }
+        }
+        return Ativas;
+    }
+
+    private Map<Date, Drawable> colorirDatasAtivas(ArrayList<Date> arrayList) {
+
+        Map<Date, Drawable> hm = new HashMap<>();
+
+        for (Date data : arrayList) {
+            hm.put(data, getDrawable(R.color.Ativas));
+        }
+        return hm;
+    }
+
+
+}

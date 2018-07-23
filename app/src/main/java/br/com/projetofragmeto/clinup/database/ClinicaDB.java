@@ -31,7 +31,7 @@ public class ClinicaDB implements Database {
         for(DataSnapshot dados: data.getChildren()){
             Clinica c = dados.getValue(Clinica.class);
             String nome = c.getNome();
-            arrayList.add(nome);
+            arrayList.add(c);
         }
 
         return arrayList;
