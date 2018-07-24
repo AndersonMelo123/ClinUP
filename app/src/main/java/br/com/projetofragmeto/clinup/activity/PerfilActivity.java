@@ -1,14 +1,11 @@
 package br.com.projetofragmeto.clinup.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -38,7 +35,7 @@ public class PerfilActivity extends AppCompatActivity {
         toolbar.setTitle("Perfil");
         setSupportActionBar(toolbar);
 
-        if (getSupportActionBar() != null) {//setinha de voltar
+        if(getSupportActionBar() != null){//setinha de voltar
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
@@ -64,11 +61,11 @@ public class PerfilActivity extends AppCompatActivity {
 
                 Usuario usuario = dataSnapshot.getValue(Usuario.class);
 
-                if (usuario != null) {
+                if(usuario != null) {
                     nome.setText(usuario.getNome());
                     email.setText(usuario.getEmail());
                     dataNascimento.setText(usuario.getDataNascimento());
-                    telefone.setText(usuario.getNumTelefone());
+                    telefone.setText(usuario.getTelefone());
                 }
             }
 
@@ -81,7 +78,7 @@ public class PerfilActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) { //método para finalizar a activity caso seja apertado a setinha de voltar
-        if (item.getItemId() == android.R.id.home)
+        if(item.getItemId() == android.R.id.home)
             finish();
         return super.onOptionsItemSelected(item);
     }

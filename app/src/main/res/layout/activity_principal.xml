@@ -30,9 +30,9 @@
         app:itemIconTint="@color/Cinza"
 
         />
-        <!--
-        app:itemTextColor="@color/Cinza"
-        app:itemIconTint="@color/Cinza"
-        -->
+    <!--
+    app:itemTextColor="@color/Cinza"
+    app:itemIconTint="@color/Cinza"
+    -->
 
 </android.support.v4.widget.DrawerLayout>

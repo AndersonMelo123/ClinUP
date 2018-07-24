@@ -1,7 +1,5 @@
 package br.com.projetofragmeto.clinup.database;
 
-import android.widget.ArrayAdapter;
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 
@@ -9,7 +7,6 @@ import java.util.ArrayList;
 
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
 import br.com.projetofragmeto.clinup.model.Hospital;
-import br.com.projetofragmeto.clinup.model.Laboratorio;
 
 public class HospitalDB implements Database {
     private DatabaseReference firebase;

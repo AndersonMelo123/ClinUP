@@ -83,8 +83,8 @@
 
             android:theme="@style/AppTheme" />
         <activity android:name=".activity.PerfilActivity" />
-        <activity android:name=".activity.BuscaActivity"></activity>
-        <activity android:name=".activity.PerfilActivity" />
+        <activity android:name=".activity.BuscaActivity" />
+        <activity android:name=".AgendamentoPerfilCliente"></activity>
         <activity android:name=".activity.AgendarActivity"></activity>
     </application>
 
