@@ -46,7 +46,7 @@ public class BuscarHospitalFragment extends Fragment {
     private Button botaoFiltro;
     private TextView textView;
 
-    private String[] filtro = {"Todos","Nome"};
+    private String[] filtro = {"Todos", "Nome"};
     private String filtragem = filtro[0];
 
     private ArrayList hospitais;
@@ -92,14 +92,14 @@ public class BuscarHospitalFragment extends Fragment {
                 //Log.i("i", (String) profissionais.get(i));
                 //Log.i("i",profObjetos.get(i).getEspecialidade());
 
-                Intent intent = new Intent(getActivity(),AgendarActivity.class);
-                intent.putExtra("nome",hospObjetos.get(i).getNome());
-                intent.putExtra("email", hospObjetos.get(i).getEmail() );
-                intent.putExtra("nome", hospObjetos.get(i).getNome() );
-                intent.putExtra("id", hospObjetos.get(i).getCnpj() );
+                Intent intent = new Intent(getActivity(), AgendarActivity.class);
+                intent.putExtra("nome", hospObjetos.get(i).getNome());
+                intent.putExtra("email", hospObjetos.get(i).getEmail());
+                intent.putExtra("nome", hospObjetos.get(i).getNome());
+                intent.putExtra("id", hospObjetos.get(i).getCnpj());
 
-                intent.putExtra("cliente","hospitais");
-                intent.putExtra("classe",Hospital.class);
+                intent.putExtra("cliente", "hospitais");
+                intent.putExtra("classe", Hospital.class);
                 startActivity(intent);
             }
         });
@@ -135,18 +135,18 @@ public class BuscarHospitalFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 final String nome = texto.getText().toString();//pega nome do campo de texto
-                switch (filtragem){
-                    case("Todos"):
+                switch (filtragem) {
+                    case ("Todos"):
                         hospitais.clear();
                         hospObjetos.clear();
 
                         firebase.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                if(dataSnapshot.getValue() != null){
+                                if (dataSnapshot.getValue() != null) {
                                     //hospitais = hospitalDB.buscarDados(dataSnapshot,hospitais);
                                     //hospitais.clear();
-                                    for(DataSnapshot dados: dataSnapshot.getChildren()){
+                                    for (DataSnapshot dados : dataSnapshot.getChildren()) {
                                         Hospital h = dados.getValue(Hospital.class);
                                         String nome = h.getNome();
                                         hospitais.add(nome);
@@ -155,21 +155,22 @@ public class BuscarHospitalFragment extends Fragment {
                                     adapter.notifyDataSetChanged();
                                 }
                             }
+
                             @Override
                             public void onCancelled(@NonNull DatabaseError databaseError) {
                             }
                         });
                         break;
-                    case("Nome"):
+                    case ("Nome"):
                         hospitais.clear();
                         hospObjetos.clear();
                         firebase.orderByChild("nome").equalTo(nome).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                if(dataSnapshot.getValue() != null){
+                                if (dataSnapshot.getValue() != null) {
                                     //hospitais = hospitalDB.buscarDados(dataSnapshot,hospitais);
                                     //hospitais.clear();
-                                    for(DataSnapshot dados: dataSnapshot.getChildren()){
+                                    for (DataSnapshot dados : dataSnapshot.getChildren()) {
                                         Hospital h = dados.getValue(Hospital.class);
                                         String nome = h.getNome();
                                         hospitais.add(nome);
@@ -178,6 +179,7 @@ public class BuscarHospitalFragment extends Fragment {
                                     adapter.notifyDataSetChanged();
                                 }
                             }
+
                             @Override
                             public void onCancelled(@NonNull DatabaseError databaseError) {
                             }
@@ -187,7 +189,6 @@ public class BuscarHospitalFragment extends Fragment {
                 }
             }
         });
-
 
 
         return view;
