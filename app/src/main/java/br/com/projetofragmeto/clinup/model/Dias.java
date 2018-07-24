@@ -1,6 +1,8 @@
 package br.com.projetofragmeto.clinup.model;
 
-public class Dias {
+import java.io.Serializable;
+
+public class Dias implements Serializable {
     private int segunda, terça, quarta, quinta, sexta, sabado, domingo;
 
     public int getSegunda() {

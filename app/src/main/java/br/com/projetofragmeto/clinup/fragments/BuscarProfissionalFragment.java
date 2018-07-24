@@ -23,15 +23,17 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import br.com.projetofragmeto.clinup.R;
 import br.com.projetofragmeto.clinup.activity.AgendarActivity;
+import br.com.projetofragmeto.clinup.activity.PerfilCliente;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
 import br.com.projetofragmeto.clinup.database.ProfissionalDB;
 import br.com.projetofragmeto.clinup.model.Profissional;
 
-public class BuscarProfissionalFragment extends Fragment {
+public class BuscarProfissionalFragment extends Fragment implements Serializable {
 
     private ListView listView;
     private EditText texto;
@@ -96,12 +98,15 @@ public class BuscarProfissionalFragment extends Fragment {
                 //Log.i("i",profObjetos.get(i).getEspecialidade());
 
                 Intent intent = new Intent(getActivity(), AgendarActivity.class);
-                intent.putExtra("nome", profObjetos.get(i).getNome());
 
                 intent.putExtra("email", profObjetos.get(i).getId());
                 intent.putExtra("nome", profObjetos.get(i).getNome());
                 intent.putExtra("id", profObjetos.get(i).getId());
-
+                intent.putExtra("telefone", profObjetos.get(i).getTelefone());
+                intent.putExtra("endereco", profObjetos.get(i).getEndereco());
+                intent.putExtra("especialidade", profObjetos.get(i).getEspecialidade());
+                intent.putExtra("formacao", profObjetos.get(i).getFormacao());
+                intent.putExtra("Num_registro", profObjetos.get(i).getNum_registro());
 
                 intent.putExtra("cliente", "profissionais");
                 intent.putExtra("classe", Profissional.class);

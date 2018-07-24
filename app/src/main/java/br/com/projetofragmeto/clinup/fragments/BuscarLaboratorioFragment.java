@@ -21,16 +21,18 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import br.com.projetofragmeto.clinup.R;
 import br.com.projetofragmeto.clinup.activity.AgendarActivity;
+import br.com.projetofragmeto.clinup.activity.PerfilCliente;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
 import br.com.projetofragmeto.clinup.database.LaboratorioDB;
 import br.com.projetofragmeto.clinup.model.Laboratorio;
 
 
-public class BuscarLaboratorioFragment extends Fragment {
+public class BuscarLaboratorioFragment extends Fragment implements Serializable {
 
     private ListView listView;
     private ArrayAdapter adapter;
@@ -87,11 +89,11 @@ public class BuscarLaboratorioFragment extends Fragment {
                 //Log.i("i",profObjetos.get(i).getEspecialidade());
 
                 Intent intent = new Intent(getActivity(), AgendarActivity.class);
-                intent.putExtra("nome", labObjetos.get(i).getNome());
+
                 intent.putExtra("email", labObjetos.get(i).getId());
                 intent.putExtra("nome", labObjetos.get(i).getNome());
                 intent.putExtra("id", labObjetos.get(i).getId());
-
+                intent.putExtra("telefone", labObjetos.get(i).getTelefone());
 
                 intent.putExtra("cliente", "laboratorios");
                 intent.putExtra("classe", Laboratorio.class);

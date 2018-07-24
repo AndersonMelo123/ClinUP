@@ -1,6 +1,8 @@
 package br.com.projetofragmeto.clinup.model;
 
-public class Exame {
+import java.io.Serializable;
+
+public class Exame implements Serializable {
     private String nome;
     private int id;
 

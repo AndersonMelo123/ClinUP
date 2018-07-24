@@ -21,15 +21,17 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import br.com.projetofragmeto.clinup.R;
 import br.com.projetofragmeto.clinup.activity.AgendarActivity;
+import br.com.projetofragmeto.clinup.activity.PerfilCliente;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
 import br.com.projetofragmeto.clinup.database.HospitalDB;
 import br.com.projetofragmeto.clinup.model.Hospital;
 
-public class BuscarHospitalFragment extends Fragment {
+public class BuscarHospitalFragment extends Fragment implements Serializable {
 
     private ListView listView;
     private ArrayAdapter adapter;
@@ -89,10 +91,12 @@ public class BuscarHospitalFragment extends Fragment {
                 //Log.i("i",profObjetos.get(i).getEspecialidade());
 
                 Intent intent = new Intent(getActivity(), AgendarActivity.class);
-                intent.putExtra("nome", hospObjetos.get(i).getNome());
                 intent.putExtra("email", hospObjetos.get(i).getEmail());
                 intent.putExtra("nome", hospObjetos.get(i).getNome());
                 intent.putExtra("id", hospObjetos.get(i).getCnpj());
+                intent.putExtra("endereco", hospObjetos.get(i).getEndereco());
+                intent.putExtra("telefone", hospObjetos.get(i).getTelefone());
+                intent.putExtra("cnpj", hospObjetos.get(i).getCnpj());
 
                 intent.putExtra("cliente", "hospitais");
                 intent.putExtra("classe", Hospital.class);

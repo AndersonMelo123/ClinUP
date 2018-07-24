@@ -1,6 +1,8 @@
 package br.com.projetofragmeto.clinup.model;
 
-public class Clinica {
+import java.io.Serializable;
+
+public class Clinica implements Serializable {
 
     private String cnpj, email, endereco, nome, telefone;
 
