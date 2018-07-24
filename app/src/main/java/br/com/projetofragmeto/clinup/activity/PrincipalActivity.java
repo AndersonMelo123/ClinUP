@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -39,7 +38,6 @@ import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
-import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
@@ -53,11 +51,11 @@ import java.util.List;
 
 import br.com.projetofragmeto.clinup.FavoritosFragment;
 import br.com.projetofragmeto.clinup.ListaFragment;
-import br.com.projetofragmeto.clinup.MapaFragment;
 import br.com.projetofragmeto.clinup.R;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
 import br.com.projetofragmeto.clinup.database.OnGetDataListener;
 import br.com.projetofragmeto.clinup.fragments.HomeFragment;
+import br.com.projetofragmeto.clinup.fragments.MapaFragment;
 import br.com.projetofragmeto.clinup.helper.Preferencias;
 import br.com.projetofragmeto.clinup.model.Usuario;
 

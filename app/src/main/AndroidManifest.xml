@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="br.com.projetofragmeto.clinup">
 
-    <uses-permission android:name="android.permission.INTERNET" />
 
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -84,8 +83,7 @@
             android:theme="@style/AppTheme" />
         <activity android:name=".activity.PerfilActivity" />
         <activity android:name=".activity.BuscaActivity" />
-        <activity android:name=".AgendamentoPerfilCliente"></activity>
-        <activity android:name=".activity.AgendarActivity"></activity>
+        <activity android:name=".activity.AgendarActivity" />
     </application>
 
 </manifest>

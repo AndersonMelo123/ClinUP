@@ -1,4 +1,4 @@
-package br.com.projetofragmeto.clinup;
+package br.com.projetofragmeto.clinup.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,6 +17,8 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import br.com.projetofragmeto.clinup.R;
 
 public class MapaFragment extends Fragment implements OnMapReadyCallback {
 

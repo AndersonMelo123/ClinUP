@@ -38,5 +38,8 @@
     <string name="err_msg_email">Entre com um e-mail válido</string>
     <string name="err_msg_password">Entre com uma senha</string>
     <string name="err_msg_cpf">Entre com um CPF</string>
+    <string name="botao_agendar">Agendar</string>
+    <string name="titulo_dialog_Agendamento">Agendar</string>
+    <string name="msg_dialog_agendamento">Para sua segurança, precisamos que você confirme se deseja realmente agendar</string>
 
 </resources>
