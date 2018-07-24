@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -109,7 +110,6 @@ public class AgendarActivity extends FragmentActivity {
         id = getIntent().getExtras().getString("id"); // Pegar o ID do cliente do fragment_Buscar...
         cliente = getIntent().getExtras().getString("cliente");
         classe = getIntent().getSerializableExtra("classe").getClass();
-
 
         firebase = ConfiguracaoFirebase.getFirebase().child(cliente).child("001").child("dias");
 

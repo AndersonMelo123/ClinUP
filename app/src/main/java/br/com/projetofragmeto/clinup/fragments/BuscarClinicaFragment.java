@@ -23,6 +23,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import br.com.projetofragmeto.clinup.R;
@@ -31,7 +32,7 @@ import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
 import br.com.projetofragmeto.clinup.database.ClinicaDB;
 import br.com.projetofragmeto.clinup.model.Clinica;
 
-public class BuscarClinicaFragment extends Fragment {
+public class BuscarClinicaFragment extends Fragment implements Serializable{
     private ListView listView;
     private ArrayAdapter adapter;
 
@@ -88,7 +89,11 @@ public class BuscarClinicaFragment extends Fragment {
 
                 Intent intent = new Intent(getActivity(),AgendarActivity.class);
                 intent.putExtra("nome",clinObjetos.get(i).getNome());
+                intent.putExtra("email", clinObjetos.get(i).getEmail() );
+                intent.putExtra("id", clinObjetos.get(i).getCnpj() );
 
+                intent.putExtra("cliente","clinica");
+                intent.putExtra("classe",Clinica.class);
                 startActivity(intent);
             }
         });
@@ -198,34 +203,6 @@ public class BuscarClinicaFragment extends Fragment {
         });
         //final String nome = "CEM";
         //final String exame = "sangue";
-
-
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                Intent intent = new Intent(getActivity(), AgendarActivity.class);
-
-                // Recuperar dados a serem passados
-                Clinica clinica = clinicas.get( position );
-
-                // Enviando dados para conversa activity
-
-                //String email = Base64Custom.decodificarBase64( conversa.getIdUsuario() );
-
-                intent.putExtra("email", clinica.getEmail() );
-                intent.putExtra("nome", clinica.getNome() );
-                intent.putExtra("id", clinica.getCnpj() );
-
-                intent.putExtra("cliente","clinica");
-                intent.putExtra("classe",Clinica.class);
-
-                startActivity(intent);
-
-            }
-        });
-
 
         return view;
     }

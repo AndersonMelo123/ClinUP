@@ -94,7 +94,12 @@ public class BuscarHospitalFragment extends Fragment {
 
                 Intent intent = new Intent(getActivity(),AgendarActivity.class);
                 intent.putExtra("nome",hospObjetos.get(i).getNome());
+                intent.putExtra("email", hospObjetos.get(i).getEmail() );
+                intent.putExtra("nome", hospObjetos.get(i).getNome() );
+                intent.putExtra("id", hospObjetos.get(i).getCnpj() );
 
+                intent.putExtra("cliente","hospitais");
+                intent.putExtra("classe",Hospital.class);
                 startActivity(intent);
             }
         });

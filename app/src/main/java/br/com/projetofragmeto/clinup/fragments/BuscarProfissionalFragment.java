@@ -90,8 +90,6 @@ public class BuscarProfissionalFragment extends Fragment {
 
         // listner para recuperar contatos
 
-
-
         // método que pega o click da listview
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -102,6 +100,13 @@ public class BuscarProfissionalFragment extends Fragment {
                 Intent intent = new Intent(getActivity(),AgendarActivity.class);
                 intent.putExtra("nome",profObjetos.get(i).getNome());
 
+                intent.putExtra("email", profObjetos.get(i).getId() );
+                intent.putExtra("nome", profObjetos.get(i).getNome() );
+                intent.putExtra("id", profObjetos.get(i).getId() );
+
+
+                intent.putExtra("cliente","profissionais");
+                intent.putExtra("classe",Profissional.class);
                 startActivity(intent);
             }
         });
@@ -214,29 +219,6 @@ public class BuscarProfissionalFragment extends Fragment {
                         });
                         break;
                 }
-
-            }
-        });
-
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                Intent intent = new Intent(getActivity(), AgendarActivity.class);
-
-                // Recuperar dados a serem passados
-                Profissional profissional = profissionais.get( position );
-
-                // Enviando dados para conversa activity
-
-                //String email = Base64Custom.decodificarBase64( conversa.getIdUsuario() );
-
-                intent.putExtra("email", profissional.getId() );
-                intent.putExtra("nome", profissional.getNome() );
-                intent.putExtra("nome", profissional.getId() );
-
-                startActivity(intent);
 
             }
         });
