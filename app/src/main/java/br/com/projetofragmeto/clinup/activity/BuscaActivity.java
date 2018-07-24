@@ -1,18 +1,10 @@
 package br.com.projetofragmeto.clinup.activity;
 
 import android.graphics.Color;
-import android.support.v4.content.ContextCompat;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.SearchView;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-
-import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import br.com.projetofragmeto.clinup.R;
 import br.com.projetofragmeto.clinup.adapter.TabBuscarAdapter;
@@ -21,6 +13,8 @@ import br.com.projetofragmeto.clinup.fragments.BuscarHospitalFragment;
 import br.com.projetofragmeto.clinup.fragments.BuscarLaboratorioFragment;
 import br.com.projetofragmeto.clinup.fragments.BuscarProfissionalFragment;
 import br.com.projetofragmeto.clinup.helper.SlidingTabLayout;
+
+//import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 public class BuscaActivity extends AppCompatActivity {
     private android.support.v7.widget.Toolbar toolbar;
