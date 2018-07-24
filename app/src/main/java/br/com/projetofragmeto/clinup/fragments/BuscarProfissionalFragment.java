@@ -28,7 +28,6 @@ import java.util.ArrayList;
 
 import br.com.projetofragmeto.clinup.R;
 import br.com.projetofragmeto.clinup.activity.AgendarActivity;
-import br.com.projetofragmeto.clinup.activity.PerfilCliente;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
 import br.com.projetofragmeto.clinup.database.ProfissionalDB;
 import br.com.projetofragmeto.clinup.model.Profissional;
