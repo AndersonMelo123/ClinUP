@@ -38,4 +38,36 @@ public class ClinicaDB implements Database {
     public void alterarDados() {
 
     }
+
+    public ArrayList filtroNome(String nome,DataSnapshot data, final ArrayList arrayList){
+
+
+        if(data.exists()) {
+            for(DataSnapshot dados: data.getChildren()){
+                Clinica c = dados.getValue(Clinica.class);
+
+                arrayList.add(c.getNome());
+
+            }
+        }
+
+
+
+        return arrayList;
+
+    }
+    public ArrayList filtroExame(String especialidade,DataSnapshot data, final ArrayList arrayList){
+
+
+        if(data.exists()) {
+            for(DataSnapshot dados: data.getChildren()){
+                Clinica c = dados.getValue(Clinica.class);
+
+                arrayList.add(c.getNome());
+
+            }
+        }
+
+        return arrayList;
+    }
 }

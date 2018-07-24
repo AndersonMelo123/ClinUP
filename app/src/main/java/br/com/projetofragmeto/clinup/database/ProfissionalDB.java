@@ -1,7 +1,14 @@
 package br.com.projetofragmeto.clinup.database;
 
+import android.support.annotation.NonNull;
+import android.util.Log;
+import android.widget.ArrayAdapter;
+
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -30,9 +37,8 @@ public class ProfissionalDB implements Database {
         for(DataSnapshot dados: data.getChildren()){
             Profissional p = dados.getValue(Profissional.class);
             String nome = p.getNome();
-            //String end = p.getEndereco();
+            Log.i("NOME",nome);
             arrayList.add(nome);
-            //arrayList.add(end);
         }
 
         return arrayList;
@@ -40,6 +46,40 @@ public class ProfissionalDB implements Database {
 
     @Override
     public void alterarDados() {
+
+    }
+
+    public ArrayList filtroNome(String nome,DataSnapshot data, final ArrayList arrayList){
+
+
+        if(data.exists()) {
+            for(DataSnapshot dados: data.getChildren()){
+                Profissional p = dados.getValue(Profissional.class);
+
+                arrayList.add(p.getNome());
+
+                }
+        }
+
+
+
+        return arrayList;
+
+    } public ArrayList filtroEspecialidade(String especialidade,DataSnapshot data, final ArrayList arrayList){
+
+
+        if(data.exists()) {
+            for(DataSnapshot dados: data.getChildren()){
+                Profissional p = dados.getValue(Profissional.class);
+
+                arrayList.add(p.getNome());
+
+                }
+        }
+
+
+
+        return arrayList;
 
     }
 }

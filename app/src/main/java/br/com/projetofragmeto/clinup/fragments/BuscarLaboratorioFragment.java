@@ -1,13 +1,22 @@
 package br.com.projetofragmeto.clinup.fragments;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -17,17 +26,31 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import br.com.projetofragmeto.clinup.R;
+import br.com.projetofragmeto.clinup.activity.AgendarActivity;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
 import br.com.projetofragmeto.clinup.database.LaboratorioDB;
+import br.com.projetofragmeto.clinup.model.Laboratorio;
 
 
 public class BuscarLaboratorioFragment extends Fragment {
 
     private ListView listView;
     private ArrayAdapter adapter;
-    private ArrayList laboratorios;
+
     private DatabaseReference firebase;
     private LaboratorioDB laboratorioDB;
+
+    private EditText texto;
+    private Button botaoBusca;
+    private Button botaoFiltro;
+    private TextView textView;
+
+    private String[] filtro = {"Todos","Nome"};
+    private String filtragem = filtro[0];
+
+    private ArrayList laboratorios;
+    private ArrayList<Laboratorio> labObjetos = new ArrayList<Laboratorio>();//retorna todos as Clinicas da consulta no banco
+
 
     public BuscarLaboratorioFragment() {
         // Required empty public constructor
@@ -44,8 +67,6 @@ public class BuscarLaboratorioFragment extends Fragment {
         laboratorios = new ArrayList();
         laboratorioDB = new LaboratorioDB();
 
-
-
         listView = view.findViewById(R.id.lv_laboratorio);
 
         adapter = new ArrayAdapter(
@@ -55,20 +76,103 @@ public class BuscarLaboratorioFragment extends Fragment {
         );
         listView.setAdapter(adapter); //seta o adaptados
 
-        // listner para recuperar contatos
+        botaoBusca = view.findViewById(R.id.blf_bt_buscar);
+        botaoFiltro = view.findViewById(R.id.blf_bp_filtro);
+        texto = view.findViewById(R.id.blf_et_buscar);
+        textView = view.findViewById(R.id.blf_et);
 
-        firebase.addValueEventListener(new ValueEventListener() {
+        // método que pega o click da listview
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.getValue() != null){
-                    laboratorios = laboratorioDB.buscarDados(dataSnapshot,laboratorios);
-                    adapter.notifyDataSetChanged();
-                }
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                //Log.i("i", (String) profissionais.get(i));
+                //Log.i("i",profObjetos.get(i).getEspecialidade());
+
+                Intent intent = new Intent(getActivity(),AgendarActivity.class);
+                intent.putExtra("nome",labObjetos.get(i).getNome());
+
+                startActivity(intent);
             }
+        });
 
+        botaoFiltro.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+            public void onClick(View view) {
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext());
+                mBuilder.setTitle("Filtro");
+                mBuilder.setSingleChoiceItems(filtro, -1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        filtragem = filtro[i];
+                        textView.setText(filtragem);
+                        dialogInterface.dismiss();
+                    }
+                });
+                mBuilder.setNeutralButton("Cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
 
+                    }
+                });
+
+                //Mostra alert Dialog
+                AlertDialog mDialog = mBuilder.create();
+                mDialog.show();
+            }
+        });
+
+        botaoBusca.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final String nome = texto.getText().toString();//pega nome do campo de texto
+
+                switch (filtragem){
+                    case("Todos"):
+                        labObjetos.clear();
+                        laboratorios.clear();
+                        firebase.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if(dataSnapshot.getValue() != null){
+                                    for(DataSnapshot dados: dataSnapshot.getChildren()){
+                                        Laboratorio l = dados.getValue(Laboratorio.class);
+                                        String nome = l.getNome();
+                                        laboratorios.add(nome);
+                                        labObjetos.add(l);
+                                    }
+
+                                    adapter.notifyDataSetChanged();
+                                }
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                            }
+                        });
+                        break;
+                    case("Nome"):
+                        labObjetos.clear();
+                        laboratorios.clear();
+                        firebase.orderByChild("nome").equalTo(nome).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if(dataSnapshot.getValue() != null){
+                                    for(DataSnapshot dados: dataSnapshot.getChildren()){
+                                        Laboratorio l = dados.getValue(Laboratorio.class);
+                                        String nome = l.getNome();
+                                        laboratorios.add(nome);
+                                        labObjetos.add(l);
+                                    }
+
+                                    adapter.notifyDataSetChanged();
+                                }
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                            }
+                        });
+                        break;
+
+                }
             }
         });
         return view;
