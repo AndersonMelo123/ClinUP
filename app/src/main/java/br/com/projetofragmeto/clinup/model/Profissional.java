@@ -11,8 +11,9 @@ public class Profissional {
     private Dias dias;
 
 
+    public Profissional() {
+    }
 
-    public Profissional(){}
     public Profissional(String nome, String endereco, String especialidade, String formacao, String num_registro) {
         this.endereco = endereco;
         this.especialidade = especialidade;
@@ -36,6 +37,7 @@ public class Profissional {
     public void setId(String id) {
         this.id = id;
     }
+
     public String getEndereco() {
         return endereco;
     }

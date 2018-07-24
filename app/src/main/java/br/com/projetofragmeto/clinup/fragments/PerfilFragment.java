@@ -14,19 +14,13 @@ import br.com.projetofragmeto.clinup.R;
 
 public class PerfilFragment extends Fragment {
 
-    private TextView nome;
-    private TextView email;
-    private TextView cpf;
-    private TextView dataNascimento;
-
+    private TextView nome, email, cpf, dataNascimento;
 
     private DatabaseReference usuarioReferencia;
 
     public PerfilFragment() {
         // Required empty public constructor
     }
-
-
 
 
     @Override
@@ -42,10 +36,10 @@ public class PerfilFragment extends Fragment {
         dataNascimento = view.findViewById(R.id.nascimento_user_fragment_perfil);
 
 
-        try{
+        try {
             String idUsuarios = getArguments().getString("id");
-        }catch (Exception e){
-            Log.i("ERRO",e.toString());
+        } catch (Exception e) {
+            Log.i("ERRO", e.toString());
 
         }
 

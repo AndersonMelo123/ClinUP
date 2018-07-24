@@ -3,12 +3,8 @@ package br.com.projetofragmeto.clinup.model;
 import java.io.Serializable;
 
 public class Agendamento implements Serializable {
-    private String id_Usuario;
-    private String id_Cliente;
-    private String dataConsulta;
-    private String dataAtual;
-    private String nomeUsuario;
-    private String id_Plano;
+
+    private String id_Usuario, id_Cliente, dataConsulta, dataAtual, nomeUsuario, id_Plano;
 
     public Agendamento() {
     }

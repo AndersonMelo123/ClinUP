@@ -1,6 +1,5 @@
 package br.com.projetofragmeto.clinup.model;
 
-
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
@@ -137,6 +136,7 @@ public class Usuario implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
+
     @Exclude
     public String getSenha() {
         return senha;
@@ -146,13 +146,12 @@ public class Usuario implements Serializable {
         this.senha = senha;
     }
 
-    public void salvar(){
+    public void salvar() {
         DatabaseReference referenciaFirebase = ConfiguracaoFirebase.getFirebase();
-        referenciaFirebase.child("usuarios").child( getId() ).setValue( this );
+        referenciaFirebase.child("usuarios").child(getId()).setValue(this);
     }
 
-    public void deletarConta(FirebaseUser user){
-
+    public void deletarConta(FirebaseUser user) {
 
 
     }

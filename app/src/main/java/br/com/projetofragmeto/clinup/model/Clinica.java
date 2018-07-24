@@ -2,11 +2,7 @@ package br.com.projetofragmeto.clinup.model;
 
 public class Clinica {
 
-    private String cnpj;
-    private String email;
-    private String endereco;
-    private String nome;
-    private String telefone;
+    private String cnpj, email, endereco, nome, telefone;
 
     public String getCnpj() {
         return cnpj;

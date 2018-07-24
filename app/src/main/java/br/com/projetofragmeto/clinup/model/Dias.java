@@ -1,13 +1,7 @@
 package br.com.projetofragmeto.clinup.model;
 
 public class Dias {
-    private int segunda;
-    private int terça;
-    private int quarta;
-    private int quinta;
-    private int sexta;
-    private int sabado;
-    private int domingo;
+    private int segunda, terça, quarta, quinta, sexta, sabado, domingo;
 
     public int getSegunda() {
         return segunda;
