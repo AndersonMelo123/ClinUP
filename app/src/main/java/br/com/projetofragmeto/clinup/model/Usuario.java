@@ -1,6 +1,5 @@
 package br.com.projetofragmeto.clinup.model;
 
-
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
@@ -8,35 +7,21 @@ import com.google.firebase.database.Exclude;
 import java.io.Serializable;
 
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
-import br.com.projetofragmeto.clinup.database.PlanoDeSaudeImplements;
 
 /*Adicionando a interface serializable será possível transformar o objeto num formato que poderá ser salvo num arquivo.
  Por exemplo, para utilizar um ObjectOutputStream e salvar um objeto num arquivo do disco será necessário implementar essa interface.*/
 
 public class Usuario implements Serializable {
 
-    private String idUsuario;
-    private String id;
+    private String idUsuario, id;
 
-    private String nome;//
-    private String email;//
-    private String senha;//
+    private String nome, email, senha, cpf, telefone,
+            dataNascimento, estadoCivil, foto, numTelefone, nomePlano, numPlano;
 
-    private String cpf;//
-    private String telefone;//
-    private String dataNascimento;//
-    private String estadoCivil;
-    private String foto;
+    private String endereco;
 
-    private String numPais;
-    private String numEstado;
-    private String numTelefone;
-
-    private Endereco endereco;
-
-    private PlanoDeSaude plano;//
-    private String nomePlano;//
-    private String numPlano;//
+    private PlanoDeSaude plano;
+    private String planoDeSaude;//
 
     public Usuario(String nome, String email, String foto) {
         this.nome = nome;
@@ -68,22 +53,6 @@ public class Usuario implements Serializable {
 
     public void setFoto(String foto) {
         this.foto = foto;
-    }
-
-    public String getNumPais() {
-        return numPais;
-    }
-
-    public void setNumPais(String numPais) {
-        this.numPais = numPais;
-    }
-
-    public String getNumEstado() {
-        return numEstado;
-    }
-
-    public void setNumEstado(String numEstado) {
-        this.numEstado = numEstado;
     }
 
     public String getNumTelefone() {
@@ -126,12 +95,20 @@ public class Usuario implements Serializable {
         this.estadoCivil = estadoCivil;
     }
 
-    public Endereco getEndereco() {
+    public String getEndereco() {
         return endereco;
     }
 
-    public void setEndereco(Endereco endereco) {
+    public void setEndereco(String endereco) {
         this.endereco = endereco;
+    }
+
+    public String getPlanoDeSaude() {
+        return planoDeSaude;
+    }
+
+    public void setPlanoDeSaude(String planoDeSaude) {
+        this.planoDeSaude = planoDeSaude;
     }
 
 
@@ -159,6 +136,7 @@ public class Usuario implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
+
     @Exclude
     public String getSenha() {
         return senha;
@@ -168,31 +146,15 @@ public class Usuario implements Serializable {
         this.senha = senha;
     }
 
-    public String getNomePlano() {
-        return nomePlano;
-    }
-
-    public void setNomePlano(String nomePlano) {
-        this.nomePlano = nomePlano;
-    }
-
-    public String getNumPlano() {
-        return numPlano;
-    }
-
-    public void setNumPlano(String numPlano) {
-        this.numPlano = numPlano;
-    }
-
-    public void salvar(){
+    public void salvar() {
         DatabaseReference referenciaFirebase = ConfiguracaoFirebase.getFirebase();
-        referenciaFirebase.child("usuarios").child( getId() ).setValue( this );
+        referenciaFirebase.child("usuarios").child(getId()).setValue(this);
     }
 
-    public void deletarConta(FirebaseUser user){
-
+    public void deletarConta(FirebaseUser user) {
 
 
     }
+
 
 }

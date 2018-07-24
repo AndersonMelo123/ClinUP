@@ -21,12 +21,28 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    implementation 'com.google.android.gms:play-services-maps:15.0.1'
+    implementation 'com.android.support:recyclerview-v7:27.1.1'
     testImplementation 'junit:junit:4.12'
 
-    androidTestCompile 'com.android.support.test:runner:0.4'
+    androidTestImplementation 'com.android.support.test:runner:0.4'
     // Set this dependency to use JUnit 4 rules
-    androidTestCompile 'com.android.support.test:rules:0.4'
+    androidTestImplementation 'com.android.support.test:rules:1.0.2'
 
+    implementation 'de.clemenskeppler:MaterialSearchView:1.0.4'
+
+    implementation("com.mikepenz:materialdrawer:6.0.8@aar") {
+        transitive = true
+    }
+    implementation 'com.mikepenz:fontawesome-typeface:5.0.13.0@aar'
+    implementation 'com.mikepenz:octicons-typeface:3.2.0.4@aar'
+    implementation 'com.roomorama:caldroid:3.0.1'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+
+    implementation "com.android.support:recyclerview-v7:27.1.1"
+    implementation "com.android.support:support-annotations:27.1.1"
+
+    implementation 'com.rengwuxian.materialedittext:library:2.1.4'
 
     implementation 'com.github.rtoshiro.mflibrary:mflibrary:1.0.0'
 
@@ -45,6 +61,9 @@ dependencies {
     implementation 'com.shobhitpuri.custombuttons:google-signin:1.0.0'
 
     implementation 'com.google.android.gms:play-services-auth:15.0.1'
+
+    implementation 'com.github.rtoshiro.mflibrary:mflibrary:1.0.0'
+
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -14,15 +14,15 @@ public class Preferencias {
     private final String CHAVE_IDENTIFICADOR = "identificadorUsuarioLogado"; //Variável para identificar usuário logado
     private final String CHAVE_NOME = "nomeUsuarioLogado"; //Nome do usuário logado
 
-    public Preferencias( Context contextoParametro){
+    public Preferencias(Context contextoParametro) {
 
         contexto = contextoParametro;
-        preferences = contexto.getSharedPreferences(NOME_ARQUIVO, MODE );
+        preferences = contexto.getSharedPreferences(NOME_ARQUIVO, MODE);
         editor = preferences.edit(); //Salvar a preferência
 
     }
 
-    public void salvarDados( String identificadorUsuario, String nomeUsuario ){
+    public void salvarDados(String identificadorUsuario, String nomeUsuario) {
 
         editor.putString(CHAVE_IDENTIFICADOR, identificadorUsuario); //Colocar nas preferências a chave identificadora do usuário
         //editor.putString(CHAVE_NOME, nomeUsuario); //Colocar nas preferências a chave com o titulo do usuário
@@ -30,12 +30,12 @@ public class Preferencias {
 
     }
 
-    public String getIdentificador(){
+    public String getIdentificador() {
 
         return preferences.getString(CHAVE_IDENTIFICADOR, null); // Recuperar o identificador que foi salvo
     }
 
-    public String getNOME(){
+    public String getNOME() {
 
         return preferences.getString(CHAVE_NOME, null); // Recuperar o identificador que foi salvo
     }
