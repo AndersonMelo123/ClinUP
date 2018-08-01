@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -38,6 +40,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 import br.com.projetofragmeto.clinup.R;
 import br.com.projetofragmeto.clinup.model.Endereco;
@@ -77,26 +83,28 @@ public class MapaFragment extends Fragment implements
         ultimaLocalizacao = getMyLocation();
 
         createLocationRequest();
+        determineLatLngFromAddress(getContext(),"Pedro Firmino, Belo Jardim");
     }
 
 
     public boolean getLocalization(Context context) {
         boolean res = true;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    public void requestPermissions(@NonNull String[] permissions, int requestCode)
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for Activity#requestPermissions for more details.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+                ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-                res = false;
-                requestPermissions(new String[]{
-                        Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_PERMISSION_LOCALIZATION);
+            // TODO: Consider calling
+            //    public void requestPermissions(@NonNull String[] permissions, int requestCode)
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for Activity#requestPermissions for more details.
 
-            }
+            res = false;
+            requestPermissions(new String[]{
+                    Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_PERMISSION_LOCALIZATION);
+
         }
         return res;
     }
@@ -125,6 +133,7 @@ public class MapaFragment extends Fragment implements
                 }
                 return;
             }
+
 
             // other 'case' lines to check for other
             // permissions this app might request
@@ -354,6 +363,30 @@ public class MapaFragment extends Fragment implements
 
         // visualizacao do dialogo
         alertDialog.show();
+    }
+
+
+
+    public LatLng determineLatLngFromAddress(Context appContext, String strAddress) {
+        LatLng latLng = null;
+        Geocoder geocoder = new Geocoder(appContext, Locale.getDefault());
+        List<Address> geoResults = null;
+
+        try {
+            geoResults = geocoder.getFromLocationName(strAddress, 1);
+            while (geoResults.size()==0) {
+                geoResults = geocoder.getFromLocationName(strAddress, 1);
+            }
+            if (geoResults.size()>0) {
+                Address addr = geoResults.get(0);
+                latLng = new LatLng(addr.getLatitude(),addr.getLongitude());
+                Log.i("Enderesso", String.valueOf(addr.getLatitude())+","+String.valueOf(addr.getLongitude()));
+            }
+        } catch (Exception e) {
+            System.out.print(e.getMessage());
+        }
+
+        return latLng; //LatLng value of address
     }
 
 }
