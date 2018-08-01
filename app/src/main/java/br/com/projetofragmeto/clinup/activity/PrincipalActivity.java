@@ -59,7 +59,6 @@ import br.com.projetofragmeto.clinup.fragments.MapaFragment;
 import br.com.projetofragmeto.clinup.helper.Preferencias;
 import br.com.projetofragmeto.clinup.model.Usuario;
 
-
 public class PrincipalActivity extends AppCompatActivity {
 
     //save our header or result

@@ -1,36 +1,66 @@
 package br.com.projetofragmeto.clinup.fragments;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import br.com.projetofragmeto.clinup.R;
+import br.com.projetofragmeto.clinup.model.Endereco;
 
-public class MapaFragment extends Fragment implements OnMapReadyCallback {
+public class MapaFragment extends Fragment implements
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
-    GoogleMap mGoogleMap;
-    GoogleApiClient mGoogleApiClient;
-    MapView mMapView;
-    View mView;
+    private GoogleApiClient mGoogleApiClient;
+    private MapView mMapView;
+    private View mView;
 
-    private Marker currentLocationMaker;
-    private LatLng currentLocationLatLong;
+    private GoogleMap mMap;
 
-    //Location ultimaLocalizacao = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient );
+    private DatabaseReference mEnderecos;
+
+    private LocationRequest locationRequest;
+
+    protected Location mCurrentLocation;
+
+    private Location ultimaLocalizacao;
+
+    final int REQUEST_PERMISSION_LOCALIZATION = 221;
+
 
     public MapaFragment() {
         // Required empty public constructor
@@ -39,94 +69,161 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-/*
-        mGoogleApiClient = new GoogleApiClient.Builder(getContext())
-                .addConnectionCallbacks((GoogleApiClient.ConnectionCallbacks) getContext())
-                .addOnConnectionFailedListener((GoogleApiClient.OnConnectionFailedListener) getContext())
-                .addApi(LocationServices.API)
-                .build();
-        //setMyLocation(ultimaLocalizacao);*/
+
+        mEnderecos = FirebaseDatabase.getInstance().getReference("endereco");
+
+        mGoogleApiClient = buildGoogleApiClient();
+
+        ultimaLocalizacao = getMyLocation();
+
+        createLocationRequest();
     }
-/*
+
+
+    public boolean getLocalization(Context context) {
+        boolean res = true;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    public void requestPermissions(@NonNull String[] permissions, int requestCode)
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for Activity#requestPermissions for more details.
+
+                res = false;
+                requestPermissions(new String[]{
+                        Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_PERMISSION_LOCALIZATION);
+
+            }
+        }
+        return res;
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        switch (requestCode) {
+            case REQUEST_PERMISSION_LOCALIZATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
+
+    protected void createLocationRequest() {
+        locationRequest = new LocationRequest();
+        locationRequest.setInterval(10000);
+        locationRequest.setFastestInterval(5000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+    }
+
+    // Método responsável por ativar o monitoramento do GPS
+    protected void startLocationUpdates() {
+        try {
+            /* code should explicitly check to see if permission is available
+            (with 'checkPermission') or explicitly handle a potential 'SecurityException'
+             */
+            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, locationRequest, this);
+
+        } catch (SecurityException e) {
+            Log.i("SecurityException", e.toString());
+
+        }
+    }
+
     public void setMyLocation(Location location) {
         if (location != null) {
-            // Recupera latitude e longitude da
-            // ultima localização do usuário
+            // Recupera latitude e longitude da ultima localização do usuário
             LatLng ultimaLocalizacao = new LatLng(location.getLatitude(), location.getLongitude());
             // Configuração da câmera
             final CameraPosition position = new CameraPosition.Builder()
                     .target(ultimaLocalizacao) // Localização
-                    .bearing(45) // Rotação da câmera
-                    .tilt(90) // ngulo em graus
-                    .zoom(17) // Zoom
+                    .bearing(0) // Rotação da câmera
+                    .tilt(45) // ngulo em graus
+                    .zoom(18) // Zoom
                     .build();
             CameraUpdate update = CameraUpdateFactory.newCameraPosition(position);
-            mGoogleMap.animateCamera(update);
-// Criando um objeto do tipo MarkerOptions
+            mMap.animateCamera(update);
+            // Criando um objeto do tipo MarkerOptions
             final MarkerOptions markerOptions = new MarkerOptions();
-// Configurando as propriedades do marker
+            // Configurando as propriedades do marker
             markerOptions.position(ultimaLocalizacao) // Localização
                     .title("Minha Localização") // Título
-                    .snippet("Latitude: , Longitude:"); // Descrição
-            mGoogleMap.addMarker(markerOptions);
+                    .snippet("Latitude:" + String.valueOf(location.getLatitude()) + "," +
+                            "Longitude:" + String.valueOf(location.getLongitude())); // Descrição
+            mMap.addMarker(markerOptions);
         }
     }
-*/
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
-        MapsInitializer.initialize(getContext());
+        mMap = googleMap;
 
-        mGoogleMap = googleMap;
+        googleMap.setOnMarkerClickListener(this);
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
-        googleMap.addMarker(new MarkerOptions().position(new LatLng(-8.890212, -36.493041)).title("Local")
-                .snippet("Estou aqui"));
-
-        CameraPosition Liberty = CameraPosition.builder()
-                .target(new LatLng(-8.890212, -36.493041))
-                .zoom(18)
-                .bearing(0)
-                .tilt(45)
-                .build();
-
-        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(Liberty));
-
-
-/*
-//começou aqui
-        mGoogleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+        mEnderecos.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onMapClick(LatLng latLng) {
-                Double lat = latLng.latitude;
-                Double longi = latLng.longitude;
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot s : dataSnapshot.getChildren()) {
 
-                Toast.makeText(getContext(), "lat: "+lat+"long: "+ longi, Toast.LENGTH_SHORT).show();
+                    Endereco endereco = s.getValue(Endereco.class);
+
+                    LatLng location = new LatLng(endereco.getLatitude(), endereco.getLongitude());
+                    mMap.addMarker(new MarkerOptions().position(location).title(endereco.getRua())).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+
+                    CameraPosition Liberty = CameraPosition.builder()
+                            .target(location)
+                            .zoom(18)
+                            .bearing(0)
+                            .tilt(45)
+                            .build();
+
+                    mMap.animateCamera(CameraUpdateFactory.newCameraPosition(Liberty));
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
-
-        mGoogleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng latLng) {
-                // Criar marker no marker
-                MarkerOptions options = new MarkerOptions();
-                options.position( latLng );
-                mGoogleMap.addMarker( options );
-                // Configurando as propriedades da Linha
-                PolylineOptions polylineOptions = new PolylineOptions();
-                polylineOptions.add( new LatLng(-8.890212, -36.493041) );
-                polylineOptions.add( latLng );
-                polylineOptions.color(Color.BLUE );
-// Adiciona a linha no mapa
-                mGoogleMap.addPolyline( polylineOptions );
-            }
-        });
-*/
-
 
     }
 
+    protected synchronized GoogleApiClient buildGoogleApiClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(getContext())
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+
+        return mGoogleApiClient;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -140,36 +237,123 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mMapView = (MapView) mView.findViewById(R.id.map);
+        mMapView = mView.findViewById(R.id.map);
         if (mMapView != null) {
             mMapView.onCreate(null);
             mMapView.onResume();
             mMapView.getMapAsync(this);
         }
     }
-/*
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        return false;
+    }
+
     @Override
     public void onStart() {
         super.onStart();
-        mGoogleApiClient.connect();
+        if (mGoogleApiClient != null) {
+            mGoogleApiClient.connect();
+            if (getLocalization(getContext())) {
+                //ao entrar aqui é porque já foi liberado
+            }
+        }
     }
+
     @Override
     public void onStop() {
-        mGoogleApiClient.disconnect();
         super.onStop();
+        if (mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.disconnect();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mGoogleApiClient.isConnected()) {
+            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);// Para o GPS
+            mGoogleApiClient.disconnect();
+        }
+    }
+
+    private Location getMyLocation() {
+        try {
+            /* code should explicitly check to see if permission is available
+            (with 'checkPermission') or explicitly handle a potential 'SecurityException'
+             */
+            ultimaLocalizacao = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+            if (ultimaLocalizacao != null) {
+                Log.i("Localização", String.valueOf(ultimaLocalizacao.getLatitude() + ultimaLocalizacao.getLongitude()));
+            } else {
+                Log.i("Localização", "mLastLocation == null\n");
+                showSettingsAlert();
+
+            }
+
+        } catch (SecurityException e) {
+            Log.i("SecurityException", e.toString());
+
+        }
+        return ultimaLocalizacao;
     }
 
 
     public void onConnected(@Nullable Bundle bundle) {
-        Log.i("LOG", "Conectado ao Google Play Services!");
+
+        Location location = getMyLocation();
+
+        if (location == null) {
+            startLocationUpdates();// Inicia o GPS
+        } else {
+            setMyLocation(location);
+        }
+        Log.i("TAGLOG", "Conectado ao Google Play Services!");
     }
 
     public void onConnectionSuspended(int i) {
-        Log.i("LOG", "Conexão Interrompida");
+        Log.i("TAGLOG", "Conexão Interrompida");
     }
 
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.i("LOG", "Erro ao conectar: " + connectionResult);
+        Log.i("TAGLOG", "Erro ao conectar: " + connectionResult);
     }
-*/
+
+    @Override
+    public void onLocationChanged(Location location) {
+        mCurrentLocation = location;
+        setMyLocation(mCurrentLocation);// Atualiza localização do usuário no mapa
+
+    }
+
+    public void showSettingsAlert() {
+
+        android.app.AlertDialog.Builder alertDialog = new android.app.AlertDialog.Builder(getContext());
+
+        // Titulo do dialogo
+        alertDialog.setTitle("GPS");
+
+        // Mensagem do dialogo
+        alertDialog.setMessage("GPS não está habilitado. Deseja configurar?");
+
+        // botao ajustar configuracao
+        alertDialog.setPositiveButton("Configurar", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(intent);
+            }
+        });
+
+        // botao cancelar
+        alertDialog.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        // visualizacao do dialogo
+        alertDialog.show();
+    }
+
 }

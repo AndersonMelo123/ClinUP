@@ -19,7 +19,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import br.com.projetofragmeto.clinup.R;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
-import br.com.projetofragmeto.clinup.model.Endereço;
+import br.com.projetofragmeto.clinup.model.Endereco;
 
 public class PerfilCliente extends AppCompatActivity {
 
@@ -97,11 +97,11 @@ public class PerfilCliente extends AppCompatActivity {
 
         }
         if (cnpj != null) {
-            Log.i("Cnpj",cnpj);
+            Log.i("Cnpj", cnpj);
         }
 
         if (cliente != null) {
-            Log.i("cliente",cliente);
+            Log.i("cliente", cliente);
 
         }
         if (endereco != null) {
@@ -111,7 +111,7 @@ public class PerfilCliente extends AppCompatActivity {
             usuarioRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    Endereço userEndereco = dataSnapshot.getValue(Endereço.class);
+                    Endereco userEndereco = dataSnapshot.getValue(Endereco.class);
 
                     tv_endereco.setText(String.valueOf(userEndereco.getRua() + ", " + userEndereco.getNumero()));
                     tv_endereco.setEnabled(true);

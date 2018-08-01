@@ -37,7 +37,7 @@ import br.com.projetofragmeto.clinup.R;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
 import br.com.projetofragmeto.clinup.helper.Preferencias;
 import br.com.projetofragmeto.clinup.model.Agendamento;
-import br.com.projetofragmeto.clinup.model.Endereço;
+import br.com.projetofragmeto.clinup.model.Endereco;
 import br.com.projetofragmeto.clinup.model.PlanoDeSaude;
 import br.com.projetofragmeto.clinup.model.Usuario;
 
@@ -195,7 +195,7 @@ public class AgendarActivity extends FragmentActivity {
                 usuarioRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Endereço userEndereco = dataSnapshot.getValue(Endereço.class);
+                        Endereco userEndereco = dataSnapshot.getValue(Endereco.class);
 
                         endereco.setText(String.valueOf(userEndereco.getRua() + ", " + userEndereco.getNumero()));
                     }
@@ -254,28 +254,10 @@ public class AgendarActivity extends FragmentActivity {
         Calendar calendar = Calendar.getInstance();
         calendar.clear();
 
-        // month start at 1. Need to minus 1 to get javaMonth
+        // início do mês em 1. Precisa de menos 1 para obter o mês
         calendar.set(year, month - 1, day);
 
         return calendar.getTime();
-    }
-
-    private Date dataAtual(Date data) {
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-        Date date = null;
-        try {
-            date = format.parse(String.valueOf(data));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.clear();
-
-        calendar.setTime(date);
-
-        return calendar.getTime();
-
     }
 
     private Date getDate(String strDate) throws ParseException {

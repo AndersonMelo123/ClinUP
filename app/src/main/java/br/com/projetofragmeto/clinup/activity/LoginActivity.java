@@ -73,7 +73,6 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth autenticacao;//autenticação do firebase
     private FirebaseAuth.AuthStateListener mAuthListener;
 
-    //private static Boolean loginAutomatico = false;
     private static final int RC_SIGN_IN = 1;
     private GoogleApiClient mGoogleApiClient;
 
@@ -100,19 +99,17 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {/* Criando o evento para esperar o clique no botão
                                              , caso clicado ele entra e executa o conteúdo*/
-
                 usuario = new Usuario();
                 usuario.setEmail(email.getText().toString());
                 usuario.setSenha(senha.getText().toString());
 
                 validarLogin();
-
             }
         });
 
-        // Initialize Facebook Login button
+        // Inicializa o botão do Facebook
         botaoLoginFacebook.setReadPermissions("email", "public_profile");
-        //inicializa callback
+        // Inicializa callback
         callbackManager = CallbackManager.Factory.create();
         clickBotaoFacebook();
 
@@ -164,11 +161,6 @@ public class LoginActivity extends AppCompatActivity {
                         abrirTelaPrincipal();
 
                     }
-
-
-                } else {
-                    Log.d("TG", "SIGNED OUT");
-
                 }
             }
         };
@@ -195,12 +187,12 @@ public class LoginActivity extends AppCompatActivity {
         mLoginGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //Se clicar no botão do facebook ele é direcionado para fazer o login
                 signIn();
             }
         });
 
     }
-
 
     // Método chamado assim que é inicializado essa activity
     @Override
@@ -235,7 +227,7 @@ public class LoginActivity extends AppCompatActivity {
         String Email = email.getText().toString().trim();
         String password = senha.getText().toString().trim();
 
-        //checking if email and passwords are empty
+        // checando se email e senhas estão vazios
         if (TextUtils.isEmpty(Email)) {
             Toast.makeText(this, "Por favor entre com o e-mail", Toast.LENGTH_LONG).show();
             return;
@@ -377,8 +369,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 firebaseLogin(loginResult.getAccessToken()); // Verificando se existe um token do facebook
-                //verificarUsuarioLogado();
-
             }
 
             @Override
@@ -403,16 +393,11 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             abrirTelaPrincipal();
                         } else {
-                            alert("Erro de autenticação com Firebase");
+                            Toast.makeText(LoginActivity.this, "Erro de autenticação com Firebase", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
     }
-
-    private void alert(String texto) {
-        Toast.makeText(this, texto, Toast.LENGTH_SHORT).show();
-    }
-
 
     //Método que recupera o id do usuário logado pelo Google
     public static boolean getPreferencesKeyUsuarioGoogle(Context context) {

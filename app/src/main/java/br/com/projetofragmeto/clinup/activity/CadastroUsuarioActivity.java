@@ -93,7 +93,6 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) { /* Criando o evento para esperar o clique no botão
                                              , caso clicado ele entra e executa o conteúdo*/
-
                 if (submitForm()) {
                     usuario = new Usuario();
                     planoDeSaude = new PlanoDeSaude();
@@ -269,7 +268,7 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
         return true;
     }
 
-    private boolean validarCpf(){
+    private boolean validarCpf() {
         if (cpf.getText().toString().trim().isEmpty()) {
             cpfIn.setError(getString(R.string.err_msg_cpf));
             requestFocus(cpf);
@@ -280,7 +279,6 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
 
         return true;
     }
-
 
     private static boolean isValidEmail(String email) {
         return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();

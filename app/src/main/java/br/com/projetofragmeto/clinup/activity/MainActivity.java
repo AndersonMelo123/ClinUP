@@ -32,7 +32,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
-
 import br.com.projetofragmeto.clinup.R;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
 import br.com.projetofragmeto.clinup.helper.Preferencias;
@@ -166,7 +165,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
 
     @Override
     protected void onStart() {
