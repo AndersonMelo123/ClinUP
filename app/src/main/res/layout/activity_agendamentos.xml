@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.Agendamentos">
+
+    <TextView
+        android:id="@+id/nome_l"
+        android:layout_width="322dp"
+        android:layout_height="39dp"
+        android:layout_marginTop="16dp"
+        android:background="#4d000000"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textColor="@color/White"
+        android:textSize="18sp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/dataAgendamento"
+        android:layout_width="322dp"
+        android:layout_height="39dp"
+        android:layout_marginTop="60dp"
+        android:background="#4d000000"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textColor="@color/White"
+        android:textSize="18sp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nome_l" />
+
+    <TextView
+        android:id="@+id/dataConsulta"
+        android:layout_width="322dp"
+        android:layout_height="39dp"
+        android:layout_marginTop="108dp"
+        android:background="#4d000000"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textColor="@color/White"
+        android:textSize="18sp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nome_l" />
+
+    <TextView
+        android:id="@+id/planoSaud"
+        android:layout_width="322dp"
+        android:layout_height="39dp"
+        android:layout_marginTop="12dp"
+        android:background="#4d000000"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textColor="@color/White"
+        android:textSize="18sp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nome_l" />
+
+    <Button
+        android:id="@+id/cancelarAgendamento"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_marginBottom="292dp"
+        android:text="@string/botao_cancelar"
+        android:theme="@style/botaoPadrao"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

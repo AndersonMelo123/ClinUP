@@ -7,6 +7,9 @@ public class Clinica {
     private String endereco;
     private String nome;
     private String telefone;
+    private String idAgendaemntos;
+
+
 
     public String getCnpj() {
         return cnpj;
@@ -46,5 +49,13 @@ public class Clinica {
 
     public void setTelefone(String telefone) {
         this.telefone = telefone;
+    }
+
+    public String getIdAgendaemntos() {
+        return idAgendaemntos;
+    }
+
+    public void setIdAgendaemntos(String idAgendaemntos) {
+        this.idAgendaemntos = idAgendaemntos;
     }
 }

@@ -7,6 +7,9 @@ public class Laboratorio {
     private String endereco;
     private String nome;
     private String telefone;
+    private String idAgendamentos;
+
+
 
     public Laboratorio(){}
 
@@ -50,5 +53,13 @@ public class Laboratorio {
 
     public void setTelefone(String telefone) {
         this.telefone = telefone;
+    }
+
+    public String getIdAgendamentos() {
+        return idAgendamentos;
+    }
+
+    public void setIdAgendamentos(String idAgendamentos) {
+        this.idAgendamentos = idAgendamentos;
     }
 }

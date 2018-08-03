@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">ClinUP</string>
     <string name="botao_cadastrar">Cadastrar</string>
+    <string name="botao_cancelar">Cancelar</string>
     <string name="botao_alterar">Salvar</string>
     <string name="texto_validacao">Validação</string>
     <string name="botao_validar">Validar</string>
@@ -41,5 +42,7 @@
     <string name="botao_agendar">Agendar</string>
     <string name="titulo_dialog_Agendamento">Agendar</string>
     <string name="msg_dialog_agendamento">Para sua segurança, precisamos que você confirme se deseja realmente agendar</string>
+    <string name="titulo_dialog_cancelamento">Cancelar</string>
+    <string name="msg_dialog_cancelamento">Deseja mesmo cancelar este agendamento?</string>
 
 </resources>

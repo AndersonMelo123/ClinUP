@@ -7,6 +7,9 @@ public class Hospital {
     private String endereco;
     private String nome;
     private String telefone;
+    private String idAgendamentos;
+
+
 
     public String getCnpj() {
         return cnpj;
@@ -46,5 +49,13 @@ public class Hospital {
 
     public void setTelefone(String telefone) {
         this.telefone = telefone;
+    }
+
+    public String getIdAgendamentos() {
+        return idAgendamentos;
+    }
+
+    public void setIdAgendamentos(String idAgendamentos) {
+        this.idAgendamentos = idAgendamentos;
     }
 }

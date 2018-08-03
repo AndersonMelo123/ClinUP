@@ -19,6 +19,8 @@ public class Usuario implements Serializable {
     private String nome, email, senha, cpf, telefone,
             dataNascimento, estadoCivil, foto, numTelefone, nomePlano, numPlano;
 
+    private String idAgendamentos;
+
     private String endereco;
 
     private PlanoDeSaude plano;
@@ -112,6 +114,14 @@ public class Usuario implements Serializable {
         this.planoDeSaude = planoDeSaude;
     }
 
+    public String getIdAgendamentos() {
+        return idAgendamentos;
+    }
+
+    public void setIdAgendamentos(String idAgendamentos) {
+        this.idAgendamentos = idAgendamentos;
+    }
+
 
     @Exclude
     public String getId() {
@@ -146,6 +156,7 @@ public class Usuario implements Serializable {
         this.senha = senha;
     }
 
+
     public void salvar(){
         DatabaseReference referenciaFirebase = ConfiguracaoFirebase.getFirebase();
         referenciaFirebase.child("usuarios").child( getId() ).setValue( this );
@@ -156,6 +167,7 @@ public class Usuario implements Serializable {
 
 
     }
+
 
 
 }

@@ -9,7 +9,7 @@ public class Profissional {
     private String num_registro;
     private String id;
     private Dias dias;
-
+    private String idAgendamentos;
 
 
     public Profissional(){}
@@ -75,4 +75,13 @@ public class Profissional {
     public void setNum_registro(String num_registro) {
         this.num_registro = num_registro;
     }
+
+    public String getIdAgendamentos() {
+        return idAgendamentos;
+    }
+
+    public void setIdAgendamentos(String idAgendamentos) {
+        this.idAgendamentos = idAgendamentos;
+    }
+
 }

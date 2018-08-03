@@ -49,12 +49,12 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.projetofragmeto.clinup.FavoritosFragment;
-import br.com.projetofragmeto.clinup.ListaFragment;
 import br.com.projetofragmeto.clinup.R;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
 import br.com.projetofragmeto.clinup.database.OnGetDataListener;
+import br.com.projetofragmeto.clinup.fragments.FavoritosFragment;
 import br.com.projetofragmeto.clinup.fragments.HomeFragment;
+import br.com.projetofragmeto.clinup.fragments.ListaFragment;
 import br.com.projetofragmeto.clinup.fragments.MapaFragment;
 import br.com.projetofragmeto.clinup.helper.Preferencias;
 import br.com.projetofragmeto.clinup.model.Usuario;
