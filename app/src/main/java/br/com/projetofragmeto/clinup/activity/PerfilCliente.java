@@ -26,7 +26,7 @@ import br.com.projetofragmeto.clinup.model.Endereco;
 public class PerfilCliente extends AppCompatActivity {
 
     private String id, telefone, especialidade, nome, numRegistro, email, endereco, cnpj, cliente, classe;
-    private TextView tv_id, tv_telefone, tv_especialidade, tv_nome, tv_numRegistro, tv_email, tv_endereco;
+    private TextView tv_id, tv_telefone, tv_especialidade, tv_nome, tv_numRegistro, tv_endereco;
 
     private Button agendar;
     private Button ligar;
@@ -55,7 +55,6 @@ public class PerfilCliente extends AppCompatActivity {
         ligar = findViewById(R.id.botao_ligar);
 
         tv_nome = (TextView) findViewById(R.id.edit_perfil_nomeID);
-        tv_email = (TextView) findViewById(R.id.edit_cadastro_emailID);
         tv_endereco = (TextView) findViewById(R.id.edit_perfil_enderecoID);
         tv_especialidade = (TextView) findViewById(R.id.edit_perfil_especialidadeID);
         tv_numRegistro = (TextView) findViewById(R.id.edit_perfil_numRegistroID);
