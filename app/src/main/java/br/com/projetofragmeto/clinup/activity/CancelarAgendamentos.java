@@ -48,11 +48,6 @@ public class CancelarAgendamentos extends AppCompatActivity {
 
     private android.support.v7.widget.Toolbar toolbar;
 
-    public CancelarAgendamentos() {
-
-    }
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

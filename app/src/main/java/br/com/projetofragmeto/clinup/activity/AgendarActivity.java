@@ -120,8 +120,8 @@ public class AgendarActivity extends FragmentActivity {
 
                         diasDaSemana.add(dias);
 
-                    }
 
+                    }
                 }
                 try {
                     AtivarDatas = setCalendario(diasDaSemana);
