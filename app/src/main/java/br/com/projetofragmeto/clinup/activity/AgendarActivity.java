@@ -103,6 +103,8 @@ public class AgendarActivity extends FragmentActivity {
         cliente = getIntent().getExtras().getString("cliente");
         classe = getIntent().getSerializableExtra("classe").getClass();
 
+        //Log.i("CLASSE", classe.toString());
+
 
         firebase = ConfiguracaoFirebase.getFirebase().child(cliente).child("001").child("dias");
 
@@ -517,9 +519,6 @@ public class AgendarActivity extends FragmentActivity {
                 agendamento.setId_Cliente(String.valueOf(id));
                 agendamento.setId_Usuario(String.valueOf(idUsuarios));
                 agendamento.setId(String.valueOf(idkey));
-
-
-
 
                 bancoDeDados.setValue(agendamento).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

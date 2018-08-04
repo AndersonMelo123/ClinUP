@@ -4,21 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.Agendamentos">
+    tools:context=".activity.CancelarAgendamentos">
+
+    <include
+        android:id="@+id/toolbarActivity"
+        layout="@layout/toolbar_activity"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="40dp"
+        tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/nome_l"
         android:layout_width="322dp"
         android:layout_height="39dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="168dp"
         android:background="#4d000000"
         android:gravity="center"
         android:textAlignment="center"
         android:textColor="@color/White"
         android:textSize="18sp"
+        android:theme="@style/StyleEditText"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -28,6 +35,7 @@
         android:layout_height="39dp"
         android:layout_marginTop="60dp"
         android:background="#4d000000"
+        android:theme="@style/StyleEditText"
         android:gravity="center"
         android:textAlignment="center"
         android:textColor="@color/White"
@@ -42,6 +50,7 @@
         android:layout_width="322dp"
         android:layout_height="39dp"
         android:layout_marginTop="108dp"
+        android:theme="@style/StyleEditText"
         android:background="#4d000000"
         android:gravity="center"
         android:textAlignment="center"
@@ -56,6 +65,7 @@
         android:id="@+id/planoSaud"
         android:layout_width="322dp"
         android:layout_height="39dp"
+        android:theme="@style/StyleEditText"
         android:layout_marginTop="12dp"
         android:background="#4d000000"
         android:gravity="center"
@@ -71,12 +81,25 @@
         android:id="@+id/cancelarAgendamento"
         android:layout_width="0dp"
         android:layout_height="45dp"
-        android:layout_marginBottom="292dp"
+        android:layout_marginBottom="68dp"
         android:text="@string/botao_cancelar"
         android:theme="@style/botaoPadrao"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="350dp"
+        android:layout_height="148dp"
+        android:paddingLeft="15dp"
+        android:paddingTop="80dp"
+        android:text="Agendamento"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimaryDarker"
+        android:textSize="36sp"
+        tools:layout_editor_absoluteX="17dp"
+        tools:layout_editor_absoluteY="25dp" />
 
 </android.support.constraint.ConstraintLayout>

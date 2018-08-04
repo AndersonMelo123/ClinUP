@@ -101,7 +101,7 @@ public class BuscarProfissionalFragment extends Fragment {
 
                 intent.putExtra("email", profObjetos.get(i).getId() );
                 intent.putExtra("nome", profObjetos.get(i).getNome() );
-                intent.putExtra("id", profObjetos.get(i).getId() );
+                intent.putExtra("id", profObjetos.get(i).getNum_registro() );
 
 
                 intent.putExtra("cliente","profissionais");
@@ -155,7 +155,7 @@ public class BuscarProfissionalFragment extends Fragment {
                                     for(DataSnapshot dados: dataSnapshot.getChildren()){
                                         Profissional p = dados.getValue(Profissional.class);//retorna cada objeto da consulta em p
                                         String nome = p.getNome();
-                                        Log.i("NOME",nome);
+                                        //Log.i("NOME",nome);
                                         profObjetos.add(p);//adiciona o profissional p em profObjetos
                                         profissionais.add(nome);//adiciona o nome do profissional p em profissionais
                                     }
