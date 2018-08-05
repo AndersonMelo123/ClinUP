@@ -178,7 +178,7 @@ public class AgendarActivity extends FragmentActivity {
 
                 if (usuario != null) {
                     nome.setText(usuario.getNome());
-                    //endereco.setText(usuario.getEndereco());
+                    endereco.setText(usuario.getEndereco());
                     email.setText(usuario.getEmail());
                     planoDeSaude.setText(usuario.getPlanoDeSaude());
                     dataNascimento.setText(usuario.getDataNascimento());
@@ -188,7 +188,7 @@ public class AgendarActivity extends FragmentActivity {
 
                 }
 
-                //if (!usuario.getEndereco().isEmpty()) {
+                if (!usuario.getEndereco().isEmpty()) {
                     String end = usuario.getEndereco();
 
                     DatabaseReference usuarioRef = ConfiguracaoFirebase.getFirebase().child("endereco").child(end);
@@ -206,10 +206,10 @@ public class AgendarActivity extends FragmentActivity {
 
                         }
                     });
-                //}
+                }
 
 
-                //if (!usuario.getPlanoDeSaude().isEmpty()) {
+                if (!usuario.getPlanoDeSaude().isEmpty()) {
                     String planoSaude = usuario.getPlanoDeSaude();
 
                     DatabaseReference planoRef = ConfiguracaoFirebase.getFirebase().child("planodesaude").child(planoSaude);
@@ -229,7 +229,7 @@ public class AgendarActivity extends FragmentActivity {
 
                         }
                     });
-               // }
+                }
 
 
             }

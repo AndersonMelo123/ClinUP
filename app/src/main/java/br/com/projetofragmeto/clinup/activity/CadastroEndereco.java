@@ -27,7 +27,7 @@ public class CadastroEndereco extends AppCompatActivity {
     private EditText etZipCode;
     private Util util;
 
-    private EditText rua, CEP, complemento, numero, cidade, estado, bairro;
+    private EditText rua, CEP, complemento, numero, cidade, bairro;
 
     private DatabaseReference usuarioReferencia;
 
