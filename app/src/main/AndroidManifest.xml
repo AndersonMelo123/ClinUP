@@ -85,6 +85,9 @@
         <activity android:name=".activity.BuscaActivity" />
         <activity android:name=".activity.AgendarActivity" />
         <activity android:name=".activity.PerfilCliente" />
+        <activity android:name=".activity.CadastroEndereco"/>
+        <activity android:name=".activity.ZipCodeSearchActivity"/>
+
     </application>
 
 </manifest>

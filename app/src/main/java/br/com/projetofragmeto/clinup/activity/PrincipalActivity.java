@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.v7.app.AppCompatActivity;
@@ -61,6 +62,8 @@ import br.com.projetofragmeto.clinup.model.Usuario;
 
 public class PrincipalActivity extends AppCompatActivity {
 
+    private FirebaseAuth usuario;
+
     //save our header or result
     private AccountHeader headerResult = null;
     private Drawer result = null;
@@ -91,7 +94,6 @@ public class PrincipalActivity extends AppCompatActivity {
         autenticacaoUsuario = ConfiguracaoFirebase.getFirebaseAutenticacao();
         user = ConfiguracaoFirebase.getUsuarioLogado(); // retorna o usuário que está logado no momento
 
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         viewPager = findViewById(R.id.viewpager);
         setupViewPager(viewPager);
@@ -135,6 +137,8 @@ public class PrincipalActivity extends AppCompatActivity {
         mReadDataOnce(idUsuarios, new OnGetDataListener() {
             @Override
             public void onStart() {
+
+
 
                 if (mProgressDialog == null) {
                     mProgressDialog = new ProgressDialog(PrincipalActivity.this);

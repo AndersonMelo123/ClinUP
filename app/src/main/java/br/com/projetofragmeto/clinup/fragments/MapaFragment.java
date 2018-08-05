@@ -35,18 +35,24 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
 import br.com.projetofragmeto.clinup.R;
+import br.com.projetofragmeto.clinup.adapter.CustomInfoWindowAdapter;
+import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
+import br.com.projetofragmeto.clinup.model.Clinica;
 import br.com.projetofragmeto.clinup.model.Endereco;
+import br.com.projetofragmeto.clinup.model.Hospital;
+import br.com.projetofragmeto.clinup.model.InfoWindowData;
+import br.com.projetofragmeto.clinup.model.Laboratorio;
+import br.com.projetofragmeto.clinup.model.Profissional;
 
 public class MapaFragment extends Fragment implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
@@ -67,6 +73,12 @@ public class MapaFragment extends Fragment implements
 
     final int REQUEST_PERMISSION_LOCALIZATION = 221;
 
+    private String[] clientes = {
+            "clinica",
+            "laboratorios",
+            "profissionais",
+            "hospitais"};
+
 
     public MapaFragment() {
         // Required empty public constructor
@@ -76,14 +88,11 @@ public class MapaFragment extends Fragment implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mEnderecos = FirebaseDatabase.getInstance().getReference("endereco");
-
         mGoogleApiClient = buildGoogleApiClient();
 
         ultimaLocalizacao = getMyLocation();
 
         createLocationRequest();
-        determineLatLngFromAddress(getContext(),"Pedro Firmino, Belo Jardim");
     }
 
 
@@ -109,7 +118,7 @@ public class MapaFragment extends Fragment implements
         return res;
     }
 
-
+    // Solicitação para que seja permitido usar a localização do aplicativo
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
@@ -191,38 +200,36 @@ public class MapaFragment extends Fragment implements
 
         mMap = googleMap;
 
-        googleMap.setOnMarkerClickListener(this);
-        googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        int tamanhoClientes = clientes.length;
+        int aux = 0;
 
-        mEnderecos.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot s : dataSnapshot.getChildren()) {
+        for (; tamanhoClientes > aux; aux++) {
 
-                    Endereco endereco = s.getValue(Endereco.class);
+            switch (clientes[aux]) {
+                case "clinica":
+                    String clinica = "clinica";
+                    setandoOsClientesMapa(mMap, aux, clinica);
 
-                    LatLng location = new LatLng(endereco.getLatitude(), endereco.getLongitude());
-                    mMap.addMarker(new MarkerOptions().position(location).title(endereco.getRua())).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                    break;
+                case "laboratorios":
+                    String laboratorios = "laboratorios";
+                    setandoOsClientesMapa(mMap, aux, laboratorios);
 
-                    CameraPosition Liberty = CameraPosition.builder()
-                            .target(location)
-                            .zoom(18)
-                            .bearing(0)
-                            .tilt(45)
-                            .build();
+                    break;
+                case "hospitais":
+                    String hospitais = "hospitais";
+                    setandoOsClientesMapa(mMap, aux, hospitais);
 
-                    mMap.animateCamera(CameraUpdateFactory.newCameraPosition(Liberty));
+                    break;
+                default:
+                    String profissionais = "profissionais";
+                    setandoOsClientesMapa(mMap, aux, profissionais);
 
-                }
+                    break;
             }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
+        }
     }
+
 
     protected synchronized GoogleApiClient buildGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(getContext())
@@ -308,7 +315,6 @@ public class MapaFragment extends Fragment implements
         return ultimaLocalizacao;
     }
 
-
     public void onConnected(@Nullable Bundle bundle) {
 
         Location location = getMyLocation();
@@ -365,22 +371,19 @@ public class MapaFragment extends Fragment implements
         alertDialog.show();
     }
 
-
-
-    public LatLng determineLatLngFromAddress(Context appContext, String strAddress) {
+    private LatLng determineLatLngFromAddress(Context appContext, String strAddress) {
         LatLng latLng = null;
         Geocoder geocoder = new Geocoder(appContext, Locale.getDefault());
         List<Address> geoResults = null;
 
         try {
             geoResults = geocoder.getFromLocationName(strAddress, 1);
-            while (geoResults.size()==0) {
+            while (geoResults.size() == 0) {
                 geoResults = geocoder.getFromLocationName(strAddress, 1);
             }
-            if (geoResults.size()>0) {
+            if (geoResults.size() > 0) {
                 Address addr = geoResults.get(0);
-                latLng = new LatLng(addr.getLatitude(),addr.getLongitude());
-                Log.i("Enderesso", String.valueOf(addr.getLatitude())+","+String.valueOf(addr.getLongitude()));
+                latLng = new LatLng(addr.getLatitude(), addr.getLongitude());
             }
         } catch (Exception e) {
             System.out.print(e.getMessage());
@@ -389,4 +392,167 @@ public class MapaFragment extends Fragment implements
         return latLng; //LatLng value of address
     }
 
+    private void setandoOsClientesMapa(final GoogleMap googleMap, int aux, final String cliente) {
+
+        mEnderecos = ConfiguracaoFirebase.getFirebase().child(clientes[aux]);
+
+        googleMap.setOnMarkerClickListener(this);
+        googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+
+        mEnderecos.addChildEventListener(new ChildEventListener() {
+
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                String nome = "";
+                String endereco = "";
+                String idCliente = dataSnapshot.getValue().toString();
+
+                coletarInformações(nome, endereco, idCliente, cliente, dataSnapshot, googleMap);
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+
+        });
+
+    }
+
+    private void coletarInformações(String nome,
+                                    String endereco,
+                                    String idCliente,
+                                    String cliente,
+                                    DataSnapshot dataSnapshot,
+                                    GoogleMap googleMap) {
+
+        switch (cliente) {
+            case "clinica":
+
+                Clinica clinica = dataSnapshot.getValue(Clinica.class);
+                nome = clinica.getNome();
+                endereco = clinica.getEndereco();
+                idCliente = dataSnapshot.getKey();
+
+                getEndereco(endereco, idCliente, googleMap, nome);
+
+                break;
+
+            case "laboratorios":
+
+                Laboratorio laboratorio = dataSnapshot.getValue(Laboratorio.class);
+                nome = laboratorio.getNome();
+                endereco = laboratorio.getEndereco();
+                idCliente = dataSnapshot.getKey();
+
+                getEndereco(endereco, idCliente, googleMap, nome);
+
+                break;
+            case "hospitais":
+
+                Hospital hospital = dataSnapshot.getValue(Hospital.class);
+                nome = hospital.getNome();
+                endereco = hospital.getEndereco();
+                idCliente = dataSnapshot.getKey();
+
+                getEndereco(endereco, idCliente, googleMap, nome);
+
+                break;
+            default:
+
+                Profissional profissional = dataSnapshot.getValue(Profissional.class);
+                nome = profissional.getNome();
+                endereco = profissional.getEndereco();
+                idCliente = dataSnapshot.getKey();
+
+                getEndereco(endereco, idCliente, googleMap, nome);
+
+                break;
+        }
+
+    }
+
+
+    private void getEndereco(String idEndereco, final String idCliente,
+                             final GoogleMap googleMap, final String nome) {
+
+        final LatLng[] location = new LatLng[1];
+
+        DatabaseReference bancoDados = ConfiguracaoFirebase.getFirebase().child("endereco").child(idEndereco);
+
+        bancoDados.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+
+                    Endereco endereco = dataSnapshot.getValue(Endereco.class);
+
+                    String enderecoMarcador = endereco.getLogradouro()
+                            + "," + endereco.getLocalidade()
+                            + " " + endereco.getUf()
+                            + " " + endereco.getBairro();
+
+                    location[0] = determineLatLngFromAddress(getContext(), enderecoMarcador);
+
+                    setarMarcador(location[0], idCliente, googleMap, nome);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void setarMarcador(LatLng latLng, String idCliente, GoogleMap googleMap, String nome) {
+
+        //Marker
+        MarkerOptions markerOpt = new MarkerOptions();
+
+        String titulo = nome;
+
+        markerOpt
+                .position(latLng)
+                .title(titulo)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+
+        InfoWindowData info = new InfoWindowData();
+        info.setImage("icone_perfil");
+        info.setPerfil(getString(R.string.visualizar_perfil));
+
+
+        //Set Custom InfoWindow Adapter
+        CustomInfoWindowAdapter adapter = new CustomInfoWindowAdapter(getContext());
+        googleMap.setInfoWindowAdapter(adapter);
+
+        Marker m = googleMap.addMarker(markerOpt);
+        m.setTag(info);
+        m.showInfoWindow();
+
+        CameraPosition Liberty = CameraPosition.builder()
+                .target(latLng)
+                .zoom(18)
+                .bearing(0)
+                .tilt(45)
+                .build();
+
+        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(Liberty));
+    }
 }

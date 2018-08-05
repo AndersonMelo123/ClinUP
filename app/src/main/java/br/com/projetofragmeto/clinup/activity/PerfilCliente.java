@@ -113,7 +113,7 @@ public class PerfilCliente extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     Endereco userEndereco = dataSnapshot.getValue(Endereco.class);
 
-                    tv_endereco.setText(String.valueOf(userEndereco.getRua() + ", " + userEndereco.getNumero()));
+                    tv_endereco.setText(String.valueOf(userEndereco.getLogradouro() + ", " + userEndereco.getNumero()));
                     tv_endereco.setEnabled(true);
                 }
 

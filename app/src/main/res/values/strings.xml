@@ -41,5 +41,46 @@
     <string name="botao_agendar">Agendar</string>
     <string name="titulo_dialog_Agendamento">Agendar</string>
     <string name="msg_dialog_agendamento">Para sua segurança, precisamos que você confirme se deseja realmente agendar</string>
+    <string name="cidade">*Cidade</string>
+    <string name="bairro">*Bairro</string>
+    <string name="n">*Nº</string>
+    <string name="complemento">*Complemento</string>
+    <string name="rua">*Rua</string>
+    <string name="esqueci_o_cep">Esqueci o CEP</string>
+    <string name="cep">*CEP</string>
+    <string name="endere_o">Endereço</string>
+    <string name="logo_clinup">Logo ClinUP</string>
+    <string name="visualizar_perfil"><u>Clique para visualizar perfil</u></string>
+
+    <string-array name="states">
+        <item>"*Estado"</item>
+        <item>"Acre (AC)"</item>
+        <item>"Alagoas (AL)"</item>
+        <item>"Amapá (AP)"</item>
+        <item>"Amazonas (AM)"</item>
+        <item>"Bahia (BA)"</item>
+        <item>"Ceará (CE)"</item>
+        <item>"Distrito Federal (DF)"</item>
+        <item>"Espírito Santo (ES)"</item>
+        <item>"Goiás (GO)"</item>
+        <item>"Maranhão (MA)"</item>
+        <item>"Mato Grosso (MT)"</item>
+        <item>"Mato Grosso do Sul (MS)"</item>
+        <item>"Minas Gerais (MG)"</item>
+        <item>"Pará (PA)"</item>
+        <item>"Paraíba (PB)"</item>
+        <item>"Paraná (PR)"</item>
+        <item>"Pernambuco (PE)"</item>
+        <item>"Piauí (PI)"</item>
+        <item>"Rio de Janeiro (RJ)"</item>
+        <item>"Rio Grande do Norte (RN)"</item>
+        <item>"Rio Grande do Sul (RS)"</item>
+        <item>"Rondônia (RO)"</item>
+        <item>"Roraima (RR)"</item>
+        <item>"Santa Catarina (SC)"</item>
+        <item>"São Paulo (SP)"</item>
+        <item>"Sergipe (SE)"</item>
+        <item>"Tocantins (TO)"</item>
+    </string-array>
 
 </resources>

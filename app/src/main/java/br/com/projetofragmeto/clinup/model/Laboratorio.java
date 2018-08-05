@@ -3,7 +3,8 @@ package br.com.projetofragmeto.clinup.model;
 import java.io.Serializable;
 
 public class Laboratorio implements Serializable {
-    private int id;
+
+    private String id;
     private String cnpj;
     private String email;
     private String endereco;
@@ -12,12 +13,19 @@ public class Laboratorio implements Serializable {
 
     public Laboratorio(){}
 
+    public String getEndereco() {
+        return endereco;
+    }
 
-    public int getId() {
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

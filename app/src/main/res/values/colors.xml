@@ -33,5 +33,6 @@
 
     <!-- Cor para as datas disponíveis -->
     <color name="Ativas">#3dc964</color>
+    <color name="linkColor">#4e9bd8</color>
 
 </resources>

@@ -175,7 +175,6 @@ public class AgendarActivity extends FragmentActivity {
 
                 Usuario usuario = dataSnapshot.getValue(Usuario.class);
 
-                String end = usuario.getEndereco();
 
                 if (usuario != null) {
                     nome.setText(usuario.getNome());
@@ -184,47 +183,53 @@ public class AgendarActivity extends FragmentActivity {
                     planoDeSaude.setText(usuario.getPlanoDeSaude());
                     dataNascimento.setText(usuario.getDataNascimento());
                     telefone.setText(usuario.getTelefone());
-
                     agendamento.setNomeUsuario(usuario.getNome());
                     agendamento.setId_Plano(String.valueOf(usuario.getPlanoDeSaude()));
 
                 }
 
-                DatabaseReference usuarioRef = ConfiguracaoFirebase.getFirebase().child("endereco").child(end);
+                //if (!usuario.getEndereco().isEmpty()) {
+                    String end = usuario.getEndereco();
 
-                usuarioRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Endereco userEndereco = dataSnapshot.getValue(Endereco.class);
+                    DatabaseReference usuarioRef = ConfiguracaoFirebase.getFirebase().child("endereco").child(end);
 
-                        endereco.setText(String.valueOf(userEndereco.getRua() + ", " + userEndereco.getNumero()));
-                    }
+                    usuarioRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            Endereco userEndereco = dataSnapshot.getValue(Endereco.class);
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                            endereco.setText(String.valueOf(userEndereco.getLogradouro() + ", " + userEndereco.getNumero()));
+                        }
 
-                    }
-                });
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                String planoSaude = usuario.getPlanoDeSaude();
+                        }
+                    });
+                //}
 
-                DatabaseReference planoRef = ConfiguracaoFirebase.getFirebase().child("planodesaude").child(planoSaude);
 
-                planoRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //if (!usuario.getPlanoDeSaude().isEmpty()) {
+                    String planoSaude = usuario.getPlanoDeSaude();
 
-                        PlanoDeSaude userPlano = dataSnapshot.getValue(PlanoDeSaude.class);
+                    DatabaseReference planoRef = ConfiguracaoFirebase.getFirebase().child("planodesaude").child(planoSaude);
 
-                        planoDeSaude.setText(String.valueOf(userPlano.getNomePlano()));
+                    planoRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                    }
+                            PlanoDeSaude userPlano = dataSnapshot.getValue(PlanoDeSaude.class);
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                            planoDeSaude.setText(String.valueOf(userPlano.getNomePlano()));
 
-                    }
-                });
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+               // }
 
 
             }
@@ -235,7 +240,9 @@ public class AgendarActivity extends FragmentActivity {
             }
         });
 
-        bt_agendar.setOnClickListener(new View.OnClickListener() {
+        bt_agendar.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View view) {
 
