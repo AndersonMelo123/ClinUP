@@ -1,15 +1,17 @@
 package br.com.projetofragmeto.clinup.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -19,12 +21,12 @@ import com.google.firebase.database.ValueEventListener;
 
 import br.com.projetofragmeto.clinup.R;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
-import br.com.projetofragmeto.clinup.model.Endereço;
+import br.com.projetofragmeto.clinup.model.Endereco;
 
 public class PerfilCliente extends AppCompatActivity {
 
     private String id, telefone, especialidade, nome, numRegistro, email, endereco, cnpj, cliente, classe;
-    private EditText tv_id, tv_telefone, tv_especialidade, tv_nome, tv_numRegistro, tv_email, tv_endereco;
+    private TextView tv_id, tv_telefone, tv_especialidade, tv_nome, tv_numRegistro, tv_endereco;
 
     private Button agendar;
     private Button ligar;
@@ -32,6 +34,7 @@ public class PerfilCliente extends AppCompatActivity {
     private android.support.v7.widget.Toolbar toolbar;
 
 
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,14 +52,13 @@ public class PerfilCliente extends AppCompatActivity {
 
 
         agendar = findViewById(R.id.botao_agendar);
-        //ligar = findViewById(R.id.botao_agendar);
+        ligar = findViewById(R.id.botao_ligar);
 
-        tv_nome = findViewById(R.id.edit_perfil_nomeID);
-        tv_email = findViewById(R.id.edit_cadastro_emailID);
-        tv_endereco = findViewById(R.id.edit_perfil_enderecoID);
-        tv_especialidade = findViewById(R.id.edit_perfil_especialidadeID);
-        tv_numRegistro = findViewById(R.id.edit_perfil_numRegistroID);
-        tv_telefone = findViewById(R.id.edit_perfil_numTelefoneID);
+        tv_nome = (TextView) findViewById(R.id.edit_perfil_nomeID);
+        tv_endereco = (TextView) findViewById(R.id.edit_perfil_enderecoID);
+        tv_especialidade = (TextView) findViewById(R.id.edit_perfil_especialidadeID);
+        tv_numRegistro = (TextView) findViewById(R.id.edit_perfil_numRegistroID);
+        tv_telefone = (TextView) findViewById(R.id.edit_perfil_numTelefoneID);
 
 
         id = getIntent().getExtras().getString("id");
@@ -91,11 +93,11 @@ public class PerfilCliente extends AppCompatActivity {
             tv_numRegistro.setEnabled(true);
 
         }
-        if (email != null) {
+        /*if (email != null) {
             tv_email.setText(email);
             tv_email.setEnabled(true);
 
-        }
+        }*/
         if (cnpj != null) {
             Log.i("Cnpj",cnpj);
         }
@@ -111,9 +113,9 @@ public class PerfilCliente extends AppCompatActivity {
             usuarioRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    Endereço userEndereco = dataSnapshot.getValue(Endereço.class);
+                    Endereco userEndereco = dataSnapshot.getValue(Endereco.class);
 
-                    tv_endereco.setText(String.valueOf(userEndereco.getRua() + ", " + userEndereco.getNumero()));
+                    tv_endereco.setText(String.valueOf(userEndereco.getRua() + ", " + userEndereco.getNumero() + ", "+userEndereco.getBairro()));
                     tv_endereco.setEnabled(true);
                 }
 
@@ -145,7 +147,16 @@ public class PerfilCliente extends AppCompatActivity {
             }
         });
 
+        ligar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ligar(view);
+            }
+        });
+
+
     }
+
 
     public void ligar(View view) {
         Intent intent = new Intent(Intent.ACTION_DIAL);
@@ -155,5 +166,12 @@ public class PerfilCliente extends AppCompatActivity {
             intent.setData(Uri.parse("tel:" + telefone));
         }
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) { //método para finalizar a activity caso seja apertado a setinha de voltar
+        if(item.getItemId() == android.R.id.home)
+            finish();
+        return super.onOptionsItemSelected(item);
     }
 }

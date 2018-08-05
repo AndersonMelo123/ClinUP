@@ -25,7 +25,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import br.com.projetofragmeto.clinup.R;
-import br.com.projetofragmeto.clinup.activity.AgendarActivity;
+import br.com.projetofragmeto.clinup.activity.PerfilCliente;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
 import br.com.projetofragmeto.clinup.database.ClinicaDB;
 import br.com.projetofragmeto.clinup.model.Clinica;
@@ -85,7 +85,7 @@ public class BuscarClinicaFragment extends Fragment implements Serializable{
                 //Log.i("i", (String) profissionais.get(i));
                 //Log.i("i",profObjetos.get(i).getEspecialidade());
 
-                Intent intent = new Intent(getActivity(), AgendarActivity.class);
+                Intent intent = new Intent(getActivity(), PerfilCliente.class);
                 intent.putExtra("nome",clinObjetos.get(i).getNome());
                 intent.putExtra("email", clinObjetos.get(i).getEmail() );
                 intent.putExtra("id", clinObjetos.get(i).getCnpj() );
