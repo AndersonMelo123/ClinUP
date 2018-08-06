@@ -94,6 +94,9 @@ public class BuscarLaboratorioFragment extends Fragment implements Serializable 
                 intent.putExtra("id", labObjetos.get(i).getId());
                 intent.putExtra("telefone", labObjetos.get(i).getTelefone());
 
+                intent.putExtra("horaAbrir",labObjetos.get(i).getHoraAbrir());
+                intent.putExtra("horaFechar",labObjetos.get(i).getHoraFechar());
+
                 intent.putExtra("cliente", "laboratorios");
                 intent.putExtra("classe", Laboratorio.class);
                 startActivity(intent);

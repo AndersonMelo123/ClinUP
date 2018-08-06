@@ -93,6 +93,9 @@ public class BuscarClinicaFragment extends Fragment implements Serializable{
                 intent.putExtra("telefone", clinObjetos.get(i).getTelefone() );
                 intent.putExtra("cnpj", clinObjetos.get(i).getCnpj() );
 
+                intent.putExtra("horaAbrir",clinObjetos.get(i).getHoraAbrir());
+                intent.putExtra("horaFechar",clinObjetos.get(i).getHoraFechar());
+
                 intent.putExtra("cliente","clinica");
                 intent.putExtra("classe",Clinica.class);
                 startActivity(intent);

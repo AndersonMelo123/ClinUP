@@ -25,8 +25,8 @@ import br.com.projetofragmeto.clinup.model.Endereco;
 
 public class PerfilCliente extends AppCompatActivity {
 
-    private String id, telefone, especialidade, nome, numRegistro, email, endereco, cnpj, cliente, classe;
-    private TextView tv_id, tv_telefone, tv_especialidade, tv_nome, tv_numRegistro, tv_endereco;
+    private String id, telefone, especialidade, nome, numRegistro, email, endereco, cnpj, cliente, classe,horaAbrir,horaFechar;
+    private TextView tv_id, tv_telefone, tv_especialidade, tv_nome, tv_numRegistro, tv_endereco,tv_horario;
 
     private Button agendar;
     private Button ligar;
@@ -59,6 +59,7 @@ public class PerfilCliente extends AppCompatActivity {
         tv_especialidade = (TextView) findViewById(R.id.edit_perfil_especialidadeID);
         tv_numRegistro = (TextView) findViewById(R.id.edit_perfil_numRegistroID);
         tv_telefone = (TextView) findViewById(R.id.edit_perfil_numTelefoneID);
+        tv_horario = (TextView) findViewById(R.id.edit_perfil_horarioID);
 
 
         id = getIntent().getExtras().getString("id");
@@ -70,9 +71,20 @@ public class PerfilCliente extends AppCompatActivity {
         endereco = getIntent().getExtras().getString("endereco");
         email = getIntent().getExtras().getString("email");
         cnpj = getIntent().getExtras().getString("cnpj");
+
+        horaAbrir = getIntent().getExtras().getString("horaAbrir");
+        horaFechar = getIntent().getExtras().getString("horaFechar");
+
+
+        Log.i("HORA",horaAbrir + " às "+ horaFechar + " hr");
+
         cliente = getIntent().getExtras().getString("cliente");
         classe = String.valueOf(getIntent().getSerializableExtra("classe").getClass());
 
+        if(horaAbrir != null && horaFechar != null){
+            tv_horario.setText(horaAbrir + " às "+ horaFechar + " hr");
+            tv_horario.setEnabled(true);
+        }
 
         if (telefone != null) {
             tv_telefone.setText(telefone);
