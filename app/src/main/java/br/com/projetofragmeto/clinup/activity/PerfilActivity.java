@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -22,6 +24,7 @@ public class PerfilActivity extends AppCompatActivity {
     private TextView email;
     private TextView telefone;
     private TextView dataNascimento;
+    private Button  editarCadastro;
     private DatabaseReference usuarioReferencia;
     private android.support.v7.widget.Toolbar toolbar;
 
@@ -44,6 +47,7 @@ public class PerfilActivity extends AppCompatActivity {
         email = findViewById(R.id.email_id);
         telefone = findViewById(R.id.telefone_id);
         dataNascimento = findViewById(R.id.data_nascimento_id);
+        editarCadastro = findViewById(R.id.bt_editarCadastro);
 
         Intent intent = getIntent(); //recebe os dados da activity principal
 
@@ -74,6 +78,13 @@ public class PerfilActivity extends AppCompatActivity {
 
             }
         });
+
+        editarCadastro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editarCadastro();
+            }
+        });
     }
 
     @Override
@@ -81,5 +92,9 @@ public class PerfilActivity extends AppCompatActivity {
         if(item.getItemId() == android.R.id.home)
             finish();
         return super.onOptionsItemSelected(item);
+    }
+    public void editarCadastro(){
+        Intent intent = new Intent(getApplicationContext(),AlterarCadastroUsuario.class);
+        startActivity(intent);
     }
 }
