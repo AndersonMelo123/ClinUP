@@ -17,7 +17,7 @@ public class Agendamento implements Serializable {
 
     public Agendamento() {
     }
-    
+
 
     public Agendamento(String id_Usuario, String id_Cliente, String dataConsulta, String dataAtual, String nomeUsuario, String id_Plano) {
         this.id_Usuario = id_Usuario;
