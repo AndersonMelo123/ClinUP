@@ -67,15 +67,14 @@ public class ListaFragment extends Fragment {
         firebase.addValueEventListener(new ValueEventListener() {//faz a consulta no banco
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.getValue() != null){
+                if (dataSnapshot.getValue() != null) {
 
-                    for(DataSnapshot dados: dataSnapshot.getChildren()){
+                    for (DataSnapshot dados : dataSnapshot.getChildren()) {
 
                         Agendamento ag = dados.getValue(Agendamento.class);//retorna cada objeto da consulta em a
 
                         String idUsuarioAgendamento = ag.getId_Usuario();
-                        Log.i("MSG", idUsuarioAgendamento);
-                        if(idUsuarioAgendamento.equals(idUsuarios)) {
+                        if (idUsuarioAgendamento.equals(idUsuarios)) {
 
                             String nome = ag.getNomeUsuario();
                             agendObjetos.add(ag);//adiciona o profissional p em profObjetos
@@ -86,6 +85,7 @@ public class ListaFragment extends Fragment {
                     adapter.notifyDataSetChanged();//notifica ao adapter as mudanças ocorridas
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
@@ -97,17 +97,17 @@ public class ListaFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                Intent intent = new Intent(getActivity(),CancelarAgendamentos.class);
+                Intent intent = new Intent(getActivity(), CancelarAgendamentos.class);
 
                 intent.putExtra("ID", agendObjetos.get(i).getId());
                 intent.putExtra("nome", agendObjetos.get(i).getNomeUsuario());
-                intent.putExtra("dataAtual",  agendObjetos.get(i).getDataAtual());
-                intent.putExtra("dataConsulta", agendObjetos.get(i).getDataConsulta() );
-                intent.putExtra("plano", agendObjetos.get(i).getId_Plano() );
+                intent.putExtra("dataAtual", agendObjetos.get(i).getDataAtual());
+                intent.putExtra("dataConsulta", agendObjetos.get(i).getDataConsulta());
+                intent.putExtra("plano", agendObjetos.get(i).getId_Plano());
                 intent.putExtra("cliente", agendObjetos.get(i).getId_Cliente());
 
 
-                intent.putExtra("classe",Agendamento.class);
+                intent.putExtra("classe", Agendamento.class);
                 startActivity(intent);
             }
         });

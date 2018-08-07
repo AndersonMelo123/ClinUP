@@ -79,10 +79,12 @@ public class CancelarAgendamentos extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                PlanoDeSaude userPlano = dataSnapshot.getValue(PlanoDeSaude.class);
+                if (dataSnapshot.exists()) {
+                    PlanoDeSaude userPlano = dataSnapshot.getValue(PlanoDeSaude.class);
 
-                planoSaud.setText(String.valueOf(userPlano.getNomePlano()));
-
+                    if (dataSnapshot.hasChild("nomePlano"))
+                        planoSaud.setText(String.valueOf(userPlano.getNomePlano()));
+                }
             }
 
             @Override

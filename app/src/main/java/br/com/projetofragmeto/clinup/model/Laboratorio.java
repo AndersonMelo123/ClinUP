@@ -3,15 +3,16 @@ package br.com.projetofragmeto.clinup.model;
 import java.io.Serializable;
 
 public class Laboratorio implements Serializable {
-    private int id;
+    private String id;
     private String cnpj;
     private String email;
     private String endereco;
     private String nome;
     private String telefone;
-    private String horaAbrir,horaFechar;
+    private String horaAbrir, horaFechar;
 
-    public Laboratorio(){}
+    public Laboratorio() {
+    }
 
     public String getHoraAbrir() {
         return horaAbrir;
@@ -28,16 +29,21 @@ public class Laboratorio implements Serializable {
     public void setHoraFechar(String horaFechar) {
         this.horaFechar = horaFechar;
     }
+
     public String getEndereco() {
         return endereco;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
+    }
+
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
     }
 
     public String getCnpj() {

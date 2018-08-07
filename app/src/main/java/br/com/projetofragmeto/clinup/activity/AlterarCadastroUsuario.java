@@ -319,8 +319,8 @@ public class AlterarCadastroUsuario extends AppCompatActivity {
         }
     }
 
-    public void irParaPerfilCliente(){
-        Intent intent = new Intent(this,PerfilActivity.class);
+    public void irParaPerfilCliente() {
+        Intent intent = new Intent(this, PerfilActivity.class);
         startActivity(intent);
         finish();
     }

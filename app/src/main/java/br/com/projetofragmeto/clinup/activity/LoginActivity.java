@@ -146,7 +146,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         String idUsuario = Base64Custom.codificarBase64(user.getEmail());
                         Preferencias preferencias = new Preferencias(LoginActivity.this);
-                        preferencias.salvarDados(idUsuario, usuario.getNome());
+                        preferencias.salvarDados(idUsuario, user.getDisplayName());
                         salvarPreferencias("id", idUsuario);
 
                         Toast.makeText(LoginActivity.this, "Sucesso ao fazer login!", Toast.LENGTH_LONG).show(); // Mensagem na tela do usuário

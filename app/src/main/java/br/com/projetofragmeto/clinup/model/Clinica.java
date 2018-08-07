@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class Clinica implements Serializable {
 
-    private String cnpj, email, endereco, nome, telefone, horaAbrir, horaFechar;
+    private String cnpj, email, endereco, nome, telefone, horaAbrir, horaFechar, id;
 
     public String getHoraAbrir() {
         return horaAbrir;

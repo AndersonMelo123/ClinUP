@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class Hospital implements Serializable {
 
+    private String id;
     private String cnpj;
     private String email;
     private String endereco;

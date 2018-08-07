@@ -102,5 +102,6 @@
     </string-array>
     <string name="titulo_dialog_cancelamento">Cancelar</string>
     <string name="msg_dialog_cancelamento">Deseja mesmo cancelar este agendamento?</string>
+    <string name="hor_rio_de_funcionamento">Horário de Funcionamento</string>
 
 </resources>
