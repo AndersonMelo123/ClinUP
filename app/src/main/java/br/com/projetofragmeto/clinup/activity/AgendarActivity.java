@@ -3,11 +3,11 @@ package br.com.projetofragmeto.clinup.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
@@ -16,7 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -183,6 +182,7 @@ public class AgendarActivity extends FragmentActivity {
                     planoDeSaude.setText(usuario.getPlanoDeSaude());
                     dataNascimento.setText(usuario.getDataNascimento());
                     telefone.setText(usuario.getTelefone());
+
                     agendamento.setNomeUsuario(usuario.getNome());
                     agendamento.setId_Plano(String.valueOf(usuario.getPlanoDeSaude()));
 
@@ -498,14 +498,17 @@ public class AgendarActivity extends FragmentActivity {
                 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
                 String dataAtual = format.format(calendario.getTime());
 
+                bancoDeDados = bancoDeDados.child("agendamento").push();
+
+                final String idkey = bancoDeDados.getKey();
+
                 agendamento.setDataConsulta(dataSelecionada);
                 agendamento.setDataAtual(dataAtual);
                 agendamento.setId_Cliente(String.valueOf(id));
                 agendamento.setId_Usuario(String.valueOf(idUsuarios));
+                agendamento.setId(String.valueOf(idkey));
 
-                bancoDeDados.child("agendamento")
-                        .push()
-                        .setValue(agendamento).addOnSuccessListener(new OnSuccessListener<Void>() {
+                bancoDeDados.setValue(agendamento).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         for (DataSnapshot data : datas) {
@@ -528,6 +531,9 @@ public class AgendarActivity extends FragmentActivity {
 
 
                         }
+                        //agendamento.setIdAgendamentos(idkey);
+
+
                         Toast.makeText(AgendarActivity.this, "Agendamento marcado com sucesso", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getApplicationContext(), PrincipalActivity.class);
                         startActivity(intent);
@@ -535,7 +541,20 @@ public class AgendarActivity extends FragmentActivity {
                     }
                 });
 
+                Agendamento agendamentoUsuario = new Agendamento();
+
+                //agendamentoUsuario.setIdAgendamentos(idkey);
+
+                DatabaseReference bancoDados = ConfiguracaoFirebase.getFirebase().child("usuarios").child(idUsuarios);
+
+                Map<String, Object> hopperUpdates = new HashMap<>();
+                hopperUpdates.put("agedamento", agendamentoUsuario);
+
+                bancoDados.updateChildren(hopperUpdates);
+
             }
+
+
         });
         builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
             @Override

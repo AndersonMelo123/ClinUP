@@ -12,6 +12,7 @@ public class Profissional implements Serializable {
     private String id;
     private String telefone;
     private Dias dias;
+    private String horaAbrir,horaFechar;
 
 
     public Profissional() {
@@ -23,6 +24,22 @@ public class Profissional implements Serializable {
         this.formacao = formacao;
         this.nome = nome;
         this.num_registro = num_registro;
+    }
+
+    public String getHoraAbrir() {
+        return horaAbrir;
+    }
+
+    public void setHoraAbrir(String horaAbrir) {
+        this.horaAbrir = horaAbrir;
+    }
+
+    public String getHoraFechar() {
+        return horaFechar;
+    }
+
+    public void setHoraFechar(String horaFechar) {
+        this.horaFechar = horaFechar;
     }
 
     public String getTelefone() {

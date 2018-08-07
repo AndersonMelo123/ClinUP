@@ -30,7 +30,7 @@ import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
 import br.com.projetofragmeto.clinup.database.ClinicaDB;
 import br.com.projetofragmeto.clinup.model.Clinica;
 
-public class BuscarClinicaFragment extends Fragment implements Serializable {
+public class BuscarClinicaFragment extends Fragment implements Serializable{
     private ListView listView;
     private ArrayAdapter adapter;
 
@@ -45,7 +45,7 @@ public class BuscarClinicaFragment extends Fragment implements Serializable {
     private Button botaoFiltro;
     private TextView textView;
 
-    String[] filtro = {"Todos", "Nome"};
+    String[] filtro = {"Todos","Nome"};
     String filtragem = filtro[0];
 
     public BuscarClinicaFragment() {
@@ -86,15 +86,20 @@ public class BuscarClinicaFragment extends Fragment implements Serializable {
                 //Log.i("i",profObjetos.get(i).getEspecialidade());
 
                 Intent intent = new Intent(getActivity(), PerfilCliente.class);
-                intent.putExtra("nome", clinObjetos.get(i).getNome());
-                intent.putExtra("email", clinObjetos.get(i).getEmail());
-                intent.putExtra("id", clinObjetos.get(i).getCnpj());
-                intent.putExtra("endereco", clinObjetos.get(i).getEndereco());
-                intent.putExtra("telefone", clinObjetos.get(i).getTelefone());
-                intent.putExtra("cnpj", clinObjetos.get(i).getCnpj());
+                intent.putExtra("nome",clinObjetos.get(i).getNome());
+                intent.putExtra("email", clinObjetos.get(i).getEmail() );
+                intent.putExtra("id", clinObjetos.get(i).getCnpj() );
+                intent.putExtra("email", clinObjetos.get(i).getEmail() );
+                intent.putExtra("id", clinObjetos.get(i).getCnpj() );
+                intent.putExtra("endereco", clinObjetos.get(i).getEndereco() );
+                intent.putExtra("telefone", clinObjetos.get(i).getTelefone() );
+                intent.putExtra("cnpj", clinObjetos.get(i).getCnpj() );
 
-                intent.putExtra("cliente", "clinica");
-                intent.putExtra("classe", Clinica.class);
+                intent.putExtra("horaAbrir",clinObjetos.get(i).getHoraAbrir());
+                intent.putExtra("horaFechar",clinObjetos.get(i).getHoraFechar());
+
+                intent.putExtra("cliente","clinica");
+                intent.putExtra("classe",Clinica.class);
                 startActivity(intent);
             }
         });
@@ -130,20 +135,21 @@ public class BuscarClinicaFragment extends Fragment implements Serializable {
             @Override
             public void onClick(View view) {
                 final String nome = texto.getText().toString();//pega nome do campo de texto
-                switch (filtragem) {
-                    case ("Todos"):
+                switch (filtragem){
+                    case("Todos"):
 
                         clinicas.clear();
                         clinObjetos.clear();
-                        
+                        //final String nome = texto.getText().toString();//pega nome do campo de texto
                         firebase.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
 
-                                if (dataSnapshot.getValue() != null) {
+                                if(dataSnapshot.getValue() != null){
+                                    //clinicas = clinicaDB.buscarDados(dataSnapshot,clinicas);
 
-                                    for (DataSnapshot dados : dataSnapshot.getChildren()) {
+                                    for(DataSnapshot dados: dataSnapshot.getChildren()){
                                         Clinica c = dados.getValue(Clinica.class);
                                         String nome = c.getNome();
                                         clinObjetos.add(c);
@@ -154,21 +160,22 @@ public class BuscarClinicaFragment extends Fragment implements Serializable {
                                     adapter.notifyDataSetChanged();
                                 }
                             }
-
                             @Override
                             public void onCancelled(@NonNull DatabaseError databaseError) {
                             }
                         });
                         break;
-                    case ("Nome"):
+                    case("Nome"):
                         clinicas.clear();
                         clinObjetos.clear();
 
                         firebase.orderByChild("nome").equalTo(nome).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                //clinicas = clinicaDB.filtroNome(nome,dataSnapshot,clinicas);
 
-                                if (dataSnapshot.getValue() != null) {
+                                if(dataSnapshot.getValue() != null) {
+                                    //clinicas = clinicaDB.buscarDados(dataSnapshot,clinicas);
 
                                     for (DataSnapshot dados : dataSnapshot.getChildren()) {
                                         Clinica c = dados.getValue(Clinica.class);
@@ -179,18 +186,29 @@ public class BuscarClinicaFragment extends Fragment implements Serializable {
                                 }
                                 adapter.notifyDataSetChanged();
                             }
-
                             @Override
                             public void onCancelled(@NonNull DatabaseError databaseError) {
                             }
                         });
                         break;
-
+            /*
+                case("exame"):
+                firebase.child("exames").orderByChild("nome").equalTo(exame).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        clinicas = clinicaDB.filtroExame(exame,dataSnapshot,clinicas);
+                        adapter.notifyDataSetChanged();
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });*/
                 }
 
             }
         });
-
+        //final String nome = "CEM";
+        //final String exame = "sangue";
 
         return view;
     }
