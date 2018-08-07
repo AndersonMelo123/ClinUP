@@ -9,7 +9,7 @@
     tools:context=".activity.PerfilActivity">
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
         <include
             android:id="@+id/toolbarActivity"
             layout="@layout/toolbar_activity"
@@ -26,7 +26,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbarActivity" />
+            app:layout_constraintTop_toBottomOf="@+id/toolbarActivity"
+            android:contentDescription="@string/todo" />
 
         <ImageView
             android:id="@+id/imageView2"
@@ -39,7 +40,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/imageView" />
+            app:layout_constraintTop_toTopOf="@+id/imageView"
+            android:contentDescription="@string/todo" />
 
         <TextView
             android:id="@+id/nome_id"
@@ -48,7 +50,6 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="12dp"
-            android:text="TextView"
             android:textColor="@color/cardview_dark_background"
             android:textSize="@dimen/nameTitle"
             android:textStyle="bold"
@@ -61,7 +62,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="E-mail"
+            android:text="@string/e_mail"
             android:textColor="@color/colorPrimaryDarker"
             android:textSize="@dimen/subtitle"
             android:textStyle="bold"
@@ -74,7 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="20dp"
-            android:text="CPF"
+            android:text="@string/cpf"
             android:textColor="@color/colorPrimaryDarker"
             android:textSize="@dimen/subtitle"
             android:textStyle="bold"
@@ -87,7 +88,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="20dp"
-            android:text="Data de Nascimento"
+            android:text="@string/data_de_nascimento"
             android:textColor="@color/colorPrimaryDarker"
             android:textSize="@dimen/subtitle"
             android:textStyle="bold"
@@ -100,7 +101,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="12dp"
-            android:text="TextView"
             android:textColor="@color/cardview_dark_background"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView5" />
@@ -111,7 +111,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="12dp"
-            android:text="TextView"
             android:textColor="@color/cardview_dark_background"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView6" />
@@ -122,7 +121,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="20dp"
-            android:text="TextView"
             android:textColor="@color/cardview_dark_background"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView7" />
@@ -136,7 +134,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="32dp"
             android:background="@color/colorPrimaryDarker"
-            android:text="Editar Cadastro"
+            android:text="@string/editar_cadastro"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"

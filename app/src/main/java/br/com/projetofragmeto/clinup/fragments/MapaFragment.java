@@ -41,10 +41,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import br.com.projetofragmeto.clinup.R;
+import br.com.projetofragmeto.clinup.activity.PerfilCliente;
 import br.com.projetofragmeto.clinup.adapter.CustomInfoWindowAdapter;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
 import br.com.projetofragmeto.clinup.model.Clinica;
@@ -67,11 +70,11 @@ public class MapaFragment extends Fragment implements
 
     private LocationRequest locationRequest;
 
-    protected Location mCurrentLocation;
-
     private Location ultimaLocalizacao;
 
     final int REQUEST_PERMISSION_LOCALIZATION = 221;
+
+    private Map<String, InfoWindowData> marcadores = new HashMap<>();
 
     private String[] clientes = {
             "clinica",
@@ -90,11 +93,8 @@ public class MapaFragment extends Fragment implements
 
         mGoogleApiClient = buildGoogleApiClient();
 
-        ultimaLocalizacao = getMyLocation();
-
         createLocationRequest();
     }
-
 
     public boolean getLocalization(Context context) {
         boolean res = true;
@@ -163,6 +163,7 @@ public class MapaFragment extends Fragment implements
             /* code should explicitly check to see if permission is available
             (with 'checkPermission') or explicitly handle a potential 'SecurityException'
              */
+
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, locationRequest, this);
 
         } catch (SecurityException e) {
@@ -272,7 +273,6 @@ public class MapaFragment extends Fragment implements
         if (mGoogleApiClient != null) {
             mGoogleApiClient.connect();
             if (getLocalization(getContext())) {
-                //ao entrar aqui é porque já foi liberado
             }
         }
     }
@@ -321,8 +321,6 @@ public class MapaFragment extends Fragment implements
 
         if (location == null) {
             startLocationUpdates();// Inicia o GPS
-        } else {
-            setMyLocation(location);
         }
         Log.i("TAGLOG", "Conectado ao Google Play Services!");
     }
@@ -337,14 +335,11 @@ public class MapaFragment extends Fragment implements
 
     @Override
     public void onLocationChanged(Location location) {
-        mCurrentLocation = location;
-        setMyLocation(mCurrentLocation);// Atualiza localização do usuário no mapa
-
     }
 
     public void showSettingsAlert() {
 
-        android.app.AlertDialog.Builder alertDialog = new android.app.AlertDialog.Builder(getContext());
+        final android.app.AlertDialog.Builder alertDialog = new android.app.AlertDialog.Builder(getContext());
 
         // Titulo do dialogo
         alertDialog.setTitle("GPS");
@@ -355,8 +350,8 @@ public class MapaFragment extends Fragment implements
         // botao ajustar configuracao
         alertDialog.setPositiveButton("Configurar", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivity(intent);
+                startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), 1);
+                getActivity().finish();
             }
         });
 
@@ -406,9 +401,8 @@ public class MapaFragment extends Fragment implements
 
                 String nome = "";
                 String endereco = "";
-                String idCliente = dataSnapshot.getValue().toString();
 
-                coletarInformações(nome, endereco, idCliente, cliente, dataSnapshot, googleMap);
+                paraCadaClienteColetaInformacoes(nome, endereco, cliente, dataSnapshot, googleMap);
             }
 
             @Override
@@ -435,12 +429,12 @@ public class MapaFragment extends Fragment implements
 
     }
 
-    private void coletarInformações(String nome,
-                                    String endereco,
-                                    String idCliente,
-                                    String cliente,
-                                    DataSnapshot dataSnapshot,
-                                    GoogleMap googleMap) {
+    // Percorrento todos os clientes e coletando informações
+    private void paraCadaClienteColetaInformacoes(String nome,
+                                                  String endereco,
+                                                  String cliente,
+                                                  DataSnapshot dataSnapshot,
+                                                  GoogleMap googleMap) {
 
         switch (cliente) {
             case "clinica":
@@ -448,9 +442,8 @@ public class MapaFragment extends Fragment implements
                 Clinica clinica = dataSnapshot.getValue(Clinica.class);
                 nome = clinica.getNome();
                 endereco = clinica.getEndereco();
-                idCliente = dataSnapshot.getKey();
 
-                getEndereco(endereco, idCliente, googleMap, nome);
+                getEndereco(endereco, googleMap, nome, cliente, clinica);
 
                 break;
 
@@ -459,9 +452,8 @@ public class MapaFragment extends Fragment implements
                 Laboratorio laboratorio = dataSnapshot.getValue(Laboratorio.class);
                 nome = laboratorio.getNome();
                 endereco = laboratorio.getEndereco();
-                idCliente = dataSnapshot.getKey();
 
-                getEndereco(endereco, idCliente, googleMap, nome);
+                getEndereco(endereco, googleMap, nome, cliente, laboratorio);
 
                 break;
             case "hospitais":
@@ -469,9 +461,8 @@ public class MapaFragment extends Fragment implements
                 Hospital hospital = dataSnapshot.getValue(Hospital.class);
                 nome = hospital.getNome();
                 endereco = hospital.getEndereco();
-                idCliente = dataSnapshot.getKey();
 
-                getEndereco(endereco, idCliente, googleMap, nome);
+                getEndereco(endereco, googleMap, nome, cliente, hospital);
 
                 break;
             default:
@@ -479,18 +470,17 @@ public class MapaFragment extends Fragment implements
                 Profissional profissional = dataSnapshot.getValue(Profissional.class);
                 nome = profissional.getNome();
                 endereco = profissional.getEndereco();
-                idCliente = dataSnapshot.getKey();
 
-                getEndereco(endereco, idCliente, googleMap, nome);
+                getEndereco(endereco, googleMap, nome, cliente, profissional);
 
                 break;
         }
 
     }
 
-
-    private void getEndereco(String idEndereco, final String idCliente,
-                             final GoogleMap googleMap, final String nome) {
+    // Método que coleta do banco o endereço e extraí a latitude e longitude
+    private void getEndereco(String idEndereco, final GoogleMap googleMap,
+                             final String nome, final String cliente, final Object classe) {
 
         final LatLng[] location = new LatLng[1];
 
@@ -510,7 +500,7 @@ public class MapaFragment extends Fragment implements
 
                     location[0] = determineLatLngFromAddress(getContext(), enderecoMarcador);
 
-                    setarMarcador(location[0], idCliente, googleMap, nome);
+                    setarMarcador(location[0], googleMap, nome, cliente, classe);
                 }
             }
 
@@ -521,22 +511,21 @@ public class MapaFragment extends Fragment implements
         });
     }
 
-    private void setarMarcador(LatLng latLng, String idCliente, GoogleMap googleMap, String nome) {
+    //Cria e adiciona todos os marcadores com as informações de cada cliente
+    private void setarMarcador(LatLng latLng, GoogleMap googleMap, String nome, final String cliente, final Object classe) {
 
         //Marker
         MarkerOptions markerOpt = new MarkerOptions();
 
-        String titulo = nome;
-
         markerOpt
                 .position(latLng)
-                .title(titulo)
+                .title(nome)
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
 
-        InfoWindowData info = new InfoWindowData();
+        final InfoWindowData info = new InfoWindowData();
         info.setImage("icone_perfil");
         info.setPerfil(getString(R.string.visualizar_perfil));
-
+        info.setNome(nome);
 
         //Set Custom InfoWindow Adapter
         CustomInfoWindowAdapter adapter = new CustomInfoWindowAdapter(getContext());
@@ -554,5 +543,151 @@ public class MapaFragment extends Fragment implements
                 .build();
 
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(Liberty));
+
+        coletandoInformacoesDosClientes(cliente, classe, info, m.getId());
+
+        googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                if (marcadores.containsKey(marker.getId())) {
+                    InfoWindowData infoWindowData = marcadores.get(marker.getId());
+                    setandoInformacoesClientesPerfil(infoWindowData);
+                }
+            }
+        });
     }
+
+    //Coleta as informações individualmente e as coloca em um arrayList
+    private void coletandoInformacoesDosClientes(String cliente, Object classe, InfoWindowData infoWindowData, String marcador) {
+
+        switch (cliente) {
+            case "clinica":
+                Log.i("ClasseAqui", "clinica");
+
+                infoWindowData.setNome(((Clinica) classe).getNome());
+                infoWindowData.setEmail(((Clinica) classe).getEmail());
+                infoWindowData.setId(((Clinica) classe).getId());
+                infoWindowData.setEndereco(((Clinica) classe).getEndereco());
+                infoWindowData.setTelefone(((Clinica) classe).getTelefone());
+                infoWindowData.setCnpj(((Clinica) classe).getCnpj());
+                infoWindowData.setCliente("clinica");
+                infoWindowData.setClasse(Clinica.class);
+
+                marcadores.put(marcador, infoWindowData);
+
+
+                break;
+
+            case "laboratorios":
+                Log.i("ClasseAqui", "laboratorios");
+
+
+                infoWindowData.setNome(((Laboratorio) classe).getNome());
+                infoWindowData.setEmail(((Laboratorio) classe).getEmail());
+                infoWindowData.setId(((Laboratorio) classe).getId());
+                infoWindowData.setTelefone(((Laboratorio) classe).getTelefone());
+                infoWindowData.setCliente("laboratorios");
+                infoWindowData.setClasse(Laboratorio.class);
+                marcadores.put(marcador, infoWindowData);
+
+                break;
+            case "hospitais":
+
+
+                infoWindowData.setNome(((Hospital) classe).getNome());
+                infoWindowData.setEmail(((Hospital) classe).getEmail());
+                infoWindowData.setId(((Hospital) classe).getId());
+                infoWindowData.setEndereco(((Hospital) classe).getEndereco());
+                infoWindowData.setTelefone(((Hospital) classe).getTelefone());
+                infoWindowData.setCnpj(((Hospital) classe).getCnpj());
+                infoWindowData.setCliente("hospitais");
+                infoWindowData.setClasse(Hospital.class);
+                marcadores.put(marcador, infoWindowData);
+
+                break;
+            default:
+
+                infoWindowData.setNome(((Profissional) classe).getNome());
+                infoWindowData.setEmail(((Profissional) classe).getId());
+                infoWindowData.setId(((Profissional) classe).getId());
+                infoWindowData.setEndereco(((Profissional) classe).getEndereco());
+                infoWindowData.setTelefone(((Profissional) classe).getTelefone());
+                infoWindowData.setEspecialidade(((Profissional) classe).getEspecialidade());
+                infoWindowData.setFormacao(((Profissional) classe).getFormacao());
+                infoWindowData.setNum_registro(((Profissional) classe).getNum_registro());
+                infoWindowData.setCliente("profissionais");
+                infoWindowData.setClasse(Profissional.class);
+
+                marcadores.put(marcador, infoWindowData);
+
+                break;
+        }
+    }
+
+    //Ao ser clicado um marcador ele envia o usuário para o perfil com as informações do cliente
+    private void setandoInformacoesClientesPerfil(InfoWindowData infoWindowData) {
+        Intent intent = new Intent(getActivity(), PerfilCliente.class);
+
+        switch (infoWindowData.getCliente()) {
+            case "clinica":
+                Log.i("ClasseAqui", "clinica");
+
+                intent.putExtra("nome", infoWindowData.getNome());
+                intent.putExtra("email", infoWindowData.getEmail());
+                intent.putExtra("id", infoWindowData.getId());
+                intent.putExtra("endereco", infoWindowData.getEndereco());
+                intent.putExtra("telefone", infoWindowData.getTelefone());
+                intent.putExtra("cnpj", infoWindowData.getCnpj());
+
+                intent.putExtra("cliente", "clinica");
+                intent.putExtra("classe", Clinica.class);
+                startActivity(intent);
+
+                break;
+
+            case "laboratorios":
+                Log.i("ClasseAqui", "laboratorios");
+
+                intent.putExtra("nome", infoWindowData.getNome());
+                intent.putExtra("email", infoWindowData.getEmail());
+                intent.putExtra("id", infoWindowData.getId());
+                intent.putExtra("telefone", infoWindowData.getTelefone());
+
+                intent.putExtra("cliente", "laboratorios");
+                intent.putExtra("classe", Laboratorio.class);
+                startActivity(intent);
+
+                break;
+            case "hospitais":
+
+                intent.putExtra("nome", infoWindowData.getNome());
+                intent.putExtra("email", infoWindowData.getEmail());
+                intent.putExtra("id", infoWindowData.getId());
+                intent.putExtra("endereco", infoWindowData.getEndereco());
+                intent.putExtra("telefone", infoWindowData.getTelefone());
+                intent.putExtra("cnpj", infoWindowData.getCnpj());
+
+                intent.putExtra("cliente", "hospitais");
+                intent.putExtra("classe", Hospital.class);
+                startActivity(intent);
+
+                break;
+            default:
+                intent.putExtra("nome", infoWindowData.getNome());
+                intent.putExtra("email", infoWindowData.getId());
+                intent.putExtra("id", infoWindowData.getId());
+                intent.putExtra("endereco", infoWindowData.getEndereco());
+                intent.putExtra("telefone", infoWindowData.getTelefone());
+                intent.putExtra("especialidade", infoWindowData.getEspecialidade());
+                intent.putExtra("formacao", infoWindowData.getFormacao());
+                intent.putExtra("Num_registro", infoWindowData.getNum_registro());
+
+                intent.putExtra("cliente", "profissionais");
+                intent.putExtra("classe", Profissional.class);
+                startActivity(intent);
+
+                break;
+        }
+    }
+
 }

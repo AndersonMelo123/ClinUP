@@ -51,6 +51,23 @@
     <string name="endere_o">Endereço</string>
     <string name="logo_clinup">Logo ClinUP</string>
     <string name="visualizar_perfil"><u>Clique para visualizar perfil</u></string>
+    <string name="_87_99999_9999">(87)99999–9999</string>
+    <string name="nome">Nome</string>
+    <string name="dd_mm_aaaa">dd/mm/aaaa</string>
+    <string name="n_registro">Nº Registro</string>
+    <string name="agendar">Agendar</string>
+    <string name="local_de_atendimento">Local de Atendimento</string>
+    <string name="telefone">Telefone</string>
+    <string name="especialidade">Especialidade</string>
+    <string name="n_mero_de_registro">Número de Registro</string>
+    <string name="n_o_informado">Não Informado</string>
+    <string name="e_mail">E-mail</string>
+    <string name="cpf">CPF</string>
+    <string name="data_de_nascimento">Data de Nascimento</string>
+    <string name="editar_cadastro">Editar Cadastro</string>
+    <string name="buscar">Buscar</string>
+    <string name="filtro">Filtro</string>
+    <string name="todo">TODO</string>
 
     <string-array name="states">
         <item>"*Estado"</item>

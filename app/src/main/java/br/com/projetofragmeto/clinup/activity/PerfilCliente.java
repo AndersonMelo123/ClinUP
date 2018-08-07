@@ -54,11 +54,11 @@ public class PerfilCliente extends AppCompatActivity {
         agendar = findViewById(R.id.botao_agendar);
         ligar = findViewById(R.id.botao_ligar);
 
-        tv_nome = (TextView) findViewById(R.id.edit_perfil_nomeID);
-        tv_endereco = (TextView) findViewById(R.id.edit_perfil_enderecoID);
-        tv_especialidade = (TextView) findViewById(R.id.edit_perfil_especialidadeID);
-        tv_numRegistro = (TextView) findViewById(R.id.edit_perfil_numRegistroID);
-        tv_telefone = (TextView) findViewById(R.id.edit_perfil_numTelefoneID);
+        tv_nome = findViewById(R.id.edit_perfil_nomeID);
+        tv_endereco = findViewById(R.id.edit_perfil_enderecoID);
+        tv_especialidade = findViewById(R.id.edit_perfil_especialidadeID);
+        tv_numRegistro = findViewById(R.id.edit_perfil_numRegistroID);
+        tv_telefone = findViewById(R.id.edit_perfil_numTelefoneID);
 
 
         id = getIntent().getExtras().getString("id");
@@ -85,12 +85,12 @@ public class PerfilCliente extends AppCompatActivity {
         }
         if (especialidade != null) {
             tv_especialidade.setText(especialidade);
-            tv_especialidade.setEnabled(true);
+            tv_especialidade.setEnabled(false);
 
         }
         if (numRegistro != null) {
             tv_numRegistro.setText(numRegistro);
-            tv_numRegistro.setEnabled(true);
+            tv_numRegistro.setEnabled(false);
 
         }
         /*if (email != null) {
@@ -115,8 +115,8 @@ public class PerfilCliente extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     Endereco userEndereco = dataSnapshot.getValue(Endereco.class);
 
-                    tv_endereco.setText(String.valueOf(userEndereco.getRua() + ", " + userEndereco.getNumero() + ", "+userEndereco.getBairro()));
-                    tv_endereco.setEnabled(true);
+                    tv_endereco.setText(String.valueOf(userEndereco.getLogradouro() + ", " + userEndereco.getNumero() + ", "+userEndereco.getBairro()));
+                    tv_endereco.setEnabled(false);
                 }
 
                 @Override

@@ -23,11 +23,15 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
 
     @Override
     public View getInfoWindow(Marker marker) {
+
         return null;
     }
 
+
+    //Adapta as informações no balão de informação do marcador do google maps
     @Override
     public View getInfoContents(Marker marker) {
+
         View view = ((Activity)context).getLayoutInflater()
                 .inflate(R.layout.map_custom_infowindow, null);
 
@@ -50,4 +54,6 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
 
         return view;
     }
+
+
 }

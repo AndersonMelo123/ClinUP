@@ -11,7 +11,6 @@
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Name"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         android:textColor="@color/Black"
@@ -23,13 +22,13 @@
         android:id="@+id/pic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:layout_editor_absoluteY="40dp" />
+        tools:layout_editor_absoluteY="40dp"
+        android:contentDescription="@string/todo" />
 
     <TextView
         android:id="@+id/details"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="detalhes"
         android:singleLine="false"
         android:textAlignment="center"
         tools:layout_editor_absoluteX="206dp"
@@ -38,9 +37,7 @@
     <TextView
         android:id="@+id/perfilID"
         android:layout_width="wrap_content"
-
         android:layout_height="wrap_content"
-        android:hint="hotels"
         android:textAlignment="center"
         android:textColor="@color/linkColor"
         tools:layout_editor_absoluteX="206dp"
