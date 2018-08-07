@@ -9,9 +9,23 @@ public class Hospital implements Serializable {
     private String endereco;
     private String nome;
     private String telefone;
-    private String idAgendamentos;
+    private String horaAbrir,horaFechar;
 
+    public String getHoraAbrir() {
+        return horaAbrir;
+    }
 
+    public void setHoraAbrir(String horaAbrir) {
+        this.horaAbrir = horaAbrir;
+    }
+
+    public String getHoraFechar() {
+        return horaFechar;
+    }
+
+    public void setHoraFechar(String horaFechar) {
+        this.horaFechar = horaFechar;
+    }
 
     public String getCnpj() {
         return cnpj;
@@ -51,13 +65,5 @@ public class Hospital implements Serializable {
 
     public void setTelefone(String telefone) {
         this.telefone = telefone;
-    }
-
-    public String getIdAgendamentos() {
-        return idAgendamentos;
-    }
-
-    public void setIdAgendamentos(String idAgendamentos) {
-        this.idAgendamentos = idAgendamentos;
     }
 }

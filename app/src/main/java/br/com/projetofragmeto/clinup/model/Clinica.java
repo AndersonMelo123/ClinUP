@@ -4,14 +4,23 @@ import java.io.Serializable;
 
 public class Clinica implements Serializable {
 
-    private String cnpj;
-    private String email;
-    private String endereco;
-    private String nome;
-    private String telefone;
-    private String idAgendaemntos;
+    private String cnpj, email, endereco, nome, telefone, horaAbrir, horaFechar;
 
+    public String getHoraAbrir() {
+        return horaAbrir;
+    }
 
+    public void setHoraAbrir(String horaAbrir) {
+        this.horaAbrir = horaAbrir;
+    }
+
+    public String getHoraFechar() {
+        return horaFechar;
+    }
+
+    public void setHoraFechar(String horaFechar) {
+        this.horaFechar = horaFechar;
+    }
 
     public String getCnpj() {
         return cnpj;
@@ -51,13 +60,5 @@ public class Clinica implements Serializable {
 
     public void setTelefone(String telefone) {
         this.telefone = telefone;
-    }
-
-    public String getIdAgendaemntos() {
-        return idAgendaemntos;
-    }
-
-    public void setIdAgendaemntos(String idAgendaemntos) {
-        this.idAgendaemntos = idAgendaemntos;
     }
 }
