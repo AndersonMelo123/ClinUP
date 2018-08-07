@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -102,8 +103,6 @@ public class AgendarActivity extends FragmentActivity {
         id = getIntent().getExtras().getString("id"); // Pegar o ID do cliente do fragment_Buscar...
         cliente = getIntent().getExtras().getString("cliente");
         classe = getIntent().getSerializableExtra("classe").getClass();
-
-        //Log.i("CLASSE", classe.toString());
 
 
         firebase = ConfiguracaoFirebase.getFirebase().child(cliente).child("001").child("dias");

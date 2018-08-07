@@ -1,6 +1,8 @@
 package br.com.projetofragmeto.clinup.model;
 
-public class Endereço {
+import java.io.Serializable;
+
+public class Endereço implements Serializable {
     private String bairro;
     private String cidade;
     private String estado;

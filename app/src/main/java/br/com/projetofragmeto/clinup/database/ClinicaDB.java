@@ -1,5 +1,7 @@
 package br.com.projetofragmeto.clinup.database;
 
+import android.util.Log;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 
@@ -7,6 +9,7 @@ import java.util.ArrayList;
 
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
 import br.com.projetofragmeto.clinup.model.Clinica;
+import br.com.projetofragmeto.clinup.model.Profissional;
 
 public class ClinicaDB implements Database {
     private DatabaseReference firebase;
@@ -28,7 +31,7 @@ public class ClinicaDB implements Database {
         for(DataSnapshot dados: data.getChildren()){
             Clinica c = dados.getValue(Clinica.class);
             String nome = c.getNome();
-            arrayList.add(c);
+            arrayList.add(nome);
         }
 
         return arrayList;

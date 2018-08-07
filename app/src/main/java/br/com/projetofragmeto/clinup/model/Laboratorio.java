@@ -1,6 +1,8 @@
 package br.com.projetofragmeto.clinup.model;
 
-public class Laboratorio {
+import java.io.Serializable;
+
+public class Laboratorio implements Serializable {
     private int id;
     private String cnpj;
     private String email;

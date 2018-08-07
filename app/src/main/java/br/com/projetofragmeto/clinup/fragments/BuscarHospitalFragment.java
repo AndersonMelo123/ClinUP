@@ -1,12 +1,8 @@
-
-
 package br.com.projetofragmeto.clinup.fragments;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -25,15 +21,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import br.com.projetofragmeto.clinup.R;
-import br.com.projetofragmeto.clinup.activity.AgendarActivity;
+import br.com.projetofragmeto.clinup.activity.PerfilCliente;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
 import br.com.projetofragmeto.clinup.database.HospitalDB;
 import br.com.projetofragmeto.clinup.model.Hospital;
 
-public class BuscarHospitalFragment extends Fragment {
+public class BuscarHospitalFragment extends Fragment implements Serializable {
 
     private ListView listView;
     private ArrayAdapter adapter;
@@ -46,7 +43,7 @@ public class BuscarHospitalFragment extends Fragment {
     private Button botaoFiltro;
     private TextView textView;
 
-    private String[] filtro = {"Todos","Nome"};
+    private String[] filtro = {"Todos", "Nome"};
     private String filtragem = filtro[0];
 
     private ArrayList hospitais;
@@ -92,9 +89,16 @@ public class BuscarHospitalFragment extends Fragment {
                 //Log.i("i", (String) profissionais.get(i));
                 //Log.i("i",profObjetos.get(i).getEspecialidade());
 
-                Intent intent = new Intent(getActivity(),AgendarActivity.class);
-                intent.putExtra("nome",hospObjetos.get(i).getNome());
+                Intent intent = new Intent(getActivity(), PerfilCliente.class);
+                intent.putExtra("email", hospObjetos.get(i).getEmail());
+                intent.putExtra("nome", hospObjetos.get(i).getNome());
+                intent.putExtra("id", hospObjetos.get(i).getCnpj());
+                intent.putExtra("endereco", hospObjetos.get(i).getEndereco());
+                intent.putExtra("telefone", hospObjetos.get(i).getTelefone());
+                intent.putExtra("cnpj", hospObjetos.get(i).getCnpj());
 
+                intent.putExtra("cliente", "hospitais");
+                intent.putExtra("classe", Hospital.class);
                 startActivity(intent);
             }
         });
@@ -130,18 +134,18 @@ public class BuscarHospitalFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 final String nome = texto.getText().toString();//pega nome do campo de texto
-                switch (filtragem){
-                    case("Todos"):
+                switch (filtragem) {
+                    case ("Todos"):
                         hospitais.clear();
                         hospObjetos.clear();
 
                         firebase.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                if(dataSnapshot.getValue() != null){
+                                if (dataSnapshot.getValue() != null) {
                                     //hospitais = hospitalDB.buscarDados(dataSnapshot,hospitais);
                                     //hospitais.clear();
-                                    for(DataSnapshot dados: dataSnapshot.getChildren()){
+                                    for (DataSnapshot dados : dataSnapshot.getChildren()) {
                                         Hospital h = dados.getValue(Hospital.class);
                                         String nome = h.getNome();
                                         hospitais.add(nome);
@@ -150,21 +154,22 @@ public class BuscarHospitalFragment extends Fragment {
                                     adapter.notifyDataSetChanged();
                                 }
                             }
+
                             @Override
                             public void onCancelled(@NonNull DatabaseError databaseError) {
                             }
                         });
                         break;
-                    case("Nome"):
+                    case ("Nome"):
                         hospitais.clear();
                         hospObjetos.clear();
                         firebase.orderByChild("nome").equalTo(nome).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                if(dataSnapshot.getValue() != null){
+                                if (dataSnapshot.getValue() != null) {
                                     //hospitais = hospitalDB.buscarDados(dataSnapshot,hospitais);
                                     //hospitais.clear();
-                                    for(DataSnapshot dados: dataSnapshot.getChildren()){
+                                    for (DataSnapshot dados : dataSnapshot.getChildren()) {
                                         Hospital h = dados.getValue(Hospital.class);
                                         String nome = h.getNome();
                                         hospitais.add(nome);
@@ -173,6 +178,7 @@ public class BuscarHospitalFragment extends Fragment {
                                     adapter.notifyDataSetChanged();
                                 }
                             }
+
                             @Override
                             public void onCancelled(@NonNull DatabaseError databaseError) {
                             }
@@ -182,7 +188,6 @@ public class BuscarHospitalFragment extends Fragment {
                 }
             }
         });
-
 
 
         return view;

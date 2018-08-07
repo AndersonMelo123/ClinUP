@@ -5,7 +5,7 @@ import java.io.Serializable;
 /*Adicionando a interface serializable será possível transformar o objeto num formato que poderá ser salvo num arquivo.
  Por exemplo, para utilizar um ObjectOutputStream e salvar um objeto num arquivo do disco será necessário implementar essa interface.*/
 
-public class Endereco implements Serializable{
+public class Endereco implements Serializable {
 
     //Atributos
 

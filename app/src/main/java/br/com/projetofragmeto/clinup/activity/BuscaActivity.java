@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+
 import android.view.MenuItem;
 
 import br.com.projetofragmeto.clinup.R;
@@ -13,8 +14,6 @@ import br.com.projetofragmeto.clinup.fragments.BuscarHospitalFragment;
 import br.com.projetofragmeto.clinup.fragments.BuscarLaboratorioFragment;
 import br.com.projetofragmeto.clinup.fragments.BuscarProfissionalFragment;
 import br.com.projetofragmeto.clinup.helper.SlidingTabLayout;
-
-//import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 public class BuscaActivity extends AppCompatActivity {
     private android.support.v7.widget.Toolbar toolbar;
@@ -42,9 +41,6 @@ public class BuscaActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
-
-
-
 
         slidingTabLayout = findViewById(R.id.stl_tabs);
         viewPager = findViewById(R.id.vp_busca);

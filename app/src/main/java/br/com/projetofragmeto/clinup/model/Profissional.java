@@ -1,6 +1,8 @@
 package br.com.projetofragmeto.clinup.model;
 
-public class Profissional {
+import java.io.Serializable;
+
+public class Profissional implements Serializable {
 
     private String endereco;
     private String especialidade;
@@ -8,17 +10,27 @@ public class Profissional {
     private String nome;
     private String num_registro;
     private String id;
+    private String telefone;
     private Dias dias;
     private String idAgendamentos;
 
+    public Profissional() {
+    }
 
-    public Profissional(){}
     public Profissional(String nome, String endereco, String especialidade, String formacao, String num_registro) {
         this.endereco = endereco;
         this.especialidade = especialidade;
         this.formacao = formacao;
         this.nome = nome;
         this.num_registro = num_registro;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
 
     public Dias getDias() {
@@ -36,6 +48,7 @@ public class Profissional {
     public void setId(String id) {
         this.id = id;
     }
+
     public String getEndereco() {
         return endereco;
     }

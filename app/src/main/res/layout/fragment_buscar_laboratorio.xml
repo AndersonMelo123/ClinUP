@@ -44,7 +44,6 @@
         android:background="@color/colorPrimaryDark"
         android:text="Filtro"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/bhf_bt_buscar2"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -61,7 +60,7 @@
     <ListView
         android:id="@+id/lv_laboratorio"
         android:layout_width="wrap_content"
-        android:layout_height="469dp"
+        android:layout_height="559dp"
         android:layout_gravity="center_horizontal|top"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
