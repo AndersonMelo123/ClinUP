@@ -60,10 +60,9 @@
     <ListView
         android:id="@+id/lv_laboratorio"
         android:layout_width="wrap_content"
-        android:layout_height="559dp"
+        android:layout_height="461dp"
         android:layout_gravity="center_horizontal|top"
         android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

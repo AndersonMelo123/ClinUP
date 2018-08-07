@@ -37,7 +37,7 @@ import br.com.projetofragmeto.clinup.R;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
 import br.com.projetofragmeto.clinup.helper.Preferencias;
 import br.com.projetofragmeto.clinup.model.Agendamento;
-import br.com.projetofragmeto.clinup.model.Endereço;
+import br.com.projetofragmeto.clinup.model.Endereco;
 import br.com.projetofragmeto.clinup.model.PlanoDeSaude;
 import br.com.projetofragmeto.clinup.model.Usuario;
 
@@ -195,7 +195,7 @@ public class AgendarActivity extends FragmentActivity {
                 usuarioRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Endereço userEndereco = dataSnapshot.getValue(Endereço.class);
+                        Endereco userEndereco = dataSnapshot.getValue(Endereco.class);
 
                         endereco.setText(String.valueOf(userEndereco.getRua() + ", " + userEndereco.getNumero()));
                     }

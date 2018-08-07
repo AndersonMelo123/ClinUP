@@ -110,6 +110,9 @@ public class BuscarProfissionalFragment extends Fragment implements Serializable
                 intent.putExtra("formacao", profObjetos.get(i).getFormacao());
                 intent.putExtra("Num_registro", profObjetos.get(i).getNum_registro());
 
+                intent.putExtra("horaAbrir",profObjetos.get(i).getHoraAbrir());
+                intent.putExtra("horaFechar",profObjetos.get(i).getHoraFechar());
+
                 intent.putExtra("cliente", "profissionais");
                 intent.putExtra("classe", Profissional.class);
                 startActivity(intent);
@@ -146,6 +149,8 @@ public class BuscarProfissionalFragment extends Fragment implements Serializable
 
             @Override
             public void onClick(View view) {
+
+
                 profissionais.clear();
                 final String nome = texto.getText().toString();//pega nome do campo de texto
                 switch (filtragem) {

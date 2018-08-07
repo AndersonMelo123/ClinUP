@@ -25,13 +25,16 @@ import br.com.projetofragmeto.clinup.model.Endereco;
 
 public class PerfilCliente extends AppCompatActivity {
 
-    private String id, telefone, especialidade, nome, numRegistro, email, endereco, cnpj, cliente, classe;
-    private TextView tv_id, tv_telefone, tv_especialidade, tv_nome, tv_numRegistro, tv_endereco;
-
-    private Button agendar;
-    private Button ligar;
-
-    private android.support.v7.widget.Toolbar toolbar;
+    private String id;
+    private String telefone;
+    private String nome;
+    private String email;
+    private String endereco;
+    private String cnpj;
+    private String cliente;
+    private String classe;
+    //private TextView tv_id;
+    private TextView tv_endereco;
 
 
     @SuppressLint("WrongViewCast")
@@ -40,7 +43,7 @@ public class PerfilCliente extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil_cliente);
 
-        toolbar = findViewById(R.id.toolbarActivity);
+        android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbarActivity);
         toolbar.setTitle("Perfil");
         toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
         setSupportActionBar(toolbar);
@@ -51,28 +54,40 @@ public class PerfilCliente extends AppCompatActivity {
         }
 
 
-        agendar = findViewById(R.id.botao_agendar);
-        ligar = findViewById(R.id.botao_ligar);
+        Button agendar = findViewById(R.id.botao_agendar);
+        Button ligar = findViewById(R.id.botao_ligar);
 
-        tv_nome = (TextView) findViewById(R.id.edit_perfil_nomeID);
+        TextView tv_nome = (TextView) findViewById(R.id.edit_perfil_nomeID);
         tv_endereco = (TextView) findViewById(R.id.edit_perfil_enderecoID);
-        tv_especialidade = (TextView) findViewById(R.id.edit_perfil_especialidadeID);
-        tv_numRegistro = (TextView) findViewById(R.id.edit_perfil_numRegistroID);
-        tv_telefone = (TextView) findViewById(R.id.edit_perfil_numTelefoneID);
+        TextView tv_especialidade = (TextView) findViewById(R.id.edit_perfil_especialidadeID);
+        TextView tv_numRegistro = (TextView) findViewById(R.id.edit_perfil_numRegistroID);
+        TextView tv_telefone = (TextView) findViewById(R.id.edit_perfil_numTelefoneID);
+        TextView tv_horario = (TextView) findViewById(R.id.edit_perfil_horarioID);
 
 
         id = getIntent().getExtras().getString("id");
 
         telefone = getIntent().getExtras().getString("telefone");
         nome = getIntent().getExtras().getString("nome");
-        especialidade = getIntent().getExtras().getString("especialidade");
-        numRegistro = getIntent().getExtras().getString("num_registro");
+        String especialidade = getIntent().getExtras().getString("especialidade");
+        String numRegistro = getIntent().getExtras().getString("num_registro");
         endereco = getIntent().getExtras().getString("endereco");
         email = getIntent().getExtras().getString("email");
         cnpj = getIntent().getExtras().getString("cnpj");
+
+        String horaAbrir = getIntent().getExtras().getString("horaAbrir");
+        String horaFechar = getIntent().getExtras().getString("horaFechar");
+
+
+        Log.i("HORA", horaAbrir + " às "+ horaFechar + " hr");
+
         cliente = getIntent().getExtras().getString("cliente");
         classe = String.valueOf(getIntent().getSerializableExtra("classe").getClass());
 
+        if(horaAbrir != null && horaFechar != null){
+            tv_horario.setText(horaAbrir + " às "+ horaFechar + " hr");
+            tv_horario.setEnabled(true);
+        }
 
         if (telefone != null) {
             tv_telefone.setText(telefone);
