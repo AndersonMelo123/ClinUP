@@ -614,7 +614,7 @@ public class MapaFragment extends Fragment implements
                 infoWindowData.setTelefone(((Profissional) classe).getTelefone());
                 infoWindowData.setEspecialidade(((Profissional) classe).getEspecialidade());
                 infoWindowData.setFormacao(((Profissional) classe).getFormacao());
-                infoWindowData.setNum_registro(((Profissional) classe).getNum_registro());
+                infoWindowData.setNumRegistro(((Profissional) classe).getNum_registro());
                 infoWindowData.setCliente("profissionais");
                 infoWindowData.setClasse(Profissional.class);
 
@@ -680,7 +680,7 @@ public class MapaFragment extends Fragment implements
                 intent.putExtra("telefone", infoWindowData.getTelefone());
                 intent.putExtra("especialidade", infoWindowData.getEspecialidade());
                 intent.putExtra("formacao", infoWindowData.getFormacao());
-                intent.putExtra("Num_registro", infoWindowData.getNum_registro());
+                intent.putExtra("Num_registro", infoWindowData.getNumRegistro());
 
                 intent.putExtra("cliente", "profissionais");
                 intent.putExtra("classe", Profissional.class);

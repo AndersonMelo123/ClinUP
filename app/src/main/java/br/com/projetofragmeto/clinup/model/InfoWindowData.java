@@ -81,11 +81,11 @@ public class InfoWindowData {
         this.formacao = formacao;
     }
 
-    public String getNum_registro() {
+    public String getNumRegistro() {
         return num_registro;
     }
 
-    public void setNum_registro(String num_registro) {
+    public void setNumRegistro(String num_registro) {
         this.num_registro = num_registro;
     }
 
