@@ -18,6 +18,8 @@ public class Usuario implements Serializable {
     private String nome, email, senha, cpf, telefone,
             dataNascimento, estadoCivil, foto, numTelefone, nomePlano, numPlano;
 
+    private String idAgendamentos;
+
     private String endereco;
 
     private PlanoDeSaude plano;
@@ -109,6 +111,14 @@ public class Usuario implements Serializable {
 
     public void setPlanoDeSaude(String planoDeSaude) {
         this.planoDeSaude = planoDeSaude;
+    }
+
+    public String getIdAgendamentos() {
+        return idAgendamentos;
+    }
+
+    public void setIdAgendamentos(String idAgendamentos) {
+        this.idAgendamentos = idAgendamentos;
     }
 
 

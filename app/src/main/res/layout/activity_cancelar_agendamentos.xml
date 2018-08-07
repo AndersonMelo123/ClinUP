@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.CancelarAgendamentos">
+
+    <TextView
+        android:id="@+id/textView16"
+        android:layout_width="150dp"
+        android:layout_height="25dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="8dp"
+        android:text="Data da Consulta:"
+        android:textColor="@color/Black"
+        android:textSize="18sp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/dataConsulta"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dataAgendamento"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="60dp"
+        android:layout_height="25dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="8dp"
+        android:text="Nome:"
+        android:textColor="@color/Black"
+        android:textSize="18sp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/nome_l"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView8"
+        app:layout_constraintVertical_bias="0.384" />
+
+    <include
+        android:id="@+id/toolbarActivity"
+        layout="@layout/toolbar_activity"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="40dp"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/nome_l"
+        android:layout_width="322dp"
+        android:layout_height="39dp"
+        android:layout_marginTop="192dp"
+        android:background="#4d000000"
+        android:gravity="center"
+        android:textAlignment="inherit"
+        android:textColor="@color/White"
+        android:textSize="18sp"
+        android:theme="@style/StyleEditText"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/dataAgendamento"
+        android:layout_width="322dp"
+        android:layout_height="39dp"
+        android:layout_marginTop="120dp"
+        android:background="#4d000000"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textColor="@color/White"
+        android:textSize="18sp"
+        android:theme="@style/StyleEditText"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nome_l" />
+
+    <TextView
+        android:id="@+id/dataConsulta"
+        android:layout_width="322dp"
+        android:layout_height="39dp"
+        android:layout_marginTop="196dp"
+        android:background="#4d000000"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textColor="@color/White"
+        android:textSize="18sp"
+        android:theme="@style/StyleEditText"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nome_l" />
+
+    <TextView
+        android:id="@+id/planoSaud"
+        android:layout_width="322dp"
+        android:layout_height="39dp"
+        android:layout_marginTop="40dp"
+        android:background="#4d000000"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textColor="@color/White"
+        android:textSize="18sp"
+        android:theme="@style/StyleEditText"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nome_l" />
+
+    <Button
+        android:id="@+id/cancelarAgendamento"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/botao_cancelar"
+        android:theme="@style/botaoPadrao"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="350dp"
+        android:layout_height="147dp"
+        android:paddingLeft="15dp"
+        android:paddingTop="80dp"
+        android:text="Agendamento"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimaryDarker"
+        android:textSize="36sp"
+        tools:layout_editor_absoluteX="17dp"
+        tools:layout_editor_absoluteY="25dp" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="130dp"
+        android:layout_height="25dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="8dp"
+        android:text="Plano de Saúde:"
+        android:textColor="@color/Black"
+        android:textSize="18sp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/planoSaud"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nome_l"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="200dp"
+        android:layout_height="25dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="8dp"
+        android:text="Data do Agendamento:"
+        android:textColor="@color/Black"
+        android:textSize="18sp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/dataAgendamento"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/planoSaud"
+        app:layout_constraintVertical_bias="0.0" />
+
+</android.support.constraint.ConstraintLayout>

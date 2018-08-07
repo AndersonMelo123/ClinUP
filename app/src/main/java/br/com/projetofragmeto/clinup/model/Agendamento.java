@@ -4,18 +4,11 @@ import java.io.Serializable;
 
 public class Agendamento implements Serializable {
 
-    private String id_Usuario, id_Cliente, dataConsulta, dataAtual, nomeUsuario, id_Plano;
+    private String id_Usuario, id_Cliente, dataConsulta, dataAtual, nomeUsuario, id_Plano, id;
 
     public Agendamento() {
     }
 
-    public Agendamento(String id_Usuario, String id_Cliente, String dataConsulta, String dataAtual, String nomeUsuario) {
-        this.id_Usuario = id_Usuario;
-        this.id_Cliente = id_Cliente;
-        this.dataConsulta = dataConsulta;
-        this.dataAtual = dataAtual;
-        this.nomeUsuario = nomeUsuario;
-    }
 
     public Agendamento(String id_Usuario, String id_Cliente, String dataConsulta, String dataAtual, String nomeUsuario, String id_Plano) {
         this.id_Usuario = id_Usuario;
@@ -72,5 +65,13 @@ public class Agendamento implements Serializable {
 
     public void setId_Plano(String id_Plano) {
         this.id_Plano = id_Plano;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }
