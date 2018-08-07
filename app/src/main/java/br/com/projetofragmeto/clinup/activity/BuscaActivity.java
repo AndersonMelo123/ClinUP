@@ -52,38 +52,7 @@ public class BuscaActivity extends AppCompatActivity {
 
 
     }
-/*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_item,menu);
-        MenuItem item = menu.findItem(R.id.action_search);
-        android.widget.SearchView searchView = (android.widget.SearchView) item.getActionView();
 
-        searchView.setOnQueryTextListener(new android.widget.SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-
-                String busca = ""+s;
-                data.putString("busca",busca);
-                Log.i("BUSCA",data.toString());
-                if(data != null) {
-                    buscarProfissionalFragment.setArguments(data);
-                    Log.i("BUSCA",s);
-                }
-
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-
-
-        });
-
-        return super.onCreateOptionsMenu(menu);
-    }
-*/
     @Override
     public boolean onOptionsItemSelected(MenuItem item) { //método para finalizar a activity caso seja apertado a setinha de voltar
         if(item.getItemId() == android.R.id.home)

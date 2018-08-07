@@ -59,7 +59,6 @@ import br.com.projetofragmeto.clinup.fragments.MapaFragment;
 import br.com.projetofragmeto.clinup.helper.Preferencias;
 import br.com.projetofragmeto.clinup.model.Usuario;
 
-
 public class PrincipalActivity extends AppCompatActivity {
 
     //save our header or result
@@ -92,7 +91,6 @@ public class PrincipalActivity extends AppCompatActivity {
         autenticacaoUsuario = ConfiguracaoFirebase.getFirebaseAutenticacao();
         user = ConfiguracaoFirebase.getUsuarioLogado(); // retorna o usuário que está logado no momento
 
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         viewPager = findViewById(R.id.viewpager);
         setupViewPager(viewPager);
@@ -136,6 +134,8 @@ public class PrincipalActivity extends AppCompatActivity {
         mReadDataOnce(idUsuarios, new OnGetDataListener() {
             @Override
             public void onStart() {
+
+
 
                 if (mProgressDialog == null) {
                     mProgressDialog = new ProgressDialog(PrincipalActivity.this);

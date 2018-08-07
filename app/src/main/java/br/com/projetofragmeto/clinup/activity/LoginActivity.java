@@ -1,11 +1,13 @@
 package br.com.projetofragmeto.clinup.activity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -52,8 +54,10 @@ import java.security.NoSuchAlgorithmException;
 
 import br.com.projetofragmeto.clinup.R;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
+import br.com.projetofragmeto.clinup.database.PlanoDeSaudeImplements;
 import br.com.projetofragmeto.clinup.helper.Base64Custom;
 import br.com.projetofragmeto.clinup.helper.Preferencias;
+import br.com.projetofragmeto.clinup.model.PlanoDeSaude;
 import br.com.projetofragmeto.clinup.model.Usuario;
 
 public class LoginActivity extends AppCompatActivity {
@@ -73,9 +77,10 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth autenticacao;//autenticação do firebase
     private FirebaseAuth.AuthStateListener mAuthListener;
 
-    //private static Boolean loginAutomatico = false;
     private static final int RC_SIGN_IN = 1;
     private GoogleApiClient mGoogleApiClient;
+
+    private AlertDialog alerta;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,19 +105,17 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {/* Criando o evento para esperar o clique no botão
                                              , caso clicado ele entra e executa o conteúdo*/
-
                 usuario = new Usuario();
                 usuario.setEmail(email.getText().toString());
                 usuario.setSenha(senha.getText().toString());
 
                 validarLogin();
-
             }
         });
 
-        // Initialize Facebook Login button
+        // Inicializa o botão do Facebook
         botaoLoginFacebook.setReadPermissions("email", "public_profile");
-        //inicializa callback
+        // Inicializa callback
         callbackManager = CallbackManager.Factory.create();
         clickBotaoFacebook();
 
@@ -143,7 +146,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         String idUsuario = Base64Custom.codificarBase64(user.getEmail());
                         Preferencias preferencias = new Preferencias(LoginActivity.this);
-                        preferencias.salvarDados(idUsuario, usuario.getNome());
+                        preferencias.salvarDados(idUsuario, user.getDisplayName());
                         salvarPreferencias("id", idUsuario);
 
                         Toast.makeText(LoginActivity.this, "Sucesso ao fazer login!", Toast.LENGTH_LONG).show(); // Mensagem na tela do usuário
@@ -154,21 +157,17 @@ public class LoginActivity extends AppCompatActivity {
                     } else if (!getPreferencesKeyUsuarioFacebook(LoginActivity.this)) {
                         String userId = AccessToken.getCurrentAccessToken().getUserId(); // Pegar o id do facebook do usuário para coletar a imagem do perfil
                         usuario = new Usuario(user.getDisplayName(), user.getEmail(), "https://graph.facebook.com/" + userId + "/picture?type=large");
-
                         String idUsuario = Base64Custom.codificarBase64(user.getEmail());
+                        usuario.setId(idUsuario);
+                        usuario.setPlanoDeSaude(idUsuario);
+
                         Preferencias preferencias = new Preferencias(LoginActivity.this);
                         preferencias.salvarDados(idUsuario, usuario.getNome());
                         salvarPreferencias("idFacebook", idUsuario);
 
-                        inserirUsuario(usuario);
-                        abrirTelaPrincipal();
+                        confirmarCadastroEnderecoFacebook(usuario);
 
                     }
-
-
-                } else {
-                    Log.d("TG", "SIGNED OUT");
-
                 }
             }
         };
@@ -195,12 +194,12 @@ public class LoginActivity extends AppCompatActivity {
         mLoginGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //Se clicar no botão do facebook ele é direcionado para fazer o login
                 signIn();
             }
         });
 
     }
-
 
     // Método chamado assim que é inicializado essa activity
     @Override
@@ -235,7 +234,7 @@ public class LoginActivity extends AppCompatActivity {
         String Email = email.getText().toString().trim();
         String password = senha.getText().toString().trim();
 
-        //checking if email and passwords are empty
+        // checando se email e senhas estão vazios
         if (TextUtils.isEmpty(Email)) {
             Toast.makeText(this, "Por favor entre com o e-mail", Toast.LENGTH_LONG).show();
             return;
@@ -345,10 +344,9 @@ public class LoginActivity extends AppCompatActivity {
                 Preferencias preferencias = new Preferencias(LoginActivity.this);
                 preferencias.salvarDados(idUsuario, account.getDisplayName());
 
-                salvarPreferencias("idGoogle", idUsuario);
+                //salvarPreferencias("idGoogle", idUsuario);
 
-                salvarUsuarioGoogle(account);
-                abrirTelaPrincipal();
+                confirmarCadastroEnderecoGoogle(account);
 
             } else {
                 Toast.makeText(LoginActivity.this, "Falha ao fazer login!", Toast.LENGTH_LONG).show();
@@ -377,8 +375,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 firebaseLogin(loginResult.getAccessToken()); // Verificando se existe um token do facebook
-                //verificarUsuarioLogado();
-
             }
 
             @Override
@@ -401,25 +397,19 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            abrirTelaPrincipal();
+                            //vazio
                         } else {
-                            alert("Erro de autenticação com Firebase");
+                            Toast.makeText(LoginActivity.this, "Erro de autenticação com Firebase", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
     }
-
-    private void alert(String texto) {
-        Toast.makeText(this, texto, Toast.LENGTH_SHORT).show();
-    }
-
 
     //Método que recupera o id do usuário logado pelo Google
     public static boolean getPreferencesKeyUsuarioGoogle(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         return preferences.contains("idGoogle");
     }
-
 
     //Método que recupera o id do usuário logado pelo Google
     public static boolean getPreferencesKeyUsuarioFacebook(Context context) {
@@ -442,16 +432,19 @@ public class LoginActivity extends AppCompatActivity {
             usuario = new Usuario(account.getId(), account.getDisplayName(), account.getEmail(), account.getPhotoUrl().toString());
 
             String idUsuario = Base64Custom.codificarBase64(usuario.getEmail());
+            usuario.setPlanoDeSaude(idUsuario);
+            //Salvando um plano de saude vazio
+            PlanoDeSaude planoDeSaude = new PlanoDeSaude();
+            PlanoDeSaudeImplements Plano = new PlanoDeSaudeImplements(getApplicationContext());
+            Plano.inserirPlanodeSaude(planoDeSaude, usuario.getId(), " ", " ");
+
             Preferencias preferencias = new Preferencias(LoginActivity.this);
             preferencias.salvarDados(idUsuario, usuario.getNome());
             salvarPreferencias("id", idUsuario);
 
             //Chamada do DAO para salvar no banco
             inserirUsuario(usuario);
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(intent);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-            finish();
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -465,6 +458,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // Criando uma segurança para salvar o usuário no banco de dados
         final String idUsuarioLogado = Base64Custom.codificarBase64(usuario.getEmail());
+        usuario.setEndereco(""); //Garantir a qualidade do banco
 
         firebase.child("usuarios").child(idUsuarioLogado).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -503,6 +497,88 @@ public class LoginActivity extends AppCompatActivity {
     public boolean isLoggedIn() {
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         return accessToken != null;
+    }
+
+    //Método que exibe pergunta de confirmação ao usuário logado pelo Google se o mesmo deseja cadastrar um endereço
+    public void confirmarCadastroEnderecoGoogle(final GoogleSignInAccount account) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Cadastrar Endereço");
+        //define a mensagem
+        builder.setMessage("Precisamos do seu endereço para que você possa agendar. Deseja cadastrar agora o seu endereo?");
+        builder.setCancelable(false);
+
+        builder.setPositiveButton("SIM", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // Botão sim foi clicado
+                salvarUsuarioGoogle(account);
+
+                Intent intent = new Intent(LoginActivity.this, CadastroEndereco.class);
+                startActivity(intent);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                finish();
+            }
+        });
+        builder.setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // Botão não foi clicado
+                salvarUsuarioGoogle(account);
+                abrirTelaPrincipal();
+            }
+        });
+
+
+        alerta = builder.create();
+        alerta.show();
+
+    }
+
+    //Método que exibe pergunta de confirmação ao usuário logado pelo Facebook se o mesmo deseja cadastrar um endereço
+    public void confirmarCadastroEnderecoFacebook(final Usuario usuario) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Cadastrar Endereço");
+        //define a mensagem
+        builder.setMessage("Precisamos do seu endereço para que você possa agendar. Deseja cadastrar agora o seu endereo?");
+        builder.setCancelable(false);
+
+        builder.setPositiveButton("SIM", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // Botão sim foi clicado
+
+                inserirUsuario(usuario);
+                //Salvando um plano de saude vazio
+                PlanoDeSaude planoDeSaude = new PlanoDeSaude();
+                PlanoDeSaudeImplements Plano = new PlanoDeSaudeImplements(getApplicationContext());
+                Plano.inserirPlanodeSaude(planoDeSaude, usuario.getId(), " ", " ");
+
+                Intent intent = new Intent(LoginActivity.this, CadastroEndereco.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        builder.setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // Botão não foi clicado
+                inserirUsuario(usuario);
+                //Salvando um plano de saude vazio
+                PlanoDeSaude planoDeSaude = new PlanoDeSaude();
+                PlanoDeSaudeImplements Plano = new PlanoDeSaudeImplements(getApplicationContext());
+                Plano.inserirPlanodeSaude(planoDeSaude, usuario.getId(), " ", " ");
+
+
+                abrirTelaPrincipal();
+            }
+        });
+
+
+        alerta = builder.create();
+        alerta.show();
+
     }
 
 }

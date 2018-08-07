@@ -100,12 +100,12 @@ public class PerfilCliente extends AppCompatActivity {
         }
         if (especialidade != null) {
             tv_especialidade.setText(especialidade);
-            tv_especialidade.setEnabled(true);
+            tv_especialidade.setEnabled(false);
 
         }
         if (numRegistro != null) {
             tv_numRegistro.setText(numRegistro);
-            tv_numRegistro.setEnabled(true);
+            tv_numRegistro.setEnabled(false);
 
         }
         /*if (email != null) {
@@ -130,8 +130,8 @@ public class PerfilCliente extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     Endereco userEndereco = dataSnapshot.getValue(Endereco.class);
 
-                    tv_endereco.setText(String.valueOf(userEndereco.getRua() + ", " + userEndereco.getNumero() + ", "+userEndereco.getBairro()));
-                    tv_endereco.setEnabled(true);
+                    tv_endereco.setText(String.valueOf(userEndereco.getLogradouro() + ", " + userEndereco.getNumero() + ", "+userEndereco.getBairro()));
+                    tv_endereco.setEnabled(false);
                 }
 
                 @Override

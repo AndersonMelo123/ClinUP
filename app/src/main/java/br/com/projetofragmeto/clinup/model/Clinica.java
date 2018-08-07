@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class Clinica implements Serializable {
 
-    private String cnpj, email, endereco, nome, telefone, horaAbrir, horaFechar;
+    private String cnpj, email, endereco, nome, telefone, horaAbrir, horaFechar, id;
 
     public String getHoraAbrir() {
         return horaAbrir;
@@ -28,6 +28,14 @@ public class Clinica implements Serializable {
 
     public void setCnpj(String cnpj) {
         this.cnpj = cnpj;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getEmail() {

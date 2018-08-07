@@ -103,7 +103,6 @@ public class AgendarActivity extends FragmentActivity {
         cliente = getIntent().getExtras().getString("cliente");
         classe = getIntent().getSerializableExtra("classe").getClass();
 
-
         firebase = ConfiguracaoFirebase.getFirebase().child(cliente).child("001").child("dias");
 
         firebase.addValueEventListener(new ValueEventListener() {
@@ -118,8 +117,8 @@ public class AgendarActivity extends FragmentActivity {
 
                         diasDaSemana.add(dias);
 
-
                     }
+
                 }
                 try {
                     AtivarDatas = setCalendario(diasDaSemana);
@@ -172,10 +171,8 @@ public class AgendarActivity extends FragmentActivity {
         usuarioReferencia.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {// método chamado sempre que os dados forem alterados no banco
-
                 Usuario usuario = dataSnapshot.getValue(Usuario.class);
 
-                String end = usuario.getEndereco();
 
                 if (usuario != null) {
                     nome.setText(usuario.getNome());
@@ -190,41 +187,49 @@ public class AgendarActivity extends FragmentActivity {
 
                 }
 
-                DatabaseReference usuarioRef = ConfiguracaoFirebase.getFirebase().child("endereco").child(end);
+                if (dataSnapshot.hasChild("endereco")) {
 
-                usuarioRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Endereco userEndereco = dataSnapshot.getValue(Endereco.class);
+                    String end = usuario.getEndereco();
 
-                        endereco.setText(String.valueOf(userEndereco.getRua() + ", " + userEndereco.getNumero()));
-                    }
+                    DatabaseReference usuarioRef = ConfiguracaoFirebase.getFirebase().child("endereco").child(end);
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    usuarioRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            Endereco userEndereco = dataSnapshot.getValue(Endereco.class);
 
-                    }
-                });
+                            endereco.setText(String.valueOf(userEndereco.getLogradouro() + ", " + userEndereco.getNumero()));
+                        }
 
-                String planoSaude = usuario.getPlanoDeSaude();
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                DatabaseReference planoRef = ConfiguracaoFirebase.getFirebase().child("planodesaude").child(planoSaude);
+                        }
+                    });
+                }
 
-                planoRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                        PlanoDeSaude userPlano = dataSnapshot.getValue(PlanoDeSaude.class);
+                if (dataSnapshot.hasChild("planoDeSaude")) {
+                    String planoSaude = usuario.getPlanoDeSaude();
 
-                        planoDeSaude.setText(String.valueOf(userPlano.getNomePlano()));
+                    DatabaseReference planoRef = ConfiguracaoFirebase.getFirebase().child("planodesaude").child(planoSaude);
 
-                    }
+                    planoRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                            PlanoDeSaude userPlano = dataSnapshot.getValue(PlanoDeSaude.class);
 
-                    }
-                });
+                            planoDeSaude.setText(String.valueOf(userPlano.getNomePlano()));
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
 
 
             }
@@ -235,7 +240,9 @@ public class AgendarActivity extends FragmentActivity {
             }
         });
 
-        bt_agendar.setOnClickListener(new View.OnClickListener() {
+        bt_agendar.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View view) {
 
@@ -254,28 +261,10 @@ public class AgendarActivity extends FragmentActivity {
         Calendar calendar = Calendar.getInstance();
         calendar.clear();
 
-        // month start at 1. Need to minus 1 to get javaMonth
+        // início do mês em 1. Precisa de menos 1 para obter o mês
         calendar.set(year, month - 1, day);
 
         return calendar.getTime();
-    }
-
-    private Date dataAtual(Date data) {
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-        Date date = null;
-        try {
-            date = format.parse(String.valueOf(data));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.clear();
-
-        calendar.setTime(date);
-
-        return calendar.getTime();
-
     }
 
     private Date getDate(String strDate) throws ParseException {

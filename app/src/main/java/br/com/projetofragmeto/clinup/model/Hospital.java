@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class Hospital implements Serializable {
 
+    private String id;
     private String cnpj;
     private String email;
     private String endereco;
@@ -37,6 +38,14 @@ public class Hospital implements Serializable {
 
     public String getEmail() {
         return email;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public void setEmail(String email) {

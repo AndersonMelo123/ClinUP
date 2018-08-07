@@ -84,8 +84,10 @@
         <activity android:name=".activity.PerfilActivity" />
         <activity android:name=".activity.BuscaActivity" />
         <activity android:name=".activity.AgendarActivity" />
-        <activity android:name=".activity.PerfilCliente"/>
-        <activity android:name=".activity.CancelarAgendamentos"></activity>
+        <activity android:name=".activity.PerfilCliente" />
+        <activity android:name=".activity.CadastroEndereco"/>
+        <activity android:name=".activity.ZipCodeSearchActivity"/>
+        <activity android:name=".activity.CancelarAgendamentos"/>
     </application>
 
 </manifest>

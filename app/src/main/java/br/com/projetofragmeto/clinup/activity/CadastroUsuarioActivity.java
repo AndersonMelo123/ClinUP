@@ -1,8 +1,10 @@
 package br.com.projetofragmeto.clinup.activity;
 
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -93,7 +95,6 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) { /* Criando o evento para esperar o clique no botão
                                              , caso clicado ele entra e executa o conteúdo*/
-
                 if (submitForm()) {
                     usuario = new Usuario();
                     planoDeSaude = new PlanoDeSaude();
@@ -108,18 +109,22 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
                     usuario.setDataNascimento(dataNascimento.getText().toString());
                     String idUsuarioLogado = Base64Custom.codificarBase64(usuario.getEmail());
                     usuario.setId(idUsuarioLogado);
+                    usuario.setEndereco("");
 
                     // Salvando no banco o plano de saúde
                     Plano.inserirPlanodeSaude(planoDeSaude, usuario.getId(), nomePlano.getText().toString(), numPlano.getText().toString());
 
                     // Salvando no banco o usuário
-                    cadastrarUsuario();
+                    cadastrarUsuario(usuario);
+
+                    AlertaCadastroEndereco();
+
                 }
             }
         });
     }
 
-    private void cadastrarUsuario() {
+    private void cadastrarUsuario(final Usuario usuario) {
 
         autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
         autenticacao.createUserWithEmailAndPassword(
@@ -138,8 +143,6 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
                     Preferencias preferencias = new Preferencias(CadastroUsuarioActivity.this);
                     preferencias.salvarDados(usuario.getId(), usuario.getNome());
                     salvarPreferencias("id", usuario.getId());
-
-                    abrirLogadoUsuario();
 
                 } else { // Alguns testes
 
@@ -269,7 +272,7 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
         return true;
     }
 
-    private boolean validarCpf(){
+    private boolean validarCpf() {
         if (cpf.getText().toString().trim().isEmpty()) {
             cpfIn.setError(getString(R.string.err_msg_cpf));
             requestFocus(cpf);
@@ -280,7 +283,6 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
 
         return true;
     }
-
 
     private static boolean isValidEmail(String email) {
         return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
@@ -323,6 +325,33 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
             }
         }
     }
+
+    private void AlertaCadastroEndereco() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Cadastrar Endereço");
+        //define a mensagem
+        builder.setMessage("Precisamos do seu endereço para que você possa agendar. Deseja cadastrar agora o seu endereo?");
+
+        builder.setPositiveButton("SIM", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Intent intent = new Intent(CadastroUsuarioActivity.this, CadastroEndereco.class);
+                startActivity(intent);
+            }
+        });
+        builder.setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                abrirLogadoUsuario();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+
 }
 
 

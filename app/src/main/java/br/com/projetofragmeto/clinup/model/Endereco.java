@@ -1,37 +1,26 @@
 package br.com.projetofragmeto.clinup.model;
 
-import java.io.Serializable;
 
-/*Adicionando a interface serializable será possível transformar o objeto num formato que poderá ser salvo num arquivo.
- Por exemplo, para utilizar um ObjectOutputStream e salvar um objeto num arquivo do disco será necessário implementar essa interface.*/
+public class Endereco {
+    public static final int REQUEST_ZIP_CODE_CODE = 566;
+    public static final String ZIP_CODE_KEY = "zip_code_key";
 
-public class Endereco implements Serializable {
+    private String cep;
+    private String logradouro;
+    private String complemento;
+    private String bairro;
+    private String localidade;
+    private String uf;
 
     //Atributos
 
     private String idUsuario;
     private String id;
 
-    private String rua;
     private String numero;
-    private String complemento;
-    private String bairro;
-    private String localidade;
-    private String uf;
-    private String cep;
 
     private double Latitude;
     private double Longitude;
-
-    public Endereco(String rua, String bairro, String localidade, String uf) {
-        this.rua = rua;
-        this.bairro = bairro;
-        this.localidade = localidade;
-        this.uf = uf;
-    }
-
-    public Endereco() {
-    }
 
     public String getIdUsuario() {
         return idUsuario;
@@ -49,20 +38,44 @@ public class Endereco implements Serializable {
         this.id = id;
     }
 
-    public String getRua() {
-        return rua;
-    }
-
-    public void setRua(String rua) {
-        this.rua = rua;
-    }
-
     public String getNumero() {
         return numero;
     }
 
     public void setNumero(String numero) {
         this.numero = numero;
+    }
+
+    public double getLatitude() {
+        return Latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        Latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return Longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        Longitude = longitude;
+    }
+
+    public String getCep() {
+        return cep;
+    }
+
+    public void setCep(String cep) {
+        this.cep = cep;
+    }
+
+    public String getLogradouro() {
+        return logradouro;
+    }
+
+    public void setLogradouro(String logradouro) {
+        this.logradouro = logradouro;
     }
 
     public String getComplemento() {
@@ -96,29 +109,4 @@ public class Endereco implements Serializable {
     public void setUf(String uf) {
         this.uf = uf;
     }
-
-    public String getCep() {
-        return cep;
-    }
-
-    public void setCep(String cep) {
-        this.cep = cep;
-    }
-
-    public double getLatitude() {
-        return Latitude;
-    }
-
-    public void setLatitude(double latitude) {
-        Latitude = latitude;
-    }
-
-    public double getLongitude() {
-        return Longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        Longitude = longitude;
-    }
 }
-

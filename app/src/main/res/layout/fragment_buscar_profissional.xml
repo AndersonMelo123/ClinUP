@@ -21,7 +21,7 @@
         android:layout_marginTop="8dp"
         android:background="@drawable/bg_edittext"
         android:ems="10"
-        android:hint="Buscar"
+        android:hint="@string/buscar"
         android:inputType="textPersonName"
         android:textColor="@color/cardview_dark_background"
         android:textColorHint="@color/cardview_dark_background"
@@ -35,7 +35,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="@color/colorPrimaryDark"
-        android:text="Buscar"
+        android:text="@string/buscar"
         app:layout_constraintStart_toEndOf="@+id/bpf_et_buscar"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -57,7 +57,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="@color/colorPrimaryDark"
-        android:text="Filtro"
+        android:text="@string/filtro"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/bpf_bt_buscar"
         app:layout_constraintTop_toTopOf="parent" />

@@ -40,7 +40,7 @@ public class PlanoDeSaudeImplements implements PlanoDeSaudeDatabase {
             @Override
             public void onComplete(@NonNull Task<Void> task) {  // "SetValue" enviando um valor ao banco se já existir apenas atualiza senão ele cria
                 if (task.isSuccessful()) {
-                    Toast.makeText(Contexto, "Sucesso ao cadastrar plano de saúde", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(Contexto, "Sucesso ao cadastrar plano de saúde", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(Contexto, "Falha ao cadastrar plano de saúde", Toast.LENGTH_SHORT).show();
                 }

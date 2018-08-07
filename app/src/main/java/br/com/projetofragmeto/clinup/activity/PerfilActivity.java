@@ -24,7 +24,7 @@ public class PerfilActivity extends AppCompatActivity {
     private TextView email;
     private TextView telefone;
     private TextView dataNascimento;
-    private Button  editarCadastro;
+    private Button editarCadastro;
     private DatabaseReference usuarioReferencia;
     private android.support.v7.widget.Toolbar toolbar;
 
@@ -38,7 +38,7 @@ public class PerfilActivity extends AppCompatActivity {
         toolbar.setTitle("Perfil");
         setSupportActionBar(toolbar);
 
-        if(getSupportActionBar() != null){//setinha de voltar
+        if (getSupportActionBar() != null) {//setinha de voltar
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
@@ -65,7 +65,7 @@ public class PerfilActivity extends AppCompatActivity {
 
                 Usuario usuario = dataSnapshot.getValue(Usuario.class);
 
-                if(usuario != null) {
+                if (usuario != null) {
                     nome.setText(usuario.getNome());
                     email.setText(usuario.getEmail());
                     dataNascimento.setText(usuario.getDataNascimento());
@@ -89,12 +89,18 @@ public class PerfilActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) { //método para finalizar a activity caso seja apertado a setinha de voltar
-        if(item.getItemId() == android.R.id.home)
+        if (item.getItemId() == android.R.id.home)
             finish();
         return super.onOptionsItemSelected(item);
     }
-    public void editarCadastro(){
-        Intent intent = new Intent(getApplicationContext(),AlterarCadastroUsuario.class);
+
+    public void editarCadastro() {
+        Intent intent = new Intent(getApplicationContext(), AlterarCadastroUsuario.class);
         startActivity(intent);
+    }
+
+    protected void onPause() {
+        super.onPause();
+        finish();
     }
 }
