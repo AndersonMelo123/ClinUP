@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -172,7 +173,6 @@ public class AgendarActivity extends FragmentActivity {
         usuarioReferencia.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {// método chamado sempre que os dados forem alterados no banco
-
                 Usuario usuario = dataSnapshot.getValue(Usuario.class);
 
 
@@ -188,7 +188,8 @@ public class AgendarActivity extends FragmentActivity {
 
                 }
 
-                if (!usuario.getEndereco().isEmpty()) {
+                if (dataSnapshot.hasChild("endereco")) {
+
                     String end = usuario.getEndereco();
 
                     DatabaseReference usuarioRef = ConfiguracaoFirebase.getFirebase().child("endereco").child(end);
@@ -209,7 +210,7 @@ public class AgendarActivity extends FragmentActivity {
                 }
 
 
-                if (!usuario.getPlanoDeSaude().isEmpty()) {
+                if (dataSnapshot.hasChild("planoDeSaude")) {
                     String planoSaude = usuario.getPlanoDeSaude();
 
                     DatabaseReference planoRef = ConfiguracaoFirebase.getFirebase().child("planodesaude").child(planoSaude);

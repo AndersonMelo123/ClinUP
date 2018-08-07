@@ -1,5 +1,6 @@
 package br.com.projetofragmeto.clinup.activity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TextInputLayout;
@@ -140,7 +141,7 @@ public class AlterarCadastroUsuario extends AppCompatActivity {
         valueEventListenerPlano = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot != null) {
+                if (dataSnapshot.exists()) {
 
                     PlanoDeSaude plano = dataSnapshot.getValue(PlanoDeSaude.class);
 
@@ -183,6 +184,8 @@ public class AlterarCadastroUsuario extends AppCompatActivity {
                     usuario.salvar();
 
                     Plano.inserirPlanodeSaude(planoDeSaude, usuario.getId(), nomePlano.getText().toString(), numPlano.getText().toString());
+
+                    irParaPerfilCliente();
                 }
 
             }
@@ -314,5 +317,11 @@ public class AlterarCadastroUsuario extends AppCompatActivity {
                     break;
             }
         }
+    }
+
+    public void irParaPerfilCliente(){
+        Intent intent = new Intent(this,PerfilActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

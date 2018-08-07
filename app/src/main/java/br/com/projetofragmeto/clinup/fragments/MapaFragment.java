@@ -399,10 +399,7 @@ public class MapaFragment extends Fragment implements
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-                String nome = "";
-                String endereco = "";
-
-                paraCadaClienteColetaInformacoes(nome, endereco, cliente, dataSnapshot, googleMap);
+                paraCadaClienteColetaInformacoes( cliente, dataSnapshot, googleMap);
             }
 
             @Override
@@ -430,16 +427,16 @@ public class MapaFragment extends Fragment implements
     }
 
     // Percorrento todos os clientes e coletando informações
-    private void paraCadaClienteColetaInformacoes(String nome,
-                                                  String endereco,
-                                                  String cliente,
-                                                  DataSnapshot dataSnapshot,
-                                                  GoogleMap googleMap) {
+    private void paraCadaClienteColetaInformacoes( String cliente, DataSnapshot dataSnapshot, GoogleMap googleMap) {
+
+        String nome = "";
+        String endereco = "";
 
         switch (cliente) {
             case "clinica":
 
                 Clinica clinica = dataSnapshot.getValue(Clinica.class);
+                if (dataSnapshot.hasChildren())
                 nome = clinica.getNome();
                 endereco = clinica.getEndereco();
 
@@ -493,14 +490,16 @@ public class MapaFragment extends Fragment implements
 
                     Endereco endereco = dataSnapshot.getValue(Endereco.class);
 
-                    String enderecoMarcador = endereco.getLogradouro()
-                            + "," + endereco.getLocalidade()
-                            + " " + endereco.getUf()
-                            + " " + endereco.getBairro();
+                    if (dataSnapshot.hasChild("logradouro")) {
+                        String enderecoMarcador = endereco.getLogradouro()
+                                + "," + endereco.getLocalidade()
+                                + " " + endereco.getUf()
+                                + " " + endereco.getBairro();
 
-                    location[0] = determineLatLngFromAddress(getContext(), enderecoMarcador);
+                        location[0] = determineLatLngFromAddress(getContext(), enderecoMarcador);
 
-                    setarMarcador(location[0], googleMap, nome, cliente, classe);
+                        setarMarcador(location[0], googleMap, nome, cliente, classe);
+                    }
                 }
             }
 
