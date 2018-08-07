@@ -1,11 +1,9 @@
 package br.com.projetofragmeto.clinup.fragments;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,16 +63,11 @@ public class ListaFragment extends Fragment {
         Preferencias preferencesUser = new Preferencias(getContext());
         final String idUsuarios = preferencesUser.getIdentificador();
 
-        //firebase = ConfiguracaoFirebase.getFirebase().child("agendamento").child(idUsuarios);
-
         //metodo q faz a listagem
         firebase.addValueEventListener(new ValueEventListener() {//faz a consulta no banco
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.getValue() != null){
-
-                    //Usuario user = dataSnapshot.getValue(Usuario.class);
-                    //String id = user.getIdUsuario();
 
                     for(DataSnapshot dados: dataSnapshot.getChildren()){
 
@@ -85,7 +78,6 @@ public class ListaFragment extends Fragment {
                         if(idUsuarioAgendamento.equals(idUsuarios)) {
 
                             String nome = ag.getNomeUsuario();
-                            String data = ag.getDataConsulta();
                             agendObjetos.add(ag);//adiciona o profissional p em profObjetos
                             agendamentos.add(nome);//adiciona o nome do profissional p em profissionais
                         }
@@ -105,8 +97,6 @@ public class ListaFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                //Agendamento age = (Agendamento)adapterView.getAdapter().getItem(i);
-
                 Intent intent = new Intent(getActivity(),CancelarAgendamentos.class);
 
                 intent.putExtra("ID", agendObjetos.get(i).getId());
@@ -124,31 +114,6 @@ public class ListaFragment extends Fragment {
 
 
         return view;
-    }
-
-    private void cancelarAgendamento(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        View view = getLayoutInflater().inflate(R.layout.dialog_excluir_agendamento, null);
-
-        builder.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-            }
-
-
-        });
-
-        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-            }
-        });
-
-        builder.setView(view);
-        AlertDialog dialog = builder.create();
-        dialog.show();
     }
 
 }

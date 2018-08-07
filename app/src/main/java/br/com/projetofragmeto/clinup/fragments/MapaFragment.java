@@ -55,38 +55,6 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
 
         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(Liberty));
 
-
-/*
-//começou aqui
-        mGoogleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng latLng) {
-                Double lat = latLng.latitude;
-                Double longi = latLng.longitude;
-
-                Toast.makeText(getContext(), "lat: "+lat+"long: "+ longi, Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        mGoogleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng latLng) {
-                // Criar marker no marker
-                MarkerOptions options = new MarkerOptions();
-                options.position( latLng );
-                mGoogleMap.addMarker( options );
-                // Configurando as propriedades da Linha
-                PolylineOptions polylineOptions = new PolylineOptions();
-                polylineOptions.add( new LatLng(-8.890212, -36.493041) );
-                polylineOptions.add( latLng );
-                polylineOptions.color(Color.BLUE );
-// Adiciona a linha no mapa
-                mGoogleMap.addPolyline( polylineOptions );
-            }
-        });
-*/
-
-
     }
 
 
@@ -109,29 +77,4 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
             mMapView.getMapAsync(this);
         }
     }
-/*
-    @Override
-    public void onStart() {
-        super.onStart();
-        mGoogleApiClient.connect();
-    }
-    @Override
-    public void onStop() {
-        mGoogleApiClient.disconnect();
-        super.onStop();
-    }
-
-
-    public void onConnected(@Nullable Bundle bundle) {
-        Log.i("LOG", "Conectado ao Google Play Services!");
-    }
-
-    public void onConnectionSuspended(int i) {
-        Log.i("LOG", "Conexão Interrompida");
-    }
-
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.i("LOG", "Erro ao conectar: " + connectionResult);
-    }
-*/
 }

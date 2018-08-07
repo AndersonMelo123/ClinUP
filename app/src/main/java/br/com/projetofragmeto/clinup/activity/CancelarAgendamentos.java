@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -17,11 +16,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.GregorianCalendar;
 
 import br.com.projetofragmeto.clinup.R;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
@@ -97,7 +91,6 @@ public class CancelarAgendamentos extends AppCompatActivity {
             }
         });
 
-        //planoSaud.setText(getPlano);
         dataAgendamento.setText(getDataAtual);
         dataConsulta.setText(getDataConsulta);
 
@@ -124,32 +117,6 @@ public class CancelarAgendamentos extends AppCompatActivity {
 
                 final DatabaseReference bancoDados = ConfiguracaoFirebase.getFirebase().child("agendamento").child(getId);
 
-                try {
-                    String dia = diaSemana(getDataConsulta);
-                    Log.i("DIA", dia);
-
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-/*
-                final DatabaseReference bd = ConfiguracaoFirebase.getFirebase().child("profissionais").child(getIdCliente);
-                bd.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Profissional pro = dataSnapshot.getValue(Profissional.class);
-                        int d = pro.getDias().getDomingo();
-                        //Log.i("DATA", String.valueOf(d));
-                        pro.getDias().setDomingo(d+1);
-                        int f = pro.getDias().getDomingo();
-                        //Log.i("DATADADATA", String.valueOf(f));
-                        //firebase.child("profissionais").child(ge)
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                    }
-                });
-*/
-
                 bancoDados.removeValue();
 
                 Toast.makeText(CancelarAgendamentos.this, "Agendamento cancelado com sucesso", Toast.LENGTH_SHORT).show();
@@ -173,34 +140,6 @@ public class CancelarAgendamentos extends AppCompatActivity {
         builder.setView(view);
         AlertDialog dialog = builder.create();
         dialog.show();
-    }
-
-    // Pega o dia da semana atual
-    private String diaSemana(String strDate) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        Date ontem = sdf.parse(strDate);
-        GregorianCalendar gc = new GregorianCalendar();
-        gc.setTime(ontem);
-        int diaDaSemana = gc.get(GregorianCalendar.DAY_OF_WEEK);
-        String dia = null;
-        switch (diaDaSemana) {
-            case 1:
-                return dia = "domingo";
-            case 2:
-                return dia = "segunda";
-            case 3:
-                return dia = "terca";
-            case 4:
-                return dia = "quarta";
-            case 5:
-                return dia = "quinta";
-            case 6:
-                return dia = "sexta";
-            case 7:
-                return dia = "sabado";
-
-        }
-        return dia;
     }
 
     @Override

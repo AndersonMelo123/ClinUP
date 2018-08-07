@@ -197,7 +197,7 @@ public class AgendarActivity extends FragmentActivity {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         Endereco userEndereco = dataSnapshot.getValue(Endereco.class);
 
-                        endereco.setText(String.valueOf(userEndereco.getLogradouro() + ", " + userEndereco.getNumero()));
+                        endereco.setText(String.valueOf(userEndereco.getRua() + ", " + userEndereco.getNumero()));
                     }
 
                     @Override
