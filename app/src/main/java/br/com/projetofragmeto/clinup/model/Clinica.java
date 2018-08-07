@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 public class Clinica implements Serializable {
 
-    private String cnpj, email, endereco, nome, telefone;
     private String cnpj;
     private String email;
     private String endereco;

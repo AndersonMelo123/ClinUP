@@ -1,259 +1,211 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_cadastro"
     tools:context=".activity.PerfilCliente"
     tools:layout_editor_absoluteY="25dp">
 
-    <LinearLayout
-        android:id="@+id/lienarLayout"
-        android:layout_width="match_parent"
-        android:layout_height="0dp">
-
-        <include
-            android:id="@+id/toolbarActivity"
-            layout="@layout/toolbar_activity"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="40dp" />
-    </LinearLayout>
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
-
-        <android.support.v4.widget.NestedScrollView
-            android:id="@+id/scrollView4"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="32dp"
-            android:fillViewport="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lienarLayout">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="@drawable/rounded"
-                android:orientation="vertical">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"></ScrollView>
+    <include
+        android:id="@+id/toolbarActivity"
+        layout="@layout/toolbar_activity"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="40dp" />
 
 
-                <!-- Nome -->
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/textInput_NomeID"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="31dp"
-                    android:layout_marginStart="31dp"
-                    android:layout_marginTop="28dp"
-                    android:theme="@style/StyleEditText"
-                    app:layout_constraintBottom_toTopOf="@+id/textInput_EmailID"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarActivity"
+        app:srcCompat="@mipmap/ic_launcher_round" />
 
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/edit_perfil_nomeID"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Nome"
-                        android:inputType="text"
-                        android:textColor="@android:color/black"
-                        android:textSize="15sp" />
+    <TextView
+        android:id="@+id/edit_perfil_nomeID"
+        android:layout_width="168dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Nome"
+        android:textColor="@color/caldroid_333"
+        android:textSize="@dimen/nameTitle"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.021"
+        app:layout_constraintStart_toEndOf="@+id/imageView3"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarActivity" />
 
-                </android.support.design.widget.TextInputLayout>
+    <Button
+        android:id="@+id/botao_agendar"
+        android:layout_width="127dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
+        android:background="#c6c6c6"
+        android:text="Agendar"
+        android:textColor="@color/Black"
+        app:layout_constraintStart_toEndOf="@+id/imageView3"
+        app:layout_constraintTop_toBottomOf="@+id/edit_perfil_nomeID" />
 
+    <Button
+        android:id="@+id/botao_favorito"
+        android:layout_width="46dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/ic_action_heart"
+        android:textColor="@color/Black"
+        app:layout_constraintStart_toEndOf="@+id/botao_agendar"
+        app:layout_constraintTop_toBottomOf="@+id/edit_perfil_nomeID" />
 
-                <!-- E-mail -->
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/textInput_nascimentoID"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="31dp"
-                    android:layout_marginStart="31dp"
-                    android:theme="@style/StyleEditText"
-                    app:layout_constraintBottom_toTopOf="@+id/textInput_TelefoneID"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textInput_EmailID">
+    <Button
+        android:id="@+id/botao_ligar"
+        android:layout_width="46dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/ic_action_phone_start"
+        android:textColor="@color/Black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/botao_favorito"
+        app:layout_constraintTop_toBottomOf="@+id/edit_perfil_nomeID" />
 
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/edit_perfil_dataNascimentoID"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="dd/mm/aaaa"
-                        android:inputType="date"
-                        android:textColor="@android:color/black"
-                        android:textSize="15sp" />
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="28dp"
+        android:text="Local de Atendimento"
+        android:textColor="@color/caldroid_333"
+        android:textSize="@dimen/subtitle"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
-                </android.support.design.widget.TextInputLayout>
+    <TextView
+        android:id="@+id/edit_perfil_enderecoID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Não Informado"
+        android:textColor="@color/caldroid_555"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
-                <!-- Cpf -->
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/textInput_CpfID"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="31dp"
-                    android:layout_marginStart="31dp"
-                    android:theme="@style/StyleEditText"
-                    app:layout_constraintBottom_toTopOf="@+id/textInput_NomPlanoID"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textInput_TelefoneID">
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:text="Telefone"
+        android:textColor="@color/caldroid_333"
+        android:textSize="@dimen/subtitle"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_perfil_enderecoID" />
 
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/edit_perfil_cpfID"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="CPF"
-                        android:inputType="number"
-                        android:textColor="@android:color/black"
-                        android:textSize="15sp" />
+    <TextView
+        android:id="@+id/edit_perfil_numTelefoneID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Não Informado"
+        android:textColor="@color/caldroid_555"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
-                </android.support.design.widget.TextInputLayout>
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:text="Especialidade"
+        android:textColor="@color/caldroid_333"
+        android:textSize="@dimen/subtitle"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_perfil_numTelefoneID" />
 
+    <TextView
+        android:id="@+id/edit_perfil_especialidadeID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Não Informado"
+        android:textColor="@color/caldroid_555"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
-                <!-- Especialidade -->
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/textInput_perfil_EspecialidadeID"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="31dp"
-                    android:layout_marginStart="31dp"
-                    android:theme="@style/StyleEditText"
-                    app:layout_constraintBottom_toTopOf="@+id/textInput_NumPlanoID"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textInput_CpfID">
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:text="Número de Registro"
+        android:textColor="@color/caldroid_333"
+        android:textSize="@dimen/subtitle"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_perfil_especialidadeID" />
 
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/edit_perfil_especialidadeID"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Especialidade"
-                        android:inputType="text"
-                        android:textColor="@android:color/black"
-                        android:textSize="15sp" />
+    <TextView
+        android:id="@+id/edit_perfil_numRegistroID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Não Informado"
+        android:textColor="@color/caldroid_555"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
-                </android.support.design.widget.TextInputLayout>
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:text="Horário de Funcionamento"
+        android:textColor="@color/caldroid_333"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_perfil_numRegistroID" />
 
-
-                <!-- Número de Registro -->
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/textInput_perfil_NumRegistroID"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="31dp"
-                    android:layout_marginStart="31dp"
-                    android:theme="@style/StyleEditText"
-                    app:layout_constraintBottom_toTopOf="@+id/textInput_SenhaID"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textInput_NomPlanoID">
-
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/edit_perfil_numRegistroID"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Nº Registro"
-                        android:inputType="number"
-                        android:textColor="@android:color/black"
-                        android:textSize="15sp" />
-
-                </android.support.design.widget.TextInputLayout>
-
-
-                <!-- Telefone -->
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/textInput_TelefoneID"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="31dp"
-                    android:layout_marginStart="31dp"
-                    android:theme="@style/StyleEditText"
-                    app:layout_constraintBottom_toTopOf="@+id/textInput_CpfID"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textInput_nascimentoID">
-
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/edit_perfil_numTelefoneID"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="(87)99999-9999"
-                        android:inputType="number"
-                        android:textColor="@android:color/black"
-                        android:textSize="15sp" />
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/textInput_EmailID"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="31dp"
-                    android:layout_marginStart="31dp"
-                    android:theme="@style/StyleEditText"
-                    app:layout_constraintBottom_toTopOf="@+id/textInput_nascimentoID"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textInput_NomeID">
-
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/edit_perfil_emailID"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="E-mail"
-                        android:inputType="textEmailAddress"
-                        android:textColor="@android:color/black"
-                        android:textSize="15sp" />
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/textInput_EnderecoID"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="31dp"
-                    android:layout_marginStart="31dp"
-                    android:theme="@style/StyleEditText"
-                    app:layout_constraintBottom_toTopOf="@+id/textInput_nascimentoID"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textInput_NomeID">
-
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/edit_perfil_enderecoID"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Endereço"
-                        android:inputType="textEmailAddress"
-                        android:textColor="@android:color/black"
-                        android:textSize="15sp" />
-
-                </android.support.design.widget.TextInputLayout>
-
-                <Button
-                    android:id="@+id/botao_agendar"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginBottom="14dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/botao_agendar"
-                    android:theme="@style/botaoPadrao" />
-
-            </LinearLayout>
-        </android.support.v4.widget.NestedScrollView>
-    </ScrollView>
+    <TextView
+        android:id="@+id/edit_perfil_horarioID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Não Informado"
+        android:textColor="@color/caldroid_555"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
 </android.support.constraint.ConstraintLayout>

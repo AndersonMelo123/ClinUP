@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class Agendamento implements Serializable {
 
-    private String id_Usuario, id_Cliente, dataConsulta, dataAtual, nomeUsuario, id_Plano;
+    private String id_Usuario, id_Cliente, dataConsulta, dataAtual, nomeUsuario, id_Plano, id;
 
     public Agendamento() {
     }
@@ -65,5 +65,13 @@ public class Agendamento implements Serializable {
 
     public void setId_Plano(String id_Plano) {
         this.id_Plano = id_Plano;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

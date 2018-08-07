@@ -15,7 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -180,7 +179,7 @@ public class AgendarActivity extends FragmentActivity {
 
                 if (usuario != null) {
                     nome.setText(usuario.getNome());
-                    //endereco.setText(usuario.getEndereco());
+                    endereco.setText(usuario.getEndereco());
                     email.setText(usuario.getEmail());
                     planoDeSaude.setText(usuario.getPlanoDeSaude());
                     dataNascimento.setText(usuario.getDataNascimento());
@@ -198,7 +197,7 @@ public class AgendarActivity extends FragmentActivity {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         Endereço userEndereco = dataSnapshot.getValue(Endereço.class);
 
-                        endereco.setText(String.valueOf(userEndereco.getRua() + ", " + userEndereco.getNumero()));
+                        endereco.setText(String.valueOf(userEndereco.getLogradouro() + ", " + userEndereco.getNumero()));
                     }
 
                     @Override
@@ -542,7 +541,7 @@ public class AgendarActivity extends FragmentActivity {
 
 
                         }
-                        agendamento.setIdAgendamentos(idkey);
+                        //agendamento.setIdAgendamentos(idkey);
 
 
                         Toast.makeText(AgendarActivity.this, "Agendamento marcado com sucesso", Toast.LENGTH_SHORT).show();
@@ -554,7 +553,7 @@ public class AgendarActivity extends FragmentActivity {
 
                 Agendamento agendamentoUsuario = new Agendamento();
 
-                agendamentoUsuario.setIdAgendamentos(idkey);
+                //agendamentoUsuario.setIdAgendamentos(idkey);
 
                 DatabaseReference bancoDados = ConfiguracaoFirebase.getFirebase().child("usuarios").child(idUsuarios);
 

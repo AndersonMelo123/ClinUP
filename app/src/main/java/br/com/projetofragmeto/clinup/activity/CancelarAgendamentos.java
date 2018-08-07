@@ -133,23 +133,19 @@ public class CancelarAgendamentos extends AppCompatActivity {
                 }
 /*
                 final DatabaseReference bd = ConfiguracaoFirebase.getFirebase().child("profissionais").child(getIdCliente);
-
                 bd.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         Profissional pro = dataSnapshot.getValue(Profissional.class);
-
                         int d = pro.getDias().getDomingo();
                         //Log.i("DATA", String.valueOf(d));
                         pro.getDias().setDomingo(d+1);
                         int f = pro.getDias().getDomingo();
                         //Log.i("DATADADATA", String.valueOf(f));
-
                         //firebase.child("profissionais").child(ge)
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-
                     }
                 });
 */

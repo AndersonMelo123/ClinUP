@@ -27,8 +27,6 @@ import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
 import br.com.projetofragmeto.clinup.helper.Preferencias;
 import br.com.projetofragmeto.clinup.model.Agendamento;
 
-import br.com.projetofragmeto.clinup.R;
-
 
 public class ListaFragment extends Fragment {
 

@@ -7,7 +7,7 @@ public class Endereço implements Serializable {
     private String cidade;
     private String estado;
     private String numero;
-    private String rua;
+    private String logradouro;
     private int id;
 
     public int getId() {
@@ -50,11 +50,11 @@ public class Endereço implements Serializable {
         this.numero = numero;
     }
 
-    public String getRua() {
-        return rua;
+    public String getLogradouro() {
+        return logradouro;
     }
 
-    public void setRua(String rua) {
-        this.rua = rua;
+    public void setLogradouro(String logradouro) {
+        this.logradouro = logradouro;
     }
 }
