@@ -33,7 +33,7 @@ public class PerfilCliente extends AppCompatActivity {
     private String cnpj;
     private String cliente;
     private String classe;
-    private TextView tv_id;
+    //private TextView tv_id;
     private TextView tv_endereco;
 
 
