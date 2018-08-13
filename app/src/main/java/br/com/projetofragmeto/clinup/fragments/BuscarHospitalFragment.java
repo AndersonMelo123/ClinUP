@@ -26,6 +26,7 @@ import java.util.ArrayList;
 
 import br.com.projetofragmeto.clinup.R;
 import br.com.projetofragmeto.clinup.activity.PerfilCliente;
+import br.com.projetofragmeto.clinup.adapter.AdapterPersonalizadoHospital;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
 import br.com.projetofragmeto.clinup.database.HospitalDB;
 import br.com.projetofragmeto.clinup.model.Hospital;
@@ -67,12 +68,14 @@ public class BuscarHospitalFragment extends Fragment implements Serializable {
 
         listView = view.findViewById(R.id.lv_hospital);
 
-        adapter = new ArrayAdapter(
+        final AdapterPersonalizadoHospital adapterPersonalizado = new AdapterPersonalizadoHospital(hospObjetos, getActivity());
+
+        /*adapter = new ArrayAdapter(
                 getActivity(), // pega o contexto da activity onde esse fragment está
                 R.layout.lista_busca, //layout da lista
                 hospitais //array list contendo todos os contados
-        );
-        listView.setAdapter(adapter); //seta o adaptados
+        );*/
+        listView.setAdapter(adapterPersonalizado); //seta o adaptados
 
         botaoBusca = view.findViewById(R.id.bhf_bt_buscar);
         botaoFiltro = view.findViewById(R.id.bhf_bp_filtro);
@@ -151,11 +154,11 @@ public class BuscarHospitalFragment extends Fragment implements Serializable {
                                     //hospitais.clear();
                                     for (DataSnapshot dados : dataSnapshot.getChildren()) {
                                         Hospital h = dados.getValue(Hospital.class);
-                                        String nome = h.getNome();
+                                        String nome = h.toString();
                                         hospitais.add(nome);
                                         hospObjetos.add(h);
                                     }
-                                    adapter.notifyDataSetChanged();
+                                    adapterPersonalizado.notifyDataSetChanged();
                                 }
                             }
 
@@ -175,11 +178,11 @@ public class BuscarHospitalFragment extends Fragment implements Serializable {
                                     //hospitais.clear();
                                     for (DataSnapshot dados : dataSnapshot.getChildren()) {
                                         Hospital h = dados.getValue(Hospital.class);
-                                        String nome = h.getNome();
+                                        String nome = h.toString();
                                         hospitais.add(nome);
                                         hospObjetos.add(h);
                                     }
-                                    adapter.notifyDataSetChanged();
+                                    adapterPersonalizado.notifyDataSetChanged();
                                 }
                             }
 

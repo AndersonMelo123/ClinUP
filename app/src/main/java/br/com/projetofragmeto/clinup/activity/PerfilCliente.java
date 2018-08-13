@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -21,7 +22,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import br.com.projetofragmeto.clinup.R;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
+import br.com.projetofragmeto.clinup.helper.Preferencias;
 import br.com.projetofragmeto.clinup.model.Endereco;
+import br.com.projetofragmeto.clinup.model.Favoritos;
+import br.com.projetofragmeto.clinup.model.Usuario;
 
 public class PerfilCliente extends AppCompatActivity {
 
@@ -33,9 +37,11 @@ public class PerfilCliente extends AppCompatActivity {
     private String cnpj;
     private String cliente;
     private String classe;
+    private String nomeUser;
     //private TextView tv_id;
     private TextView tv_endereco;
 
+    DatabaseReference firebase;
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -56,6 +62,7 @@ public class PerfilCliente extends AppCompatActivity {
 
         Button agendar = findViewById(R.id.botao_agendar);
         Button ligar = findViewById(R.id.botao_ligar);
+        final Button favoritos = findViewById(R.id.botao_favorito);
 
         TextView tv_nome = (TextView) findViewById(R.id.edit_perfil_nomeID);
         tv_endereco = (TextView) findViewById(R.id.edit_perfil_enderecoID);
@@ -166,6 +173,57 @@ public class PerfilCliente extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 ligar(view);
+            }
+        });
+
+        Preferencias preferencesUser = new Preferencias(this);
+        final String idUsuarios = preferencesUser.getIdentificador(); // Obter o identificador do usuário que está logado
+
+
+        firebase = ConfiguracaoFirebase.getFirebase() // Consultando o usuário no banco de dados se existir ele pega
+                .child("usuarios").child(idUsuarios);
+
+        firebase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Usuario user = dataSnapshot.getValue(Usuario.class);
+
+                nomeUser = user.getNome();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        favoritos.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceAsColor")
+            @Override
+            public void onClick(View view) {
+
+                DatabaseReference bancoDeDados = ConfiguracaoFirebase.getFirebase();
+
+                bancoDeDados = bancoDeDados.child("favoritos").push();
+
+                final Favoritos favoritos = new Favoritos();
+
+                favoritos.setNomeCliente(nome);
+                favoritos.setId_Cliente(id);
+
+                favoritos.setId_Usuario(idUsuarios);
+                favoritos.setNomeUsuario(nomeUser);
+
+
+                bancoDeDados.setValue(favoritos).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                        Toast.makeText(PerfilCliente.this, "Adicionado aos Favoritos", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
             }
         });
 

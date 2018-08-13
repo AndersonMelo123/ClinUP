@@ -487,6 +487,23 @@ public class AgendarActivity extends FragmentActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View view = getLayoutInflater().inflate(R.layout.dialog_confirmar_agendamento, null);
 
+        DatabaseReference clientRef = ConfiguracaoFirebase.getFirebase().child(cliente).child(id);
+
+        /*;clientRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Object user = dataSnapshot.getValue(classe.getClass());
+
+                agendamento.setNome_Cliente();
+                endereco.setText(String.valueOf(userEndereco.getLogradouro() + ", " + userEndereco.getNumero()));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });*/
+
         builder.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {

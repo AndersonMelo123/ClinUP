@@ -12,6 +12,12 @@ public class Hospital implements Serializable {
     private String telefone;
     private String horaAbrir,horaFechar;
 
+    @Override
+    public String toString() {
+        return "Nome: " + nome + '\n' +
+                "Telefone: " + telefone;
+    }
+
     public String getHoraAbrir() {
         return horaAbrir;
     }

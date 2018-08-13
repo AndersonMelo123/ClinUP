@@ -14,6 +14,12 @@ public class Laboratorio implements Serializable {
     public Laboratorio() {
     }
 
+    @Override
+    public String toString() {
+        return "Nome: " + nome + '\n' +
+                "Telefone: " + telefone;
+    }
+
     public String getHoraAbrir() {
         return horaAbrir;
     }

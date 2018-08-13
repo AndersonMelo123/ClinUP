@@ -26,6 +26,7 @@ import java.util.ArrayList;
 
 import br.com.projetofragmeto.clinup.R;
 import br.com.projetofragmeto.clinup.activity.PerfilCliente;
+import br.com.projetofragmeto.clinup.adapter.AdapterPersonalizadoClinica;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
 import br.com.projetofragmeto.clinup.database.ClinicaDB;
 import br.com.projetofragmeto.clinup.model.Clinica;
@@ -71,12 +72,15 @@ public class BuscarClinicaFragment extends Fragment implements Serializable{
 
         listView = view.findViewById(R.id.lv_clinica);
 
-        adapter = new ArrayAdapter(
+        final AdapterPersonalizadoClinica adapterPersonalizado = new AdapterPersonalizadoClinica(clinObjetos, getActivity());
+
+
+        /*adapter = new ArrayAdapter(
                 getActivity(), // pega o contexto da activity onde esse fragment está
                 R.layout.lista_busca, //layout da lista
                 clinicas //array list contendo todos os contados
-        );
-        listView.setAdapter(adapter); //seta o adaptados
+        );*/
+        listView.setAdapter(adapterPersonalizado); //seta o adaptados
 
         // método que pega o click da listview
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -151,13 +155,13 @@ public class BuscarClinicaFragment extends Fragment implements Serializable{
 
                                     for(DataSnapshot dados: dataSnapshot.getChildren()){
                                         Clinica c = dados.getValue(Clinica.class);
-                                        String nome = c.getNome();
+                                        String nome = c.toString();
                                         clinObjetos.add(c);
                                         clinicas.add(nome);
                                     }
 
 
-                                    adapter.notifyDataSetChanged();
+                                    adapterPersonalizado.notifyDataSetChanged();
                                 }
                             }
                             @Override
@@ -179,12 +183,12 @@ public class BuscarClinicaFragment extends Fragment implements Serializable{
 
                                     for (DataSnapshot dados : dataSnapshot.getChildren()) {
                                         Clinica c = dados.getValue(Clinica.class);
-                                        String nome = c.getNome();
+                                        String nome = c.toString();
                                         clinObjetos.add(c);
                                         clinicas.add(nome);
                                     }
                                 }
-                                adapter.notifyDataSetChanged();
+                                adapterPersonalizado.notifyDataSetChanged();
                             }
                             @Override
                             public void onCancelled(@NonNull DatabaseError databaseError) {

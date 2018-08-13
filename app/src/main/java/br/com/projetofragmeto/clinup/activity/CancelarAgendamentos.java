@@ -51,6 +51,11 @@ public class CancelarAgendamentos extends AppCompatActivity {
         toolbar.setTitle("Agendamento");
         setSupportActionBar(toolbar);
 
+        if (getSupportActionBar() != null) {//setinha de voltar
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
 
         nome = findViewById(R.id.nome_l);
         planoSaud = findViewById(R.id.planoSaud);

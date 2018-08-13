@@ -6,6 +6,12 @@ public class Clinica implements Serializable {
 
     private String cnpj, email, endereco, nome, telefone, horaAbrir, horaFechar, id;
 
+    @Override
+    public String toString() {
+        return "Nome: " + nome + '\n' +
+                "Telefone: " + telefone;
+    }
+
     public String getHoraAbrir() {
         return horaAbrir;
     }

@@ -27,6 +27,7 @@ import java.util.ArrayList;
 
 import br.com.projetofragmeto.clinup.R;
 import br.com.projetofragmeto.clinup.activity.PerfilCliente;
+import br.com.projetofragmeto.clinup.adapter.AdapterPersonalizadoProfissionais;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
 import br.com.projetofragmeto.clinup.database.ProfissionalDB;
 import br.com.projetofragmeto.clinup.model.Profissional;
@@ -71,12 +72,14 @@ public class BuscarProfissionalFragment extends Fragment implements Serializable
         botaoFiltrar = view.findViewById(R.id.bpf_bp_filtro);
         textView = view.findViewById(R.id.textView);
 
-        adapter = new ArrayAdapter(
+        final AdapterPersonalizadoProfissionais adapterPersonalizado = new AdapterPersonalizadoProfissionais(profObjetos, getActivity());
+
+        /*adapter = new ArrayAdapter(
                 getActivity(), // pega o contexto da activity onde esse fragment está
                 R.layout.lista_busca, //layout da lista
                 profissionais //array list contendo todos os contados
-        );
-        listView.setAdapter(adapter); //seta o adaptados
+        );*/
+        listView.setAdapter(adapterPersonalizado); //seta o adaptados
 
         firebase = ConfiguracaoFirebase.getFirebase().child("profissionais");
 
@@ -103,7 +106,7 @@ public class BuscarProfissionalFragment extends Fragment implements Serializable
 
                 intent.putExtra("email", profObjetos.get(i).getId());
                 intent.putExtra("nome", profObjetos.get(i).getNome());
-                intent.putExtra("id", profObjetos.get(i).getId());
+                intent.putExtra("id", profObjetos.get(i).getNum_registro());
                 intent.putExtra("telefone", profObjetos.get(i).getTelefone());
                 intent.putExtra("endereco", profObjetos.get(i).getEndereco());
                 intent.putExtra("especialidade", profObjetos.get(i).getEspecialidade());
@@ -165,13 +168,13 @@ public class BuscarProfissionalFragment extends Fragment implements Serializable
                                     //profissionais.clear();
                                     for (DataSnapshot dados : dataSnapshot.getChildren()) {
                                         Profissional p = dados.getValue(Profissional.class);//retorna cada objeto da consulta em p
-                                        String nome = p.getNome();
+                                        String nome = p.toString();
                                         Log.i("NOME", nome);
                                         profObjetos.add(p);//adiciona o profissional p em profObjetos
                                         profissionais.add(nome);//adiciona o nome do profissional p em profissionais
                                     }
                                     //profissionais = profissionalDB.buscarDados(dataSnapshot,profissionais);
-                                    adapter.notifyDataSetChanged();//notifica ao adapter as mudanças ocorridas
+                                    adapterPersonalizado.notifyDataSetChanged();//notifica ao adapter as mudanças ocorridas
                                 }
                             }
 
@@ -191,13 +194,13 @@ public class BuscarProfissionalFragment extends Fragment implements Serializable
                                     profissionais.clear();
                                     for (DataSnapshot dados : dataSnapshot.getChildren()) {
                                         Profissional p = dados.getValue(Profissional.class);
-                                        String nome = p.getNome();
+                                        String nome = p.toString();
                                         Log.i("NOME", nome);
                                         profObjetos.add(p);
                                         profissionais.add(nome);
                                     }
                                     //profissionais = profissionalDB.buscarDados(dataSnapshot,profissionais);
-                                    adapter.notifyDataSetChanged();
+                                    adapterPersonalizado.notifyDataSetChanged();
                                 }
                             }
 
@@ -216,13 +219,13 @@ public class BuscarProfissionalFragment extends Fragment implements Serializable
                                     profissionais.clear();
                                     for (DataSnapshot dados : dataSnapshot.getChildren()) {
                                         Profissional p = dados.getValue(Profissional.class);
-                                        String nome = p.getNome();
+                                        String nome = p.toString();
                                         Log.i("NOME", nome);
                                         profObjetos.add(p);
                                         profissionais.add(nome);
                                     }
                                     //profissionais = profissionalDB.buscarDados(dataSnapshot,profissionais);
-                                    adapter.notifyDataSetChanged();
+                                    adapterPersonalizado.notifyDataSetChanged();
                                 }
                             }
 

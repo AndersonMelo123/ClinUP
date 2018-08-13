@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class Agendamento implements Serializable {
 
-    private String id_Usuario, id_Cliente, dataConsulta, dataAtual, nomeUsuario, id_Plano, id;
+    private String id_Usuario, id_Cliente, dataConsulta, dataAtual, nomeUsuario, id_Plano, id, nome_Cliente;
 
     public Agendamento() {
     }
@@ -17,6 +17,20 @@ public class Agendamento implements Serializable {
         this.dataAtual = dataAtual;
         this.nomeUsuario = nomeUsuario;
         this.id_Plano = id_Plano;
+    }
+
+    @Override
+    public String toString() {
+        return "Nome: " + nomeUsuario + '\n' +
+                "Data da Consulta: " + dataConsulta;
+    }
+
+    public String getNome_Cliente() {
+        return nome_Cliente;
+    }
+
+    public void setNome_Cliente(String nome_Cliente) {
+        this.nome_Cliente = nome_Cliente;
     }
 
     public String getId_Usuario() {
