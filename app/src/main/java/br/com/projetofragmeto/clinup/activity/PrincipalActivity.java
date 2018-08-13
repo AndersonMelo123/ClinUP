@@ -359,7 +359,8 @@ public class PrincipalActivity extends AppCompatActivity {
     }
 
     public void goToBuscaActivity() {
-        Intent intent = new Intent(getApplicationContext(),BuscaActivity.class);
+        //Intent intent = new Intent(getApplicationContext(),BuscaActivity.class);
+        Intent intent = new Intent(getApplicationContext(),BuscaGeralActivity.class);
         startActivity(intent);
     }
 
