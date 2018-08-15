@@ -66,12 +66,11 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:text="Filtro:"
         android:textColor="@color/cardview_dark_background"
         android:textSize="@dimen/subtitle"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bpf_et_buscar" />
 </android.support.constraint.ConstraintLayout>
