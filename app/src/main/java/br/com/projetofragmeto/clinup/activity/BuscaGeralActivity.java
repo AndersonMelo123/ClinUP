@@ -139,7 +139,8 @@ public class BuscaGeralActivity extends AppCompatActivity {
                                     @Override
                                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                                        Intent intent = new Intent(BuscaGeralActivity.this, PerfilCliente.class);
+                                        passarInfoProf(i);
+                                        /*Intent intent = new Intent(BuscaGeralActivity.this, PerfilCliente.class);
 
                                         for(int j = 0; j < profObjetos.size();j++){
                                             if(profObjetos.get(j).getNome().equals(listaNomes.get(i))){
@@ -161,7 +162,7 @@ public class BuscaGeralActivity extends AppCompatActivity {
                                                 intent.putExtra("classe", Profissional.class);
                                                 startActivity(intent);
                                             }
-                                        }
+                                        }*/
 
 
                                     }
@@ -201,7 +202,8 @@ public class BuscaGeralActivity extends AppCompatActivity {
                                     @Override
                                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                                        Intent intent = new Intent(BuscaGeralActivity.this, PerfilCliente.class);
+                                        passarInfoClin(i);
+                                        /*Intent intent = new Intent(BuscaGeralActivity.this, PerfilCliente.class);
 
                                         for(int j = 0; j < clinObjetos.size();j++){
                                             if(clinObjetos.get(j).getNome().equals(listaNomes.get(i))){
@@ -221,7 +223,7 @@ public class BuscaGeralActivity extends AppCompatActivity {
                                                 intent.putExtra("classe",Clinica.class);
                                                 startActivity(intent);
                                             }
-                                        }
+                                        }*/
 
 
                                     }
@@ -259,7 +261,8 @@ public class BuscaGeralActivity extends AppCompatActivity {
                                     @Override
                                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                                        Intent intent = new Intent(BuscaGeralActivity.this, PerfilCliente.class);
+                                        passarInfoHosp(i);
+                                        /*Intent intent = new Intent(BuscaGeralActivity.this, PerfilCliente.class);
 
                                         for(int j = 0; j < hospObjetos.size();j++){
                                             if(hospObjetos.get(j).getNome().equals(listaNomes.get(i))){
@@ -280,7 +283,7 @@ public class BuscaGeralActivity extends AppCompatActivity {
                                                 intent.putExtra("classe", Hospital.class);
                                                 startActivity(intent);
                                             }
-                                        }
+                                        }*/
 
 
                                     }
@@ -317,7 +320,8 @@ public class BuscaGeralActivity extends AppCompatActivity {
                                     @Override
                                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                                        Intent intent = new Intent(BuscaGeralActivity.this, PerfilCliente.class);
+                                        passarInfoLab(i);
+                                        /*Intent intent = new Intent(BuscaGeralActivity.this, PerfilCliente.class);
 
                                         for(int j = 0; j < labObjetos.size();j++){
                                             if(labObjetos.get(j).getNome().equals(listaNomes.get(i))){
@@ -335,7 +339,7 @@ public class BuscaGeralActivity extends AppCompatActivity {
                                                 intent.putExtra("classe", Laboratorio.class);
                                                 startActivity(intent);
                                             }
-                                        }
+                                        }*/
 
 
                                     }
@@ -395,6 +399,99 @@ public class BuscaGeralActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
+    public void passarInfoProf(int i){
+        Intent intent = new Intent(BuscaGeralActivity.this, PerfilCliente.class);
+
+        for(int j = 0; j < profObjetos.size();j++){
+            if(profObjetos.get(j).getNome().equals(listaNomes.get(i))){
+                Log.i("VALOR",profObjetos.get(j).getNome() + ":"+ listaNomes.get(i));
+
+                intent.putExtra("email", profObjetos.get(j).getId());
+                intent.putExtra("nome", profObjetos.get(j).getNome());
+                intent.putExtra("id", profObjetos.get(j).getId());
+                intent.putExtra("telefone", profObjetos.get(j).getTelefone());
+                intent.putExtra("endereco", profObjetos.get(j).getEndereco());
+                intent.putExtra("especialidade", profObjetos.get(j).getEspecialidade());
+                intent.putExtra("formacao", profObjetos.get(j).getFormacao());
+                intent.putExtra("Num_registro", profObjetos.get(j).getNum_registro());
+
+                intent.putExtra("horaAbrir",profObjetos.get(j).getHoraAbrir());
+                intent.putExtra("horaFechar",profObjetos.get(j).getHoraFechar());
+
+                intent.putExtra("cliente", "listaNomes");
+                intent.putExtra("classe", Profissional.class);
+                startActivity(intent);
+            }
+        }
+    }
+    public void passarInfoHosp(int i){
+        Intent intent = new Intent(BuscaGeralActivity.this, PerfilCliente.class);
+
+        for(int j = 0; j < hospObjetos.size();j++){
+            if(hospObjetos.get(j).getNome().equals(listaNomes.get(i))){
+                Log.i("VALOR",hospObjetos.get(j).getNome() + ":"+ listaNomes.get(i));
+
+                intent.putExtra("email", hospObjetos.get(i).getEmail());
+                intent.putExtra("nome", hospObjetos.get(i).getNome());
+                intent.putExtra("id", hospObjetos.get(i).getCnpj());
+                intent.putExtra("endereco", hospObjetos.get(i).getEndereco());
+                intent.putExtra("telefone", hospObjetos.get(i).getTelefone());
+                intent.putExtra("cnpj", hospObjetos.get(i).getCnpj());
+
+                intent.putExtra("horaAbrir",hospObjetos.get(i).getHoraAbrir());
+                intent.putExtra("horaFechar",hospObjetos.get(i).getHoraFechar());
+
+
+                intent.putExtra("cliente", "hospitais");
+                intent.putExtra("classe", Hospital.class);
+                startActivity(intent);
+            }
+        }
+    }
+    public void passarInfoLab(int i){
+        Intent intent = new Intent(BuscaGeralActivity.this, PerfilCliente.class);
+
+        for(int j = 0; j < labObjetos.size();j++){
+            if(labObjetos.get(j).getNome().equals(listaNomes.get(i))){
+                Log.i("VALOR",labObjetos.get(j).getNome() + ":"+ listaNomes.get(i));
+
+                intent.putExtra("email", labObjetos.get(i).getId());
+                intent.putExtra("nome", labObjetos.get(i).getNome());
+                intent.putExtra("id", labObjetos.get(i).getId());
+                intent.putExtra("telefone", labObjetos.get(i).getTelefone());
+
+                intent.putExtra("horaAbrir",labObjetos.get(i).getHoraAbrir());
+                intent.putExtra("horaFechar",labObjetos.get(i).getHoraFechar());
+
+                intent.putExtra("cliente", "laboratorios");
+                intent.putExtra("classe", Laboratorio.class);
+                startActivity(intent);
+            }
+        }
+    }
+    public void passarInfoClin(int i){
+        Intent intent = new Intent(BuscaGeralActivity.this, PerfilCliente.class);
+
+        for(int j = 0; j < clinObjetos.size();j++){
+            if(clinObjetos.get(j).getNome().equals(listaNomes.get(i))){
+                Log.i("VALOR",clinObjetos.get(j).getNome() + ":"+ listaNomes.get(i));
+
+                intent.putExtra("nome",clinObjetos.get(i).getNome());
+                intent.putExtra("email", clinObjetos.get(i).getEmail() );
+                intent.putExtra("id", clinObjetos.get(i).getCnpj() );
+                intent.putExtra("endereco", clinObjetos.get(i).getEndereco() );
+                intent.putExtra("telefone", clinObjetos.get(i).getTelefone() );
+                intent.putExtra("cnpj", clinObjetos.get(i).getCnpj() );
+
+                intent.putExtra("horaAbrir",clinObjetos.get(i).getHoraAbrir());
+                intent.putExtra("horaFechar",clinObjetos.get(i).getHoraFechar());
+
+                intent.putExtra("cliente","clinica");
+                intent.putExtra("classe",Clinica.class);
+                startActivity(intent);
+            }
+        }
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) { //método para finalizar a activity caso seja apertado a setinha de voltar
         if(item.getItemId() == android.R.id.home)
