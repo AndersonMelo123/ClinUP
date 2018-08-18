@@ -45,11 +45,11 @@ public class AdapterPersonalizadoFavoritos extends BaseAdapter {
         Favoritos favoritos = this.favoritos.get(position);
 
         TextView nome = view.findViewById(R.id.lista_favoritos_personalizada_nome);
-        TextView descricao = view.findViewById(R.id.lista_favoritos_personalizada_descricao);
+        //TextView descricao = view.findViewById(R.id.lista_favoritos_personalizada_descricao);
         ImageView imagem = view.findViewById(R.id.lista_favoritos_personalizada_imagem);
 
         nome.setText(favoritos.getNomeCliente());
-        descricao.setText(favoritos.getNomeUsuario());
+        //descricao.setText(favoritos.getNomeUsuario());
 
         return view;
     }

@@ -207,13 +207,16 @@ public class PerfilCliente extends AppCompatActivity {
 
                 bancoDeDados = bancoDeDados.child("favoritos").push();
 
+                final String idkey = bancoDeDados.getKey();
+
                 final Favoritos favoritos = new Favoritos();
 
                 favoritos.setNomeCliente(nome);
                 favoritos.setId_Cliente(id);
 
                 favoritos.setId_Usuario(idUsuarios);
-                favoritos.setNomeUsuario(nomeUser);
+                //favoritos.setNomeUsuario(nomeUser);
+                favoritos.setId(String.valueOf(idkey));
 
 
                 bancoDeDados.setValue(favoritos).addOnSuccessListener(new OnSuccessListener<Void>() {

@@ -147,7 +147,7 @@ public class BuscaGeralActivity extends AppCompatActivity {
 
                                                 intent.putExtra("email", profObjetos.get(j).getId());
                                                 intent.putExtra("nome", profObjetos.get(j).getNome());
-                                                intent.putExtra("id", profObjetos.get(j).getId());
+                                                intent.putExtra("id", profObjetos.get(j).getNum_registro());
                                                 intent.putExtra("telefone", profObjetos.get(j).getTelefone());
                                                 intent.putExtra("endereco", profObjetos.get(j).getEndereco());
                                                 intent.putExtra("especialidade", profObjetos.get(j).getEspecialidade());
@@ -325,7 +325,7 @@ public class BuscaGeralActivity extends AppCompatActivity {
 
                                                 intent.putExtra("email", labObjetos.get(i).getId());
                                                 intent.putExtra("nome", labObjetos.get(i).getNome());
-                                                intent.putExtra("id", labObjetos.get(i).getId());
+                                                intent.putExtra("id", labObjetos.get(i).getCnpj());
                                                 intent.putExtra("telefone", labObjetos.get(i).getTelefone());
 
                                                 intent.putExtra("horaAbrir",labObjetos.get(i).getHoraAbrir());

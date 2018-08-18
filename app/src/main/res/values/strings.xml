@@ -102,6 +102,8 @@
     </string-array>
     <string name="titulo_dialog_cancelamento">Cancelar</string>
     <string name="msg_dialog_cancelamento">Deseja mesmo cancelar este agendamento?</string>
+    <string name="titulo_dialog_excluir_favorito">Excluir</string>
+    <string name="msg_dialog_excluir_favorito">Deseja mesmo excluir este favorito?</string>
     <string name="hor_rio_de_funcionamento">Horário de Funcionamento</string>
 
 </resources>

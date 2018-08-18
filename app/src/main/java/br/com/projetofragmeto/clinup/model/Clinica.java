@@ -9,7 +9,7 @@ public class Clinica implements Serializable {
     @Override
     public String toString() {
         return "Nome: " + nome + '\n' +
-                "Telefone: " + telefone;
+                "Tipo: " + telefone;
     }
 
     public String getHoraAbrir() {
