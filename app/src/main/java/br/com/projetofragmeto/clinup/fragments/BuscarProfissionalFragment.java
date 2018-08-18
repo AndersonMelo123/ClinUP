@@ -35,14 +35,9 @@ import br.com.projetofragmeto.clinup.model.Profissional;
 
 public class BuscarProfissionalFragment extends Fragment implements Serializable {
 
-    private ListView listView;
-    private EditText textoBusca;
     private TextView textViewFiltro;
-    private Button botaoBuscar, botaoFiltrar;
     private ArrayAdapter adapter;
     private ArrayList profissionais;//retorna o nome dos profissionais da consulta para exibir na listview
-    private DatabaseReference firebase;
-    private ProfissionalDB profissionalDB;
     private ArrayList<Profissional> profObjetos = new ArrayList<Profissional>();//retorna todos os profissionais da consulta no banco
     private ArrayList listaAuxiliar = new ArrayList();
 
@@ -65,13 +60,13 @@ public class BuscarProfissionalFragment extends Fragment implements Serializable
 
 
         profissionais = new ArrayList();
-        profissionalDB = new ProfissionalDB();
+        ProfissionalDB profissionalDB = new ProfissionalDB();
 
 
-        listView = view.findViewById(R.id.lv_profissional);
-        textoBusca = view.findViewById(R.id.bpf_et_buscar);
-        botaoBuscar = view.findViewById(R.id.bpf_bt_buscar);
-        botaoFiltrar = view.findViewById(R.id.bpf_bp_filtro);
+        ListView listView = view.findViewById(R.id.lv_profissional);
+        EditText textoBusca = view.findViewById(R.id.bpf_et_buscar);
+        Button botaoBuscar = view.findViewById(R.id.bpf_bt_buscar);
+        Button botaoFiltrar = view.findViewById(R.id.bpf_bp_filtro);
         textViewFiltro = view.findViewById(R.id.textView);
 
         adapter = new ArrayAdapter(
@@ -81,7 +76,7 @@ public class BuscarProfissionalFragment extends Fragment implements Serializable
         );
         listView.setAdapter(adapter); //seta o adaptados
 
-        firebase = ConfiguracaoFirebase.getFirebase().child("profissionais");
+        DatabaseReference firebase = ConfiguracaoFirebase.getFirebase().child("profissionais");
 
 
         // adiciona um profissional no banco
