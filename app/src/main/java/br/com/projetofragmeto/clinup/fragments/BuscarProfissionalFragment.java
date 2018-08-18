@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import br.com.projetofragmeto.clinup.R;
 import br.com.projetofragmeto.clinup.activity.PerfilCliente;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
-import br.com.projetofragmeto.clinup.database.ProfissionalDB;
 import br.com.projetofragmeto.clinup.model.Profissional;
 
 public class BuscarProfissionalFragment extends Fragment implements Serializable {
@@ -60,7 +59,7 @@ public class BuscarProfissionalFragment extends Fragment implements Serializable
 
 
         profissionais = new ArrayList();
-        ProfissionalDB profissionalDB = new ProfissionalDB();
+        
 
 
         ListView listView = view.findViewById(R.id.lv_profissional);
