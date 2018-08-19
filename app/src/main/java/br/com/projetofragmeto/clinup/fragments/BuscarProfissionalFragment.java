@@ -50,7 +50,7 @@ public class BuscarProfissionalFragment extends Fragment implements Serializable
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_buscar_profissional, container, false);
@@ -59,7 +59,7 @@ public class BuscarProfissionalFragment extends Fragment implements Serializable
 
 
         profissionais = new ArrayList();
-        
+
 
 
         ListView listView = view.findViewById(R.id.lv_profissional);
@@ -221,6 +221,7 @@ public class BuscarProfissionalFragment extends Fragment implements Serializable
                             //profissionais.clear();
                             for (DataSnapshot dados : dataSnapshot.getChildren()) {
                                 Profissional p = dados.getValue(Profissional.class);//retorna cada objeto da consulta em p
+                                assert p != null;
                                 String nome = p.getNome();
                                 Log.i("NOME", nome);
                                 profObjetos.add(p);//adiciona o profissional p em profObjetos
@@ -243,103 +244,6 @@ public class BuscarProfissionalFragment extends Fragment implements Serializable
         }
 
 
-
-
-
-        /*
-        botaoBuscar.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-
-
-                profissionais.clear();
-
-                final String nome = textoBusca.getText().toString();//pega nome do campo de textoBusca
-                switch (filtragem) {
-                    case ("Todos")://se o filtro selecionado for Todos
-
-
-                        firebase.addValueEventListener(new ValueEventListener() {//faz a consulta no banco
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                if (dataSnapshot.getValue() != null) {
-                                    //profissionais.clear();
-                                    for (DataSnapshot dados : dataSnapshot.getChildren()) {
-                                        Profissional p = dados.getValue(Profissional.class);//retorna cada objeto da consulta em p
-                                        String nome = p.getNome();
-                                        Log.i("NOME", nome);
-                                        profObjetos.add(p);//adiciona o profissional p em profObjetos
-                                        profissionais.add(nome);//adiciona o nome do profissional p em profissionais
-                                    }
-                                    //profissionais = profissionalDB.buscarDados(dataSnapshot,profissionais);
-                                    adapter.notifyDataSetChanged();//notifica ao adapter as mudanças ocorridas
-
-                                    Log.i("ARRAY",profissionais.toString()); //exibe array com o nome de todos os profissioais
-
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-                            }
-                        });
-                        break;
-
-                    case ("Nome"):
-                        profissionais.clear();
-                        profObjetos.clear();
-                        firebase.orderByChild("nome").equalTo(nome).addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                if (dataSnapshot.getValue() != null) {
-                                    profissionais.clear();
-                                    for (DataSnapshot dados : dataSnapshot.getChildren()) {
-                                        Profissional p = dados.getValue(Profissional.class);
-                                        String nome = p.getNome();
-                                        Log.i("NOME", nome);
-                                        profObjetos.add(p);
-                                        profissionais.add(nome);
-                                    }
-                                    //profissionais = profissionalDB.buscarDados(dataSnapshot,profissionais);
-                                    adapter.notifyDataSetChanged();
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-                            }
-                        });
-                        break;
-                    case ("Especialidade"):
-                        profissionais.clear();
-                        profObjetos.clear();
-                        firebase.orderByChild("especialidade").equalTo(nome).addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                if (dataSnapshot.getValue() != null) {
-                                    profissionais.clear();
-                                    for (DataSnapshot dados : dataSnapshot.getChildren()) {
-                                        Profissional p = dados.getValue(Profissional.class);
-                                        String nome = p.getNome();
-                                        Log.i("NOME", nome);
-                                        profObjetos.add(p);
-                                        profissionais.add(nome);
-                                    }
-                                    //profissionais = profissionalDB.buscarDados(dataSnapshot,profissionais);
-                                    adapter.notifyDataSetChanged();
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-                            }
-                        });
-                        break;
-                }
-
-            }
-        });*/
 
         return view;
     }

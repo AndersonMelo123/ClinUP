@@ -42,4 +42,10 @@
     <string name="titulo_dialog_Agendamento">Agendar</string>
     <string name="msg_dialog_agendamento">Para sua segurança, precisamos que você confirme se deseja realmente agendar</string>
 
+    <string name="selecione_o_filtro">Selecione o Filtro</string>
+
+    <string name="buscar">Buscar</string>
+    <string name="filtro">Filtro</string>
+    <string name="filtro2">Filtro:</string>
+
 </resources>

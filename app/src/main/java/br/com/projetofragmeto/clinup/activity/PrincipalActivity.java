@@ -72,11 +72,9 @@ public class PrincipalActivity extends AppCompatActivity {
 
     private FirebaseAuth autenticacaoUsuario;
     private GoogleApiClient googleApiClient;
-    private FirebaseUser user;
 
     private Toolbar toolbar;
     private TabLayout tabLayout;
-    private ViewPager viewPager;
 
     private int[] tabIcons = {
             R.drawable.ic_tab_mapa,
@@ -90,11 +88,11 @@ public class PrincipalActivity extends AppCompatActivity {
         setContentView(R.layout.activity_principal);
 
         autenticacaoUsuario = ConfiguracaoFirebase.getFirebaseAutenticacao();
-        user = ConfiguracaoFirebase.getUsuarioLogado(); // retorna o usuário que está logado no momento
+        FirebaseUser user = ConfiguracaoFirebase.getUsuarioLogado();
 
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        viewPager = findViewById(R.id.viewpager);
+        ViewPager viewPager = findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 
         tabLayout = findViewById(R.id.tabs);
@@ -254,12 +252,12 @@ public class PrincipalActivity extends AppCompatActivity {
         listener.onStart();
         FirebaseDatabase.getInstance().getReference().child("usuarios").child(child).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 listener.onSuccess(dataSnapshot);
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
                 listener.onFailed(databaseError);
             }
         });
@@ -333,7 +331,7 @@ public class PrincipalActivity extends AppCompatActivity {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
 
-        public ViewPagerAdapter(FragmentManager manager) {
+        ViewPagerAdapter(FragmentManager manager) {
             super(manager);
         }
 
@@ -347,7 +345,7 @@ public class PrincipalActivity extends AppCompatActivity {
             return mFragmentList.size();
         }
 
-        public void addFragment(Fragment fragment, String title) {
+        void addFragment(Fragment fragment, String title) {
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
         }
