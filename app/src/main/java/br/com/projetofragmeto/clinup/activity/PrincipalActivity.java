@@ -1,5 +1,6 @@
 package br.com.projetofragmeto.clinup.activity;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -12,10 +13,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,7 +29,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -48,6 +48,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import br.com.projetofragmeto.clinup.R;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
@@ -63,7 +64,7 @@ import br.com.projetofragmeto.clinup.model.Usuario;
 public class PrincipalActivity extends AppCompatActivity {
 
     //save our header or result
-    private AccountHeader headerResult = null;
+
     private Drawer result = null;
 
     private String nomeUser, emailUser, fotoUser;
@@ -73,14 +74,10 @@ public class PrincipalActivity extends AppCompatActivity {
     private FirebaseAuth autenticacaoUsuario;
     private GoogleApiClient googleApiClient;
 
-    private Toolbar toolbar;
+
     private TabLayout tabLayout;
 
-    private int[] tabIcons = {
-            R.drawable.ic_tab_mapa,
-            R.drawable.ic_tab_agenda,
-            R.drawable.ic_tab_favoritos
-    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,9 +85,7 @@ public class PrincipalActivity extends AppCompatActivity {
         setContentView(R.layout.activity_principal);
 
         autenticacaoUsuario = ConfiguracaoFirebase.getFirebaseAutenticacao();
-        FirebaseUser user = ConfiguracaoFirebase.getUsuarioLogado();
 
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ViewPager viewPager = findViewById(R.id.viewpager);
         setupViewPager(viewPager);
@@ -153,6 +148,7 @@ public class PrincipalActivity extends AppCompatActivity {
                 if (dataSnapshot.getValue() != null) {
                     Usuario usuario = dataSnapshot.getValue(Usuario.class);
 
+                    assert usuario != null;
                     nomeUser = usuario.getNome();
                     emailUser = usuario.getEmail();
 
@@ -216,7 +212,7 @@ public class PrincipalActivity extends AppCompatActivity {
                                 @Override
                                 public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                                     if (drawerItem != null) {
-                                        Intent intent = null;
+                                        Intent intent;
                                         if (drawerItem.getIdentifier() == 1) {
 
                                             homeFragment(); //Vai para a frament HomeFragment
@@ -301,22 +297,23 @@ public class PrincipalActivity extends AppCompatActivity {
 
     }
 
+    @SuppressLint("SetTextI18n")
     private void setupTabIcons() {
 
-        TextView tabOne = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
+        @SuppressLint("InflateParams") TextView tabOne = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
         tabOne.setText("Localização");
         tabOne.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_tab_mapa, 0, 0);
-        tabLayout.getTabAt(0).setCustomView(tabOne);
+        Objects.requireNonNull(tabLayout.getTabAt(0)).setCustomView(tabOne);
 
-        TextView tabTwo = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
+        @SuppressLint("InflateParams") TextView tabTwo = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
         tabTwo.setText("Consultas");
         tabTwo.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_tab_agenda, 0, 0);
-        tabLayout.getTabAt(1).setCustomView(tabTwo);
+        Objects.requireNonNull(tabLayout.getTabAt(1)).setCustomView(tabTwo);
 
-        TextView tabThree = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
+        @SuppressLint("InflateParams") TextView tabThree = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
         tabThree.setText("Favoritos");
         tabThree.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_tab_favoritos, 0, 0);
-        tabLayout.getTabAt(2).setCustomView(tabThree);
+        Objects.requireNonNull(tabLayout.getTabAt(2)).setCustomView(tabThree);
     }
 
     private void setupViewPager(ViewPager viewPager) {
