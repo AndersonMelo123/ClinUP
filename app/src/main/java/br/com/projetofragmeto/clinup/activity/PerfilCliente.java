@@ -42,6 +42,7 @@ public class PerfilCliente extends AppCompatActivity {
     private TextView tv_endereco;
 
     DatabaseReference firebase;
+    Boolean verifica = false;
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -198,32 +199,61 @@ public class PerfilCliente extends AppCompatActivity {
             }
         });
 
+        firebase = ConfiguracaoFirebase.getFirebase().child("favoritos");
+
         favoritos.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ResourceAsColor")
             @Override
             public void onClick(View view) {
 
-                DatabaseReference bancoDeDados = ConfiguracaoFirebase.getFirebase();
-
-                bancoDeDados = bancoDeDados.child("favoritos").push();
-
-                final String idkey = bancoDeDados.getKey();
-
-                final Favoritos favoritos = new Favoritos();
-
-                favoritos.setNomeCliente(nome);
-                favoritos.setId_Cliente(id);
-
-                favoritos.setId_Usuario(idUsuarios);
-                //favoritos.setNomeUsuario(nomeUser);
-                favoritos.setId(String.valueOf(idkey));
-
-
-                bancoDeDados.setValue(favoritos).addOnSuccessListener(new OnSuccessListener<Void>() {
+                firebase.addValueEventListener(new ValueEventListener() {//faz a consulta no banco
                     @Override
-                    public void onSuccess(Void aVoid) {
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.getValue() != null) {
 
-                        Toast.makeText(PerfilCliente.this, "Adicionado aos Favoritos", Toast.LENGTH_SHORT).show();
+                            for (DataSnapshot dados : dataSnapshot.getChildren()) {
+
+                                Favoritos fav = dados.getValue(Favoritos.class);//retorna cada objeto da consulta em a
+
+                                String idUsuarioFavoritos = fav.getId_Usuario();
+                                String idFav = fav.getId_Cliente();
+
+                                if (idUsuarioFavoritos.equals(idUsuarios) && idFav.equals(id)) {
+
+                                    verifica = true;
+                                }
+                            }
+
+                            if(verifica == true){
+
+                                Toast.makeText(PerfilCliente.this, "Usuário já está em Favoritos", Toast.LENGTH_SHORT).show();
+
+                            }else {
+                                DatabaseReference bancoDeDados = ConfiguracaoFirebase.getFirebase();
+
+                                bancoDeDados = bancoDeDados.child("favoritos").push();
+
+                                final String idkey = bancoDeDados.getKey();
+
+                                final Favoritos favoritos = new Favoritos();
+
+                                favoritos.setNomeCliente(nome);
+                                favoritos.setId_Cliente(id);
+                                favoritos.setId_Usuario(idUsuarios);
+                                favoritos.setId(String.valueOf(idkey));
+
+                                bancoDeDados.setValue(favoritos).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Toast.makeText(PerfilCliente.this, "Adicionado aos Favoritos", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
                     }
                 });
 

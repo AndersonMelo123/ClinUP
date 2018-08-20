@@ -89,11 +89,14 @@ public class FavoritosFragment extends Fragment {
             }
         });
 
+
+
         //pega o clic no list view e passa exclui o favorito
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 getId = favObjetos.get(i).getId();
+
                 excluirFavoritos();
             }
         });
