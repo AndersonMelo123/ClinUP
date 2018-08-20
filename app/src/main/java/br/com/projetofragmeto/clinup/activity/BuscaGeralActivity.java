@@ -39,17 +39,17 @@ public class BuscaGeralActivity extends AppCompatActivity {
     private ListView listView;
     private TextView textView;
 
-    private ArrayAdapter adapter;
+    private ArrayAdapter<String> adapter;
 
-    private ArrayList listaNomes = new ArrayList();//retorna o nome dos listaNomes da consulta para exibir na listview
-    private ArrayList<Profissional> profObjetos = new ArrayList<Profissional>();//retorna todos os listaNomes da consulta no banco
+    private ArrayList<String> listaNomes = new ArrayList<>();//retorna o nome dos listaNomes da consulta para exibir na listview
+    private ArrayList<Profissional> profObjetos = new ArrayList<>();//retorna todos os listaNomes da consulta no banco
 
-    private ArrayList<Clinica> clinObjetos = new ArrayList<Clinica>();//retorna todos as Clinicas da consulta no banco
-    private ArrayList listaAuxiliar = new ArrayList(); // lista auxiliar que pega os nomes dos objetos gerados a pesquisa
+    private ArrayList<Clinica> clinObjetos = new ArrayList<>();//retorna todos as Clinicas da consulta no banco
+    private ArrayList<String> listaAuxiliar = new ArrayList<>(); // lista auxiliar que pega os nomes dos objetos gerados a pesquisa
 
-    private ArrayList<Hospital> hospObjetos = new ArrayList<Hospital>();//retorna todos as Clinicas da consulta no banco
+    private ArrayList<Hospital> hospObjetos = new ArrayList<>();//retorna todos as Clinicas da consulta no banco
 
-    private ArrayList<Laboratorio> labObjetos = new ArrayList<Laboratorio>();//retorna todos as Clinicas da consulta no banco
+    private ArrayList<Laboratorio> labObjetos = new ArrayList<>();//retorna todos as Clinicas da consulta no banco
 
     private String[] filtro = {"Profissionais","Clínicas","Hospitais","Laboratórios"};
     String filtragem = filtro[0];
@@ -78,7 +78,7 @@ public class BuscaGeralActivity extends AppCompatActivity {
 
         firebase = ConfiguracaoFirebase.getFirebase(); // referêcia do firebase para acessar o banco
 
-        adapter = new ArrayAdapter(
+        adapter = new ArrayAdapter<>(
                 this, // pega o contexto da activity onde esse fragment está
                 R.layout.lista_busca, //layout da lista
                 listaNomes //array list contendo todos os contados
@@ -114,6 +114,7 @@ public class BuscaGeralActivity extends AppCompatActivity {
                                             //listaNomes.clear();
                                             for (DataSnapshot dados : dataSnapshot.getChildren()) {
                                                 Profissional p = dados.getValue(Profissional.class);//retorna cada objeto da consulta em p
+                                                assert p != null;
                                                 String nome = p.getNome();
                                                 Log.i("NOME", nome);
                                                 profObjetos.add(p);//adiciona o profissional p em profObjetos
@@ -181,6 +182,7 @@ public class BuscaGeralActivity extends AppCompatActivity {
 
                                             for(DataSnapshot dados: dataSnapshot.getChildren()){
                                                 Clinica c = dados.getValue(Clinica.class);
+                                                assert c != null;
                                                 String nome = c.getNome();
                                                 clinObjetos.add(c);
                                                 listaAuxiliar.add(nome);
@@ -241,6 +243,7 @@ public class BuscaGeralActivity extends AppCompatActivity {
                                             //hospitais.clear();
                                             for (DataSnapshot dados : dataSnapshot.getChildren()) {
                                                 Hospital h = dados.getValue(Hospital.class);
+                                                assert h != null;
                                                 String nome = h.getNome();
                                                 hospObjetos.add(h);
                                                 listaAuxiliar.add(nome);
@@ -299,6 +302,7 @@ public class BuscaGeralActivity extends AppCompatActivity {
                                         if (dataSnapshot.getValue() != null) {
                                             for (DataSnapshot dados : dataSnapshot.getChildren()) {
                                                 Laboratorio l = dados.getValue(Laboratorio.class);
+                                                assert l != null;
                                                 String nome = l.getNome();
                                                 labObjetos.add(l);
                                                 listaAuxiliar.add(nome);
@@ -392,7 +396,7 @@ public class BuscaGeralActivity extends AppCompatActivity {
         if (listaNomes != null)
             listaNomes.clear();
         for(int i=0;i<listaAuxiliar.size();i++){
-            if(listaAuxiliar.get(i).toString().toLowerCase().contains(textoBusca.toLowerCase())){
+            if(listaAuxiliar.get(i).toLowerCase().contains(textoBusca.toLowerCase())){
                 listaNomes.add(listaAuxiliar.get(i));
             }
         }

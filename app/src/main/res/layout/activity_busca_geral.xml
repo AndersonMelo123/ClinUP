@@ -30,14 +30,14 @@
 
     <Button
         android:id="@+id/bt_filtro"
-        android:layout_width="36dp"
-        android:layout_height="35dp"
+        android:layout_width="39dp"
+        android:layout_height="40dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/ic_action_filter"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.466"
+        app:layout_constraintHorizontal_bias="0.333"
         app:layout_constraintStart_toEndOf="@+id/et_buscar"
         app:layout_constraintTop_toBottomOf="@+id/toolbarActivity" />
 
