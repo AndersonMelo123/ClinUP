@@ -147,17 +147,17 @@ public class BuscaGeralActivity extends AppCompatActivity {
 
                                                 intent.putExtra("email", profObjetos.get(j).getId());
                                                 intent.putExtra("nome", profObjetos.get(j).getNome());
-                                                intent.putExtra("id", profObjetos.get(j).getNum_registro());
+                                                intent.putExtra("id", profObjetos.get(j).getId());
                                                 intent.putExtra("telefone", profObjetos.get(j).getTelefone());
                                                 intent.putExtra("endereco", profObjetos.get(j).getEndereco());
                                                 intent.putExtra("especialidade", profObjetos.get(j).getEspecialidade());
                                                 intent.putExtra("formacao", profObjetos.get(j).getFormacao());
-                                                intent.putExtra("Num_registro", profObjetos.get(j).getNum_registro());
+                                                intent.putExtra("num_registro", profObjetos.get(j).getNum_registro());
 
                                                 intent.putExtra("horaAbrir",profObjetos.get(j).getHoraAbrir());
                                                 intent.putExtra("horaFechar",profObjetos.get(j).getHoraFechar());
 
-                                                intent.putExtra("cliente", "listaNomes");
+                                                intent.putExtra("cliente", "profissionais");
                                                 intent.putExtra("classe", Profissional.class);
                                                 startActivity(intent);
                                             }
@@ -209,10 +209,13 @@ public class BuscaGeralActivity extends AppCompatActivity {
 
                                                 intent.putExtra("nome",clinObjetos.get(i).getNome());
                                                 intent.putExtra("email", clinObjetos.get(i).getEmail() );
-                                                intent.putExtra("id", clinObjetos.get(i).getCnpj() );
+                                                intent.putExtra("id", clinObjetos.get(i).getId() );
                                                 intent.putExtra("endereco", clinObjetos.get(i).getEndereco() );
                                                 intent.putExtra("telefone", clinObjetos.get(i).getTelefone() );
                                                 intent.putExtra("cnpj", clinObjetos.get(i).getCnpj() );
+                                                intent.putExtra("especialidade", clinObjetos.get(i).getEspecialidade() );
+                                                intent.putExtra("num_registro", clinObjetos.get(i).getCnpj() );
+
 
                                                 intent.putExtra("horaAbrir",clinObjetos.get(i).getHoraAbrir());
                                                 intent.putExtra("horaFechar",clinObjetos.get(i).getHoraFechar());
@@ -267,10 +270,12 @@ public class BuscaGeralActivity extends AppCompatActivity {
 
                                                 intent.putExtra("email", hospObjetos.get(i).getEmail());
                                                 intent.putExtra("nome", hospObjetos.get(i).getNome());
-                                                intent.putExtra("id", hospObjetos.get(i).getCnpj());
+                                                intent.putExtra("id", hospObjetos.get(i).getId());
                                                 intent.putExtra("endereco", hospObjetos.get(i).getEndereco());
                                                 intent.putExtra("telefone", hospObjetos.get(i).getTelefone());
                                                 intent.putExtra("cnpj", hospObjetos.get(i).getCnpj());
+                                                intent.putExtra("especialidade", hospObjetos.get(i).getEspecialidade() );
+                                                intent.putExtra("num_registro", hospObjetos.get(i).getCnpj() );
 
                                                 intent.putExtra("horaAbrir",hospObjetos.get(i).getHoraAbrir());
                                                 intent.putExtra("horaFechar",hospObjetos.get(i).getHoraFechar());
@@ -325,8 +330,11 @@ public class BuscaGeralActivity extends AppCompatActivity {
 
                                                 intent.putExtra("email", labObjetos.get(i).getId());
                                                 intent.putExtra("nome", labObjetos.get(i).getNome());
-                                                intent.putExtra("id", labObjetos.get(i).getCnpj());
+                                                intent.putExtra("id", labObjetos.get(i).getId());
+                                                intent.putExtra("endereco", labObjetos.get(i).getEndereco());
                                                 intent.putExtra("telefone", labObjetos.get(i).getTelefone());
+                                                intent.putExtra("especialidade", labObjetos.get(i).getEspecialidade() );
+                                                intent.putExtra("num_registro", labObjetos.get(i).getCnpj() );
 
                                                 intent.putExtra("horaAbrir",labObjetos.get(i).getHoraAbrir());
                                                 intent.putExtra("horaFechar",labObjetos.get(i).getHoraFechar());
@@ -336,15 +344,10 @@ public class BuscaGeralActivity extends AppCompatActivity {
                                                 startActivity(intent);
                                             }
                                         }
-
-
                                     }
                                 });
                                 break;
                         }
-
-
-
                     }
                 });
                 mBuilder.setNeutralButton("Cancelar", new DialogInterface.OnClickListener() {

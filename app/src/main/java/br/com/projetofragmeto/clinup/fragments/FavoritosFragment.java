@@ -7,10 +7,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -22,19 +22,25 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import br.com.projetofragmeto.clinup.R;
+import br.com.projetofragmeto.clinup.activity.PerfilCliente;
 import br.com.projetofragmeto.clinup.activity.PrincipalActivity;
 import br.com.projetofragmeto.clinup.adapter.AdapterPersonalizadoFavoritos;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
 import br.com.projetofragmeto.clinup.helper.Preferencias;
+import br.com.projetofragmeto.clinup.model.Clinica;
 import br.com.projetofragmeto.clinup.model.Favoritos;
+import br.com.projetofragmeto.clinup.model.Hospital;
+import br.com.projetofragmeto.clinup.model.Laboratorio;
+import br.com.projetofragmeto.clinup.model.Profissional;
 
 public class FavoritosFragment extends Fragment {
 
     private ListView listView;
-    private String getId;
+    private String getId, tipo;
     public ArrayList favoritos;//retorna o nome dos profissionais da consulta para exibir na listview
     private DatabaseReference firebase;
     public ArrayList<Favoritos> favObjetos = new ArrayList<Favoritos>();
+    private AdapterPersonalizadoFavoritos adapterPersonalizado;
 
     public FavoritosFragment() {
         // Required empty public constructor
@@ -47,7 +53,7 @@ public class FavoritosFragment extends Fragment {
         favoritos = new ArrayList();
         listView = view.findViewById(R.id.lv_favoritos);
 
-        final AdapterPersonalizadoFavoritos adapterPersonalizado = new AdapterPersonalizadoFavoritos(favObjetos, getActivity());
+        adapterPersonalizado = new AdapterPersonalizadoFavoritos(favObjetos, getActivity());
 
         listView.setAdapter(adapterPersonalizado);
 
@@ -68,7 +74,7 @@ public class FavoritosFragment extends Fragment {
 
                     for (DataSnapshot dados : dataSnapshot.getChildren()) {
 
-                        Favoritos fav = dados.getValue(Favoritos.class);//retorna cada objeto da consulta em a
+                        Favoritos fav = dados.getValue(Favoritos.class);//retorna cada objeto da consulta em fav
 
                         String idUsuarioFavoritos = fav.getId_Usuario();
 
@@ -89,22 +95,173 @@ public class FavoritosFragment extends Fragment {
             }
         });
 
-
-
-        //pega o clic no list view e passa exclui o favorito
+/*
+        //pega o clic da listView e exbibe o perfil do favorito
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                getId = favObjetos.get(i).getId();
+                final Favoritos favoritos = favObjetos.get(i);
+                Log.i("ObjetosFavoritos", favoritos.getNomeCliente());
+                getId = favoritos.getId_Cliente();
+                tipo = favoritos.getTipo();
 
-                excluirFavoritos();
+                Log.i("ObjetosFavoritos", getId);
+                Log.i("ObjetosFavoritos", tipo);
+
+                firebase = ConfiguracaoFirebase.getFirebase().child(tipo);
+
+                firebase.addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                        Log.i("ObjetosFavoritos", dataSnapshot.getKey());
+                        Log.i("ObjetosFavoritos", String.valueOf(dataSnapshot.getValue()));
+                        Log.i("ObjetosFavoritos", getId);
+
+                        if (dataSnapshot.getKey().equals(getId)) {
+                            coletaDadosCliente(tipo, dataSnapshot);
+                        }
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
             }
         });
 
+        //pega o clic no list view e exclui o favorito
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                getId = favObjetos.get(i).getId();
+
+                excluirFavoritos(getId);
+                return true;
+            }
+        });
+*/
         return view;
     }
 
-    private void excluirFavoritos(){
+    private void coletaDadosCliente(String tipo, DataSnapshot dataSnapshot) {
+
+        Log.i("ObjetosFavoritos", "EntrouAqui");
+
+
+        switch (tipo) {
+            case "laboratorios":
+
+                Laboratorio laboratorio = dataSnapshot.getValue(Laboratorio.class);
+
+                Intent intent1 = new Intent(getContext(), PerfilCliente.class);
+
+                intent1.putExtra("email", laboratorio.getId());
+                intent1.putExtra("nome", laboratorio.getNome());
+                intent1.putExtra("id", laboratorio.getCnpj());
+                intent1.putExtra("endereco", laboratorio.getEndereco());
+                intent1.putExtra("telefone", laboratorio.getTelefone());
+                intent1.putExtra("especialidade", laboratorio.getEspecialidade());
+                intent1.putExtra("num_registro", laboratorio.getCnpj());
+
+                intent1.putExtra("horaAbrir", laboratorio.getHoraAbrir());
+                intent1.putExtra("horaFechar", laboratorio.getHoraFechar());
+
+                intent1.putExtra("cliente", "laboratorios");
+                intent1.putExtra("classe", Laboratorio.class);
+                startActivity(intent1);
+                break;
+            case "clinica":
+
+                //Log.i("ObjetosFavoritos", "EntrouAqui");
+
+                Clinica clinica = dataSnapshot.getValue(Clinica.class);
+
+                Intent intent2 = new Intent(getContext(), PerfilCliente.class);
+
+                intent2.putExtra("nome", clinica.getNome());
+                intent2.putExtra("email", clinica.getEmail());
+                intent2.putExtra("id", clinica.getCnpj());
+                intent2.putExtra("endereco", clinica.getEndereco());
+                intent2.putExtra("telefone", clinica.getTelefone());
+                intent2.putExtra("cnpj", clinica.getCnpj());
+                intent2.putExtra("especialidade", clinica.getEspecialidade());
+                intent2.putExtra("num_registro", clinica.getCnpj());
+
+                intent2.putExtra("horaAbrir", clinica.getHoraAbrir());
+                intent2.putExtra("horaFechar", clinica.getHoraFechar());
+
+                intent2.putExtra("cliente", "clinica");
+                intent2.putExtra("classe", Clinica.class);
+                startActivity(intent2);
+                break;
+
+            case "hospitais":
+
+                Hospital hospital = dataSnapshot.getValue(Hospital.class);
+
+                Intent intent3 = new Intent(getContext(), PerfilCliente.class);
+
+                intent3.putExtra("email", hospital.getEmail());
+                intent3.putExtra("nome", hospital.getNome());
+                intent3.putExtra("id", hospital.getCnpj());
+                intent3.putExtra("endereco", hospital.getEndereco());
+                intent3.putExtra("telefone", hospital.getTelefone());
+                intent3.putExtra("cnpj", hospital.getCnpj());
+                intent3.putExtra("especialidade", hospital.getEspecialidade());
+                intent3.putExtra("num_registro", hospital.getCnpj());
+
+                intent3.putExtra("horaAbrir", hospital.getHoraAbrir());
+                intent3.putExtra("horaFechar", hospital.getHoraFechar());
+
+
+                intent3.putExtra("cliente", "hospitais");
+                intent3.putExtra("classe", Hospital.class);
+                startActivity(intent3);
+                break;
+
+            default:
+                Profissional profissional = dataSnapshot.getValue(Profissional.class);
+
+                Intent intent = new Intent(getContext(), PerfilCliente.class);
+
+                intent.putExtra("email", profissional.getId());
+                intent.putExtra("nome", profissional.getNome());
+                intent.putExtra("id", profissional.getNum_registro());
+                intent.putExtra("telefone", profissional.getTelefone());
+                intent.putExtra("endereco", profissional.getEndereco());
+                intent.putExtra("especialidade", profissional.getEspecialidade());
+                intent.putExtra("formacao", profissional.getFormacao());
+                intent.putExtra("Num_registro", profissional.getNum_registro());
+
+                intent.putExtra("horaAbrir", profissional.getHoraAbrir());
+                intent.putExtra("horaFechar", profissional.getHoraFechar());
+
+                intent.putExtra("cliente", "profissionais");
+                intent.putExtra("classe", Profissional.class);
+                startActivity(intent);
+                break;
+        }
+    }
+
+    private void excluirFavoritos(final String getId) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         View view = getLayoutInflater().inflate(R.layout.dialog_excluir_favorito, null);
 

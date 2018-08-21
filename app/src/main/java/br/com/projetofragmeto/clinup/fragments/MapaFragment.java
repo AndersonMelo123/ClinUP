@@ -181,7 +181,7 @@ public class MapaFragment extends Fragment implements
                     .target(ultimaLocalizacao) // Localização
                     .bearing(0) // Rotação da câmera
                     .tilt(45) // ngulo em graus
-                    .zoom(18) // Zoom
+                    .zoom(35) // Zoom
                     .build();
             CameraUpdate update = CameraUpdateFactory.newCameraPosition(position);
             mMap.animateCamera(update);
@@ -535,7 +535,7 @@ public class MapaFragment extends Fragment implements
 
         CameraPosition Liberty = CameraPosition.builder()
                 .target(latLng)
-                .zoom(18)
+                .zoom(35)
                 .bearing(0)
                 .tilt(45)
                 .build();

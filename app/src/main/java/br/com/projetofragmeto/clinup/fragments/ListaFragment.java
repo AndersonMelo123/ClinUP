@@ -103,7 +103,7 @@ public class ListaFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), CancelarAgendamentos.class);
 
                 intent.putExtra("ID", agendObjetos.get(i).getId());
-                intent.putExtra("nome", agendObjetos.get(i).getNomeUsuario());
+                intent.putExtra("nome", agendObjetos.get(i).getNome_Cliente());
                 intent.putExtra("dataAtual", agendObjetos.get(i).getDataAtual());
                 intent.putExtra("dataConsulta", agendObjetos.get(i).getDataConsulta());
                 intent.putExtra("plano", agendObjetos.get(i).getId_Plano());

@@ -108,14 +108,15 @@
 
     <Button
         android:id="@+id/cancelarAgendamento"
-        android:layout_width="0dp"
-        android:layout_height="45dp"
-        android:layout_marginBottom="72dp"
+        android:layout_width="329dp"
+        android:layout_height="53dp"
+        android:layout_marginBottom="96dp"
+        android:layout_marginStart="8dp"
         android:text="@string/botao_cancelar"
         android:theme="@style/botaoPadrao"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.425"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView

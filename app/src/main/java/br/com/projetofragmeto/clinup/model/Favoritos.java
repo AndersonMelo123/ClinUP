@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class Favoritos implements Serializable {
 
-    String id_Usuario, id_Cliente, nomeUsuario, nomeCliente, id;
+    String id_Usuario, id_Cliente, nomeUsuario, nomeCliente, id, tipo;
 
     public Favoritos(String id_Usuario, String id_Cliente, String nomeUsuario, String nomeCliente) {
         this.id_Usuario = id_Usuario;
@@ -22,6 +22,14 @@ public class Favoritos implements Serializable {
     public String toString() {
         return "nomeUsuario: " + nomeUsuario + '\n' +
                 "nomeCliente: " + nomeCliente;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
     public String getId() {

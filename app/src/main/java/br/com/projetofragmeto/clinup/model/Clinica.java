@@ -4,12 +4,20 @@ import java.io.Serializable;
 
 public class Clinica implements Serializable {
 
-    private String cnpj, email, endereco, nome, telefone, horaAbrir, horaFechar, id;
+    private String cnpj, email, endereco, nome, telefone, horaAbrir, horaFechar, id, especialidade;
 
     @Override
     public String toString() {
         return "Nome: " + nome + '\n' +
                 "Tipo: " + telefone;
+    }
+
+    public String getEspecialidade() {
+        return especialidade;
+    }
+
+    public void setEspecialidade(String especialidade) {
+        this.especialidade = especialidade;
     }
 
     public String getHoraAbrir() {

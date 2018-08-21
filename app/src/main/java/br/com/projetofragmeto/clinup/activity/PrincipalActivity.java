@@ -77,12 +77,6 @@ public class PrincipalActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
-    private int[] tabIcons = {
-            R.drawable.ic_tab_mapa,
-            R.drawable.ic_tab_agenda,
-            R.drawable.ic_tab_favoritos
-    };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -311,7 +305,7 @@ public class PrincipalActivity extends AppCompatActivity {
         tabLayout.getTabAt(0).setCustomView(tabOne);
 
         TextView tabTwo = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
-        tabTwo.setText("Consultas");
+        tabTwo.setText("Agendamentos");
         tabTwo.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_tab_agenda, 0, 0);
         tabLayout.getTabAt(1).setCustomView(tabTwo);
 

@@ -4,6 +4,6 @@
     android:layout_height="wrap_content"
     android:id="@+id/tab"
     android:textColor="@color/Cinza"
-    android:textSize="15dp"
+    android:textSize="14dp"
     android:textAlignment="center"
     android:fontFamily="@string/font_fontFamily_medium"/>
