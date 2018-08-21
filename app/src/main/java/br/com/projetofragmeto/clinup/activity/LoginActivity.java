@@ -54,10 +54,8 @@ import java.security.NoSuchAlgorithmException;
 
 import br.com.projetofragmeto.clinup.R;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
-import br.com.projetofragmeto.clinup.database.PlanoDeSaudeImplements;
 import br.com.projetofragmeto.clinup.helper.Base64Custom;
 import br.com.projetofragmeto.clinup.helper.Preferencias;
-import br.com.projetofragmeto.clinup.model.PlanoDeSaude;
 import br.com.projetofragmeto.clinup.model.Usuario;
 
 public class LoginActivity extends AppCompatActivity {
@@ -324,7 +322,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
             //Se o login pelo Google foi realizado com sucesso pela segunda vez na mesma sessão
-            if (result.isSuccess() && !getPreferencesKeyUsuarioGoogle(LoginActivity.this) ) {
+            if (result.isSuccess() && !getPreferencesKeyUsuarioGoogle(LoginActivity.this)) {
 
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
