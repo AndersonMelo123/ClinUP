@@ -15,14 +15,6 @@
       },
       "oauth_client": [
         {
-          "client_id": "402161144898-kj4gh60igtki2huk36boki44ip4sotvm.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "br.com.projetofragmeto.clinup",
-            "certificate_hash": "0fa94988ba04ef32835099544e4c9044798c5994"
-          }
-        },
-        {
           "client_id": "402161144898-73kffmpqrk9aikq6linatien2e1but2b.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

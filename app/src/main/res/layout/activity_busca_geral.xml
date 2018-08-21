@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.BuscaGeralActivity">
+
+    <include
+        android:id="@+id/toolbarActivity"
+        layout="@layout/toolbar_activity"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="40dp"
+        tools:ignore="MissingConstraints" />
+
+    <EditText
+        android:id="@+id/et_buscar"
+        android:layout_width="310dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bg_edittext"
+        android:ems="10"
+        android:hint="@string/buscar"
+        android:inputType="textPersonName"
+        android:textColor="@color/cardview_dark_background"
+        android:textColorHint="@color/cardview_dark_background"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarActivity" />
+
+    <Button
+        android:id="@+id/bt_filtro"
+        android:layout_width="39dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/ic_action_filter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.333"
+        app:layout_constraintStart_toEndOf="@+id/et_buscar"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarActivity" />
+
+    <TextView
+        android:id="@+id/tv_filtro"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/selecione_o_filtro"
+        android:textColor="@color/Black"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_buscar" />
+
+    <ListView
+        android:id="@+id/lista"
+        android:layout_width="368dp"
+        android:layout_height="414dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_filtro" />
+
+</android.support.constraint.ConstraintLayout>

@@ -5,11 +5,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import br.com.projetofragmeto.clinup.fragments.BuscarClinicaFragment;
-import br.com.projetofragmeto.clinup.fragments.BuscarHospitalFragment;
-import br.com.projetofragmeto.clinup.fragments.BuscarLaboratorioFragment;
-import br.com.projetofragmeto.clinup.fragments.BuscarProfissionalFragment;
-
 public class TabBuscarAdapter extends FragmentStatePagerAdapter {
 
     private String[] tituloAbas = {"PROFISSIONAIS","CLÍNICAS","HOSPITAIS","LABORATÓRIOS"};
@@ -24,16 +19,16 @@ public class TabBuscarAdapter extends FragmentStatePagerAdapter {
 
         switch (position){
             case 0:
-                fragment = new BuscarProfissionalFragment();
+                //fragment = new BuscarProfissionalFragment();
                 break;
             case 1:
-                fragment = new BuscarClinicaFragment();
+                //fragment = new BuscarClinicaFragment();
                 break;
             case 2:
-                fragment = new BuscarHospitalFragment();
+                //fragment = new BuscarHospitalFragment();
                 break;
             case 3:
-                fragment = new BuscarLaboratorioFragment();
+                //fragment = new BuscarLaboratorioFragment();
                 break;
         }
         return fragment;
