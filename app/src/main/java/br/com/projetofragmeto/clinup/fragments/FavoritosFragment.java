@@ -1,14 +1,21 @@
 package br.com.projetofragmeto.clinup.fragments;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -17,15 +24,21 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import br.com.projetofragmeto.clinup.R;
+import br.com.projetofragmeto.clinup.activity.PerfilCliente;
+import br.com.projetofragmeto.clinup.activity.PrincipalActivity;
 import br.com.projetofragmeto.clinup.adapter.AdapterPersonalizadoFavoritos;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
 import br.com.projetofragmeto.clinup.helper.Preferencias;
+import br.com.projetofragmeto.clinup.model.Clinica;
 import br.com.projetofragmeto.clinup.model.Favoritos;
+import br.com.projetofragmeto.clinup.model.Hospital;
+import br.com.projetofragmeto.clinup.model.Laboratorio;
+import br.com.projetofragmeto.clinup.model.Profissional;
 
 public class FavoritosFragment extends Fragment {
 
     private ListView listView;
-    //private String getId, tipo;
+    private String getId, tipo;
     public ArrayList favoritos;//retorna o nome dos profissionais da consulta para exibir na listview
     private DatabaseReference firebase;
     public ArrayList<Favoritos> favObjetos = new ArrayList<Favoritos>();
@@ -84,28 +97,21 @@ public class FavoritosFragment extends Fragment {
             }
         });
 
-/*
+
         //pega o clic da listView e exbibe o perfil do favorito
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 final Favoritos favoritos = favObjetos.get(i);
-                Log.i("ObjetosFavoritos", favoritos.getNomeCliente());
+
                 getId = favoritos.getId_Cliente();
                 tipo = favoritos.getTipo();
-
-                Log.i("ObjetosFavoritos", getId);
-                Log.i("ObjetosFavoritos", tipo);
 
                 firebase = ConfiguracaoFirebase.getFirebase().child(tipo);
 
                 firebase.addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                        Log.i("ObjetosFavoritos", dataSnapshot.getKey());
-                        Log.i("ObjetosFavoritos", String.valueOf(dataSnapshot.getValue()));
-                        Log.i("ObjetosFavoritos", getId);
 
                         if (dataSnapshot.getKey().equals(getId)) {
                             coletaDadosCliente(tipo, dataSnapshot);
@@ -146,14 +152,11 @@ public class FavoritosFragment extends Fragment {
                 return true;
             }
         });
-*/
+
         return view;
     }
-/*
+
     private void coletaDadosCliente(String tipo, DataSnapshot dataSnapshot) {
-
-        Log.i("ObjetosFavoritos", "EntrouAqui");
-
 
         switch (tipo) {
             case "laboratorios":
@@ -178,8 +181,6 @@ public class FavoritosFragment extends Fragment {
                 startActivity(intent1);
                 break;
             case "clinica":
-
-                //Log.i("ObjetosFavoritos", "EntrouAqui");
 
                 Clinica clinica = dataSnapshot.getValue(Clinica.class);
 
@@ -265,6 +266,7 @@ public class FavoritosFragment extends Fragment {
                 Toast.makeText(getContext(), "Favorito excluido o com sucesso", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getContext(), PrincipalActivity.class);
                 startActivity(intent);
+
             }
         });
 
@@ -279,5 +281,5 @@ public class FavoritosFragment extends Fragment {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-*/
+
 }
