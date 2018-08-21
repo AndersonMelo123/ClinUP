@@ -54,7 +54,8 @@ public class BuscaGeralActivity extends AppCompatActivity {
     private String[] filtro = {"Profissionais","Clínicas","Hospitais","Laboratórios"};
     String filtragem = filtro[0];
 
-    private DatabaseReference firebase;
+
+    private DatabaseReference firebase; // referencia do banco de dados
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,7 +104,7 @@ public class BuscaGeralActivity extends AppCompatActivity {
 
                         switch (textView.getText().toString()){
                             case("Profissionais"):
-                                Log.i("FILTRO",filtragem);
+                                //Log.i("FILTRO",filtragem);
 
                                 firebase.child("profissionais").addValueEventListener(new ValueEventListener() {
                                     @Override
@@ -147,7 +148,7 @@ public class BuscaGeralActivity extends AppCompatActivity {
                                 });
                                 break;
                             case("Clínicas"):
-                                Log.i("FILTRO",filtragem);
+                                //Log.i("FILTRO",filtragem);
 
                                 firebase.child("clinica").addValueEventListener(new ValueEventListener() {
                                     @Override
@@ -189,7 +190,7 @@ public class BuscaGeralActivity extends AppCompatActivity {
                                 });
                                 break;
                             case("Hospitais"):
-                                Log.i("FILTRO",filtragem);
+                                //Log.i("FILTRO",filtragem);
                                 firebase.child("hospitais").addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -228,7 +229,7 @@ public class BuscaGeralActivity extends AppCompatActivity {
                                 });
                                 break;
                             case("Laboratórios"):
-                                Log.i("FILTRO",filtragem);
+                                //Log.i("FILTRO",filtragem);
                                 firebase.child("laboratorios").addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
