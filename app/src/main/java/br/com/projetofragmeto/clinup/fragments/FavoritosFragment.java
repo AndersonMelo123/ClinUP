@@ -25,7 +25,6 @@ import java.util.ArrayList;
 
 import br.com.projetofragmeto.clinup.R;
 import br.com.projetofragmeto.clinup.activity.PerfilCliente;
-import br.com.projetofragmeto.clinup.activity.PrincipalActivity;
 import br.com.projetofragmeto.clinup.adapter.AdapterPersonalizadoFavoritos;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
 import br.com.projetofragmeto.clinup.helper.Preferencias;
@@ -72,6 +71,8 @@ public class FavoritosFragment extends Fragment {
         firebase.addValueEventListener(new ValueEventListener() {//faz a consulta no banco
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                favObjetos.clear();
+                favoritos.clear();
                 if (dataSnapshot.getValue() != null) {
 
                     for (DataSnapshot dados : dataSnapshot.getChildren()) {
@@ -263,9 +264,7 @@ public class FavoritosFragment extends Fragment {
 
                 bancoDados.removeValue();
 
-                Toast.makeText(getContext(), "Favorito excluido o com sucesso", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getContext(), PrincipalActivity.class);
-                startActivity(intent);
+                Toast.makeText(getContext(), "Excluido o com sucesso", Toast.LENGTH_SHORT).show();
 
             }
         });
