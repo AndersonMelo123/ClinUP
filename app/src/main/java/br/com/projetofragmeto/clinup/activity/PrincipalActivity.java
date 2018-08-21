@@ -28,7 +28,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -53,7 +52,6 @@ import br.com.projetofragmeto.clinup.R;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
 import br.com.projetofragmeto.clinup.database.OnGetDataListener;
 import br.com.projetofragmeto.clinup.fragments.FavoritosFragment;
-import br.com.projetofragmeto.clinup.fragments.HomeFragment;
 import br.com.projetofragmeto.clinup.fragments.ListaFragment;
 import br.com.projetofragmeto.clinup.fragments.MapaFragment;
 import br.com.projetofragmeto.clinup.helper.Preferencias;
@@ -61,8 +59,6 @@ import br.com.projetofragmeto.clinup.model.Usuario;
 
 public class PrincipalActivity extends AppCompatActivity {
 
-    //save our header or result
-    private AccountHeader headerResult = null;
     private Drawer result = null;
 
     private String nomeUser, emailUser, fotoUser;
@@ -71,17 +67,11 @@ public class PrincipalActivity extends AppCompatActivity {
 
     private FirebaseAuth autenticacaoUsuario;
     private GoogleApiClient googleApiClient;
-    private FirebaseUser user;
 
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
-    private int[] tabIcons = {
-            R.drawable.ic_tab_mapa,
-            R.drawable.ic_tab_agenda,
-            R.drawable.ic_tab_favoritos
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,8 +79,6 @@ public class PrincipalActivity extends AppCompatActivity {
         setContentView(R.layout.activity_principal);
 
         autenticacaoUsuario = ConfiguracaoFirebase.getFirebaseAutenticacao();
-        user = ConfiguracaoFirebase.getUsuarioLogado(); // retorna o usuário que está logado no momento
-
 
         viewPager = findViewById(R.id.viewpager);
         setupViewPager(viewPager);
@@ -100,11 +88,11 @@ public class PrincipalActivity extends AppCompatActivity {
 
         setupTabIcons();
 
-
-        final Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab =  findViewById(R.id.fab);
+
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -112,10 +100,10 @@ public class PrincipalActivity extends AppCompatActivity {
             }
         });
 
-        homeFragment(); // Instancia o fragment home
 
         Preferencias preferencesUser = new Preferencias(PrincipalActivity.this);
         String idUsuarios = preferencesUser.getIdentificador();
+
 
         //initialize and create the image loader logic
         DrawerImageLoader.init(new AbstractDrawerImageLoader() {
@@ -134,8 +122,6 @@ public class PrincipalActivity extends AppCompatActivity {
         mReadDataOnce(idUsuarios, new OnGetDataListener() {
             @Override
             public void onStart() {
-
-
 
                 if (mProgressDialog == null) {
                     mProgressDialog = new ProgressDialog(PrincipalActivity.this);
@@ -167,6 +153,7 @@ public class PrincipalActivity extends AppCompatActivity {
                     } else {
                         profile = new ProfileDrawerItem().withEmail(emailUser).withName(nomeUser).withIcon(R.mipmap.ic_launcher);
                     }
+
 
                     //################################# - Google - ################################################
                     GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -200,13 +187,12 @@ public class PrincipalActivity extends AppCompatActivity {
                             })
                             .build();
 
-
                     //if you want to update the items at a later time it is recommended to keep it in a variable
                     PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName("Home").withIcon(FontAwesome.Icon.faw_home);
                     PrimaryDrawerItem item2 = new PrimaryDrawerItem().withIdentifier(2).withName("Perfil").withIcon(FontAwesome.Icon.faw_user);
 
                     //Cria o drawer e lembra o 'Drawer' resulto objeto
-                    Drawer result = new DrawerBuilder()
+                    result = new DrawerBuilder()
                             .withAccountHeader(headerResult)
                             .withActivity(PrincipalActivity.this)
                             .withToolbar(toolbar)
@@ -221,13 +207,16 @@ public class PrincipalActivity extends AppCompatActivity {
                                         Intent intent = null;
                                         if (drawerItem.getIdentifier() == 1) {
 
-                                            homeFragment(); //Vai para a frament HomeFragment
+                                            intent = new Intent(PrincipalActivity.this, PrincipalActivity.class);
+                                            startActivity(intent);
+                                            finish();
                                         }
 
                                         if (drawerItem.getIdentifier() == 2) {
 
                                             intent = new Intent(PrincipalActivity.this, PerfilActivity.class);
                                             startActivity(intent);
+
                                         }
 
                                         if (drawerItem.getIdentifier() == 3) {
@@ -237,6 +226,7 @@ public class PrincipalActivity extends AppCompatActivity {
                                     return false;
                                 }
                             })
+                            .withTranslucentStatusBar(false)
                             .build();
 
                     result.addStickyFooterItem(new PrimaryDrawerItem().withIdentifier(3).withName("Sair").withIcon(FontAwesome.Icon.faw_sign_out_alt));
@@ -265,6 +255,7 @@ public class PrincipalActivity extends AppCompatActivity {
         });
     }
 
+
     private void logout() {
 
         logOutGoogle();
@@ -289,6 +280,7 @@ public class PrincipalActivity extends AppCompatActivity {
         });
     }
 
+
     private void goLogInScreen() {
         Intent intent = new Intent(this, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -296,32 +288,27 @@ public class PrincipalActivity extends AppCompatActivity {
         finish();
     }
 
-    private void homeFragment() {
-
-        HomeFragment homeFragment = new HomeFragment(); // instancia o fragment home
-        getSupportFragmentManager().beginTransaction().replace(R.id.conteudo_fragment, homeFragment).commit(); // exibe o fragmentHome
-
-    }
 
     private void setupTabIcons() {
 
-        TextView tabOne = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
+        TextView tabOne = (TextView) LayoutInflater.from(PrincipalActivity.this).inflate(R.layout.custom_tab, null);
         tabOne.setText("Localização");
         tabOne.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_tab_mapa, 0, 0);
         tabLayout.getTabAt(0).setCustomView(tabOne);
 
-        TextView tabTwo = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
+        TextView tabTwo = (TextView) LayoutInflater.from(PrincipalActivity.this).inflate(R.layout.custom_tab, null);
         tabTwo.setText("Consultas");
         tabTwo.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_tab_agenda, 0, 0);
         tabLayout.getTabAt(1).setCustomView(tabTwo);
 
-        TextView tabThree = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
+        TextView tabThree = (TextView) LayoutInflater.from(PrincipalActivity.this).inflate(R.layout.custom_tab, null);
         tabThree.setText("Favoritos");
         tabThree.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_tab_favoritos, 0, 0);
         tabLayout.getTabAt(2).setCustomView(tabThree);
     }
 
     private void setupViewPager(ViewPager viewPager) {
+
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new MapaFragment(), "Localização");
         adapter.addFragment(new ListaFragment(), "Consultas");
@@ -333,7 +320,7 @@ public class PrincipalActivity extends AppCompatActivity {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
 
-        public ViewPagerAdapter(FragmentManager manager) {
+        ViewPagerAdapter(FragmentManager manager) {
             super(manager);
         }
 
@@ -347,7 +334,7 @@ public class PrincipalActivity extends AppCompatActivity {
             return mFragmentList.size();
         }
 
-        public void addFragment(Fragment fragment, String title) {
+        void addFragment(Fragment fragment, String title) {
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
         }
@@ -359,17 +346,18 @@ public class PrincipalActivity extends AppCompatActivity {
     }
 
     public void goToBuscaActivity() {
-        Intent intent = new Intent(getApplicationContext(),BuscaActivity.class);
+        Intent intent = new Intent(getApplicationContext(), BuscaActivity.class);
         startActivity(intent);
     }
 
     @Override
     public void onBackPressed() {
-        //handle the back press :D close the drawer first and if the drawer is closed close the activity
+        // manipular a contrapressão: D fecha a gaveta primeiro e se a gaveta estiver fechada feche a atividade
         if (result != null && result.isDrawerOpen()) {
             result.closeDrawer();
         } else {
             super.onBackPressed();
         }
     }
+
 }

@@ -54,10 +54,8 @@ import java.security.NoSuchAlgorithmException;
 
 import br.com.projetofragmeto.clinup.R;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
-import br.com.projetofragmeto.clinup.database.PlanoDeSaudeImplements;
 import br.com.projetofragmeto.clinup.helper.Base64Custom;
 import br.com.projetofragmeto.clinup.helper.Preferencias;
-import br.com.projetofragmeto.clinup.model.PlanoDeSaude;
 import br.com.projetofragmeto.clinup.model.Usuario;
 
 public class LoginActivity extends AppCompatActivity {
@@ -138,11 +136,13 @@ public class LoginActivity extends AppCompatActivity {
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+
                 FirebaseUser user = firebaseAuth.getCurrentUser();
+
                 if (AccessToken.getCurrentAccessToken() != null && user != null) {
 
                     //Se o login pelo Facebook foi realizado com sucesso pela segunda vez na mesma sessão
-                    if (getPreferencesKeyUsuarioFacebook(LoginActivity.this)) {
+                    if (!getPreferencesKeyUsuarioFacebook(LoginActivity.this)) {
 
                         String idUsuario = Base64Custom.codificarBase64(user.getEmail());
                         Preferencias preferencias = new Preferencias(LoginActivity.this);
@@ -154,12 +154,12 @@ public class LoginActivity extends AppCompatActivity {
 
 
                         //Se o login pelo Facebook foi realizado com sucesso pela primeira vez na sessão
-                    } else if (!getPreferencesKeyUsuarioFacebook(LoginActivity.this)) {
+                    } else if (getPreferencesKeyUsuarioFacebook(LoginActivity.this)) {
+
                         String userId = AccessToken.getCurrentAccessToken().getUserId(); // Pegar o id do facebook do usuário para coletar a imagem do perfil
                         usuario = new Usuario(user.getDisplayName(), user.getEmail(), "https://graph.facebook.com/" + userId + "/picture?type=large");
                         String idUsuario = Base64Custom.codificarBase64(user.getEmail());
                         usuario.setId(idUsuario);
-                        usuario.setPlanoDeSaude(idUsuario);
 
                         Preferencias preferencias = new Preferencias(LoginActivity.this);
                         preferencias.salvarDados(idUsuario, usuario.getNome());
@@ -221,7 +221,7 @@ public class LoginActivity extends AppCompatActivity {
 
         autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
 
-        if (autenticacao.getCurrentUser() != null) { //Verificando se existe usuário logado
+        if (autenticacao.getCurrentUser() != null && getPreferencesKeyVerificarLogado(this)) { //Verificando se existe usuário logado
             abrirTelaPrincipal();
         }
         //Se já estiver logado pelo Facebook
@@ -320,8 +320,9 @@ public class LoginActivity extends AppCompatActivity {
 
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
 
+
             //Se o login pelo Google foi realizado com sucesso pela segunda vez na mesma sessão
-            if (result.isSuccess() && getPreferencesKeyUsuarioGoogle(this)) {
+            if (result.isSuccess() && !getPreferencesKeyUsuarioGoogle(LoginActivity.this)) {
 
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
@@ -335,7 +336,7 @@ public class LoginActivity extends AppCompatActivity {
                 abrirTelaPrincipal();
 
                 //Se o login pelo Google foi realizado com sucesso pela primeira vez na sessão
-            } else if (result.isSuccess() && !getPreferencesKeyUsuarioGoogle(this)) {
+            } else if (result.isSuccess() && getPreferencesKeyUsuarioGoogle(LoginActivity.this)) {
 
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
@@ -343,8 +344,7 @@ public class LoginActivity extends AppCompatActivity {
                 String idUsuario = Base64Custom.codificarBase64(account.getEmail());
                 Preferencias preferencias = new Preferencias(LoginActivity.this);
                 preferencias.salvarDados(idUsuario, account.getDisplayName());
-
-                //salvarPreferencias("idGoogle", idUsuario);
+                salvarPreferencias("id", idUsuario);
 
                 confirmarCadastroEnderecoGoogle(account);
 
@@ -425,32 +425,24 @@ public class LoginActivity extends AppCompatActivity {
         editor.commit();
     }
 
+    //Método que recupera o id do usuário logado para acessar seus dados e salvar suas informações no banco
+    public static boolean getPreferencesKeyVerificarLogado(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.contains("id");
+    }
+
     //Método que salva o usuário logado pelo Google no banco
-    private boolean salvarUsuarioGoogle(GoogleSignInAccount account) {
+    private void salvarUsuarioGoogle(GoogleSignInAccount account) {
         try {
 
             usuario = new Usuario(account.getId(), account.getDisplayName(), account.getEmail(), account.getPhotoUrl().toString());
 
-            String idUsuario = Base64Custom.codificarBase64(usuario.getEmail());
-            usuario.setPlanoDeSaude(idUsuario);
-            //Salvando um plano de saude vazio
-            PlanoDeSaude planoDeSaude = new PlanoDeSaude();
-            PlanoDeSaudeImplements Plano = new PlanoDeSaudeImplements(getApplicationContext());
-            Plano.inserirPlanodeSaude(planoDeSaude, usuario.getId(), " ", " ");
-
-            Preferencias preferencias = new Preferencias(LoginActivity.this);
-            preferencias.salvarDados(idUsuario, usuario.getNome());
-            salvarPreferencias("id", idUsuario);
-
             //Chamada do DAO para salvar no banco
             inserirUsuario(usuario);
 
-
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
         }
-        return true;
     }
 
     //Método para salvar usuário no banco de dados do Firebase
@@ -458,7 +450,6 @@ public class LoginActivity extends AppCompatActivity {
 
         // Criando uma segurança para salvar o usuário no banco de dados
         final String idUsuarioLogado = Base64Custom.codificarBase64(usuario.getEmail());
-        usuario.setEndereco(""); //Garantir a qualidade do banco
 
         firebase.child("usuarios").child(idUsuarioLogado).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -502,7 +493,7 @@ public class LoginActivity extends AppCompatActivity {
     //Método que exibe pergunta de confirmação ao usuário logado pelo Google se o mesmo deseja cadastrar um endereço
     public void confirmarCadastroEnderecoGoogle(final GoogleSignInAccount account) {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
         builder.setTitle("Cadastrar Endereço");
         //define a mensagem
         builder.setMessage("Precisamos do seu endereço para que você possa agendar. Deseja cadastrar agora o seu endereo?");
@@ -538,7 +529,7 @@ public class LoginActivity extends AppCompatActivity {
     //Método que exibe pergunta de confirmação ao usuário logado pelo Facebook se o mesmo deseja cadastrar um endereço
     public void confirmarCadastroEnderecoFacebook(final Usuario usuario) {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
         builder.setTitle("Cadastrar Endereço");
         //define a mensagem
         builder.setMessage("Precisamos do seu endereço para que você possa agendar. Deseja cadastrar agora o seu endereo?");
@@ -550,14 +541,11 @@ public class LoginActivity extends AppCompatActivity {
                 // Botão sim foi clicado
 
                 inserirUsuario(usuario);
-                //Salvando um plano de saude vazio
-                PlanoDeSaude planoDeSaude = new PlanoDeSaude();
-                PlanoDeSaudeImplements Plano = new PlanoDeSaudeImplements(getApplicationContext());
-                Plano.inserirPlanodeSaude(planoDeSaude, usuario.getId(), " ", " ");
 
                 Intent intent = new Intent(LoginActivity.this, CadastroEndereco.class);
                 startActivity(intent);
                 finish();
+
             }
         });
         builder.setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
@@ -565,11 +553,6 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 // Botão não foi clicado
                 inserirUsuario(usuario);
-                //Salvando um plano de saude vazio
-                PlanoDeSaude planoDeSaude = new PlanoDeSaude();
-                PlanoDeSaudeImplements Plano = new PlanoDeSaudeImplements(getApplicationContext());
-                Plano.inserirPlanodeSaude(planoDeSaude, usuario.getId(), " ", " ");
-
 
                 abrirTelaPrincipal();
             }
