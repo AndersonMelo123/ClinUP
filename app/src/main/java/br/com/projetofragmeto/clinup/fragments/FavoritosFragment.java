@@ -1,18 +1,13 @@
 package br.com.projetofragmeto.clinup.fragments;
 
 
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -22,21 +17,15 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import br.com.projetofragmeto.clinup.R;
-import br.com.projetofragmeto.clinup.activity.PerfilCliente;
-import br.com.projetofragmeto.clinup.activity.PrincipalActivity;
 import br.com.projetofragmeto.clinup.adapter.AdapterPersonalizadoFavoritos;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
 import br.com.projetofragmeto.clinup.helper.Preferencias;
-import br.com.projetofragmeto.clinup.model.Clinica;
 import br.com.projetofragmeto.clinup.model.Favoritos;
-import br.com.projetofragmeto.clinup.model.Hospital;
-import br.com.projetofragmeto.clinup.model.Laboratorio;
-import br.com.projetofragmeto.clinup.model.Profissional;
 
 public class FavoritosFragment extends Fragment {
 
     private ListView listView;
-    private String getId, tipo;
+    //private String getId, tipo;
     public ArrayList favoritos;//retorna o nome dos profissionais da consulta para exibir na listview
     private DatabaseReference firebase;
     public ArrayList<Favoritos> favObjetos = new ArrayList<Favoritos>();
@@ -160,7 +149,7 @@ public class FavoritosFragment extends Fragment {
 */
         return view;
     }
-
+/*
     private void coletaDadosCliente(String tipo, DataSnapshot dataSnapshot) {
 
         Log.i("ObjetosFavoritos", "EntrouAqui");
@@ -290,5 +279,5 @@ public class FavoritosFragment extends Fragment {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-
+*/
 }
