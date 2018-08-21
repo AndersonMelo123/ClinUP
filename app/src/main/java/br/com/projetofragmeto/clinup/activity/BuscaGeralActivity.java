@@ -39,22 +39,23 @@ public class BuscaGeralActivity extends AppCompatActivity {
     private ListView listView;
     private TextView textView;
 
-    private ArrayAdapter adapter;
+    private ArrayAdapter<String> adapter;
 
-    private ArrayList listaNomes = new ArrayList();//retorna o nome dos listaNomes da consulta para exibir na listview
-    private ArrayList<Profissional> profObjetos = new ArrayList<Profissional>();//retorna todos os listaNomes da consulta no banco
+    private ArrayList<String> listaNomes = new ArrayList<>();//retorna o nome dos listaNomes da consulta para exibir na listview
+    private ArrayList<Profissional> profObjetos = new ArrayList<>();//retorna todos os listaNomes da consulta no banco
 
-    private ArrayList<Clinica> clinObjetos = new ArrayList<Clinica>();//retorna todos as Clinicas da consulta no banco
-    private ArrayList listaAuxiliar = new ArrayList(); // lista auxiliar que pega os nomes dos objetos gerados a pesquisa
+    private ArrayList<Clinica> clinObjetos = new ArrayList<>();//retorna todos as Clinicas da consulta no banco
+    private ArrayList<String> listaAuxiliar = new ArrayList<>(); // lista auxiliar que pega os nomes dos objetos gerados a pesquisa
 
-    private ArrayList<Hospital> hospObjetos = new ArrayList<Hospital>();//retorna todos as Clinicas da consulta no banco
+    private ArrayList<Hospital> hospObjetos = new ArrayList<>();//retorna todos as Clinicas da consulta no banco
 
-    private ArrayList<Laboratorio> labObjetos = new ArrayList<Laboratorio>();//retorna todos as Clinicas da consulta no banco
+    private ArrayList<Laboratorio> labObjetos = new ArrayList<>();//retorna todos as Clinicas da consulta no banco
 
     private String[] filtro = {"Profissionais","Clínicas","Hospitais","Laboratórios"};
     String filtragem = filtro[0];
 
-    private DatabaseReference firebase;
+
+    private DatabaseReference firebase; // referencia do banco de dados
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,7 +79,7 @@ public class BuscaGeralActivity extends AppCompatActivity {
 
         firebase = ConfiguracaoFirebase.getFirebase(); // referêcia do firebase para acessar o banco
 
-        adapter = new ArrayAdapter(
+        adapter = new ArrayAdapter<>(
                 this, // pega o contexto da activity onde esse fragment está
                 R.layout.lista_busca, //layout da lista
                 listaNomes //array list contendo todos os contados
@@ -103,7 +104,7 @@ public class BuscaGeralActivity extends AppCompatActivity {
 
                         switch (textView.getText().toString()){
                             case("Profissionais"):
-                                Log.i("FILTRO",filtragem);
+                                //Log.i("FILTRO",filtragem);
 
                                 firebase.child("profissionais").addValueEventListener(new ValueEventListener() {
                                     @Override
@@ -168,7 +169,7 @@ public class BuscaGeralActivity extends AppCompatActivity {
                                 });
                                 break;
                             case("Clínicas"):
-                                Log.i("FILTRO",filtragem);
+                                //Log.i("FILTRO",filtragem);
 
                                 firebase.child("clinica").addValueEventListener(new ValueEventListener() {
                                     @Override
@@ -231,7 +232,7 @@ public class BuscaGeralActivity extends AppCompatActivity {
                                 });
                                 break;
                             case("Hospitais"):
-                                Log.i("FILTRO",filtragem);
+                                //Log.i("FILTRO",filtragem);
                                 firebase.child("hospitais").addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -292,7 +293,7 @@ public class BuscaGeralActivity extends AppCompatActivity {
                                 });
                                 break;
                             case("Laboratórios"):
-                                Log.i("FILTRO",filtragem);
+                                //Log.i("FILTRO",filtragem);
                                 firebase.child("laboratorios").addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -386,12 +387,13 @@ public class BuscaGeralActivity extends AppCompatActivity {
 
     }
 
+    //percorre os dados que foram carregados no banco, verificando se a string passada existe e atualiza a listview
     public void buscar(String textoBusca){
         System.out.println(textoBusca);
         if (listaNomes != null)
             listaNomes.clear();
         for(int i=0;i<listaAuxiliar.size();i++){
-            if(listaAuxiliar.get(i).toString().toLowerCase().contains(textoBusca.toLowerCase())){
+            if(listaAuxiliar.get(i).toLowerCase().contains(textoBusca.toLowerCase())){
                 listaNomes.add(listaAuxiliar.get(i));
             }
         }

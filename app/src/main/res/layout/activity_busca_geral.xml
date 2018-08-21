@@ -15,13 +15,13 @@
 
     <EditText
         android:id="@+id/et_buscar"
-        android:layout_width="309dp"
-        android:layout_height="46dp"
+        android:layout_width="310dp"
+        android:layout_height="45dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/bg_edittext"
         android:ems="10"
-        android:hint="Buscar"
+        android:hint="@string/buscar"
         android:inputType="textPersonName"
         android:textColor="@color/cardview_dark_background"
         android:textColorHint="@color/cardview_dark_background"
@@ -30,24 +30,24 @@
 
     <Button
         android:id="@+id/bt_filtro"
-        android:layout_width="36dp"
-        android:layout_height="35dp"
+        android:layout_width="39dp"
+        android:layout_height="40dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/ic_action_filter"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.466"
+        app:layout_constraintHorizontal_bias="0.333"
         app:layout_constraintStart_toEndOf="@+id/et_buscar"
         app:layout_constraintTop_toBottomOf="@+id/toolbarActivity" />
 
     <TextView
         android:id="@+id/tv_filtro"
         android:layout_width="wrap_content"
-        android:layout_height="22dp"
+        android:layout_height="20dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Selecione o Filtro"
+        android:text="@string/selecione_o_filtro"
         android:textColor="@color/Black"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"

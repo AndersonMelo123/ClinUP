@@ -2,13 +2,10 @@ package br.com.projetofragmeto.clinup.config;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import br.com.projetofragmeto.clinup.database.OnGetDataListener;
 
 public final class ConfiguracaoFirebase {
 
@@ -17,9 +14,9 @@ public final class ConfiguracaoFirebase {
     private static FirebaseAuth autenticacao; //Variável para acesso a autenticação de usuário no Firebase
     private static FirebaseUser user;
 
-    public static DatabaseReference getFirebase(){ //Método para obter uma instância do banco de dados do Firebase
+    public static DatabaseReference getFirebase() { //Método para obter uma instância do banco de dados do Firebase
 
-        if ( referenciaFirebase == null ){
+        if (referenciaFirebase == null) {
             referenciaFirebase = FirebaseDatabase.getInstance().getReference();
 
         }
@@ -34,17 +31,17 @@ public final class ConfiguracaoFirebase {
         return database;
     }
 
-    public static FirebaseAuth getFirebaseAutenticacao(){ //Método para obter uma instância da Autenticação do Firebase
+    public static FirebaseAuth getFirebaseAutenticacao() { //Método para obter uma instância da Autenticação do Firebase
 
-        if ( autenticacao == null ){
+        if (autenticacao == null) {
             autenticacao = FirebaseAuth.getInstance();
 
         }
         return autenticacao;
     }
 
-    public static FirebaseUser getUsuarioLogado(){ // retorna o usuário que está logado no momento
-         user = ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser(); // retorna o usuário logado
+    public static FirebaseUser getUsuarioLogado() { // retorna o usuário que está logado no momento
+        user = ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser(); // retorna o usuário logado
 
         return user;
 

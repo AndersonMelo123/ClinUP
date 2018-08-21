@@ -106,4 +106,10 @@
     <string name="msg_dialog_excluir_favorito">Deseja mesmo excluir este favorito?</string>
     <string name="hor_rio_de_funcionamento">Horário de Funcionamento</string>
 
+    <string name="selecione_o_filtro">Selecione o Filtro</string>
+
+    <string name="buscar">Buscar</string>
+    <string name="filtro">Filtro</string>
+    <string name="filtro2">Filtro:</string>
+
 </resources>

@@ -5,15 +5,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import br.com.projetofragmeto.clinup.R;
 
 
 public class HomeFragment extends Fragment {
-
-    private Button bt_Agendar;
-
 
     public HomeFragment() {
         // Required empty public constructor

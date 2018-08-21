@@ -560,7 +560,6 @@ public class MapaFragment extends Fragment implements
 
         switch (cliente) {
             case "clinica":
-                Log.i("ClasseAqui", "clinica");
 
                 infoWindowData.setNome(((Clinica) classe).getNome());
                 infoWindowData.setEmail(((Clinica) classe).getEmail());
@@ -577,8 +576,6 @@ public class MapaFragment extends Fragment implements
                 break;
 
             case "laboratorios":
-                Log.i("ClasseAqui", "laboratorios");
-
 
                 infoWindowData.setNome(((Laboratorio) classe).getNome());
                 infoWindowData.setEmail(((Laboratorio) classe).getEmail());
@@ -628,7 +625,6 @@ public class MapaFragment extends Fragment implements
 
         switch (infoWindowData.getCliente()) {
             case "clinica":
-                Log.i("ClasseAqui", "clinica");
 
                 intent.putExtra("nome", infoWindowData.getNome());
                 intent.putExtra("email", infoWindowData.getEmail());
@@ -644,7 +640,6 @@ public class MapaFragment extends Fragment implements
                 break;
 
             case "laboratorios":
-                Log.i("ClasseAqui", "laboratorios");
 
                 intent.putExtra("nome", infoWindowData.getNome());
                 intent.putExtra("email", infoWindowData.getEmail());

@@ -109,7 +109,6 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
                     usuario.setDataNascimento(dataNascimento.getText().toString());
                     String idUsuarioLogado = Base64Custom.codificarBase64(usuario.getEmail());
                     usuario.setId(idUsuarioLogado);
-                    usuario.setEndereco("");
 
                     // Salvando no banco o plano de saúde
                     Plano.inserirPlanodeSaude(planoDeSaude, usuario.getId(), nomePlano.getText().toString(), numPlano.getText().toString());
