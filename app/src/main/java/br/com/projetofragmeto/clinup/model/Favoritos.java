@@ -40,7 +40,7 @@ public class Favoritos implements Serializable {
         this.id = id;
     }
 
-    public String getId_Usuario() {
+    public String getIdUsuario() {
         return id_Usuario;
     }
 

@@ -213,7 +213,7 @@ public class PerfilCliente extends AppCompatActivity {
 
                             Favoritos fav = dados.getValue(Favoritos.class);//retorna cada objeto da consulta em a
 
-                            String idUsuarioFavoritos = fav.getId_Usuario();
+                            String idUsuarioFavoritos = fav.getIdUsuario();
                             String idFav = fav.getIdCliente();
                             String tipoFav = fav.getTipo();
 

@@ -78,7 +78,7 @@ public class FavoritosFragment extends Fragment {
 
                         Favoritos fav = dados.getValue(Favoritos.class);//retorna cada objeto da consulta em fav
 
-                        String idUsuarioFavoritos = fav.getId_Usuario();
+                        String idUsuarioFavoritos = fav.getIdUsuario();
 
                         if (idUsuarioFavoritos.equals(idUsuarios)) {
 
