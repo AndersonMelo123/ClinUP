@@ -44,15 +44,15 @@ public class Favoritos implements Serializable {
         return id_Usuario;
     }
 
-    public void setId_Usuario(String id_Usuario) {
+    public void setIdUsuario(String id_Usuario) {
         this.id_Usuario = id_Usuario;
     }
 
-    public String getId_Cliente() {
+    public String getIdCliente() {
         return id_Cliente;
     }
 
-    public void setId_Cliente(String id_Cliente) {
+    public void setIdCliente(String id_Cliente) {
         this.id_Cliente = id_Cliente;
     }
 

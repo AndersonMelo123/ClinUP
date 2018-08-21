@@ -82,7 +82,7 @@ public class FavoritosFragment extends Fragment {
 
                         if (idUsuarioFavoritos.equals(idUsuarios)) {
 
-                            String info = fav.getId_Cliente();
+                            String info = fav.getIdCliente();
                             favObjetos.add(fav);//adiciona o profissional p em profObjetos
                             favoritos.add(info);//adiciona o nome do profissional p em profissionais
 
@@ -104,7 +104,7 @@ public class FavoritosFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 final Favoritos favoritos = favObjetos.get(i);
 
-                getId = favoritos.getId_Cliente();
+                getId = favoritos.getIdCliente();
                 tipo = favoritos.getTipo();
 
                 firebase = ConfiguracaoFirebase.getFirebase().child(tipo);
