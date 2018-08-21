@@ -8,6 +8,7 @@
     <color name="Cinza">#878787</color>
     <color name="Black">#000000</color>
     <color name="White">#FFF</color>
+    <color name="Red">#FF0000</color>
 
     <!-- Material DEFAULT colors -->
     <color name="material_drawer_primary">#2196F3</color>

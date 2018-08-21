@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class Agendamento implements Serializable {
 
-    private String id_Usuario, id_Cliente, dataConsulta, dataAtual, nomeUsuario, id_Plano, id;
+    private String id_Usuario, id_Cliente, dataConsulta, dataAtual, nomeUsuario, id_Plano, id, nome_Cliente;
 
     public Agendamento() {
     }
@@ -19,19 +19,33 @@ public class Agendamento implements Serializable {
         this.id_Plano = id_Plano;
     }
 
-    public String getId_Usuario() {
+    @Override
+    public String toString() {
+        return "Nome: " + nomeUsuario + '\n' +
+                "Data da Consulta: " + dataConsulta;
+    }
+
+    public String getNomeCliente() {
+        return nome_Cliente;
+    }
+
+    public void setNomeCliente(String nome_Cliente) {
+        this.nome_Cliente = nome_Cliente;
+    }
+
+    public String getIdUsuario() {
         return id_Usuario;
     }
 
-    public void setId_Usuario(String id_Usuario) {
+    public void setIdUsuario(String id_Usuario) {
         this.id_Usuario = id_Usuario;
     }
 
-    public String getId_Cliente() {
+    public String getIdCliente() {
         return id_Cliente;
     }
 
-    public void setId_Cliente(String id_Cliente) {
+    public void setIdCliente(String id_Cliente) {
         this.id_Cliente = id_Cliente;
     }
 
@@ -59,11 +73,11 @@ public class Agendamento implements Serializable {
         this.nomeUsuario = nomeUsuario;
     }
 
-    public String getId_Plano() {
+    public String getIdPlano() {
         return id_Plano;
     }
 
-    public void setId_Plano(String id_Plano) {
+    public void setIdPlano(String id_Plano) {
         this.id_Plano = id_Plano;
     }
 

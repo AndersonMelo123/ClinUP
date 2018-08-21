@@ -45,7 +45,7 @@ public class AgendarActivity extends FragmentActivity {
     private ArrayList<Date> DesativarDatas = new ArrayList<>();
     private ArrayList<Date> AtivarDatas = new ArrayList<>();
 
-    private String id, cliente;
+    private String id, cliente, nomeCliente;
 
     private TextView nome, endereco, telefone, dataNascimento, planoDeSaude, email, dataAgendamento;
 
@@ -101,7 +101,9 @@ public class AgendarActivity extends FragmentActivity {
 
         id = getIntent().getExtras().getString("id"); // Pegar o ID do cliente do fragment_Buscar...
         cliente = getIntent().getExtras().getString("cliente");
+        nomeCliente = getIntent().getExtras().getString("nome");
         classe = getIntent().getSerializableExtra("classe").getClass();
+
 
         firebase = ConfiguracaoFirebase.getFirebase().child(cliente).child("001").child("dias");
 
@@ -183,7 +185,7 @@ public class AgendarActivity extends FragmentActivity {
                     telefone.setText(usuario.getTelefone());
 
                     agendamento.setNomeUsuario(usuario.getNome());
-                    agendamento.setId_Plano(String.valueOf(usuario.getPlanoDeSaude()));
+                    agendamento.setIdPlano(String.valueOf(usuario.getPlanoDeSaude()));
 
                 }
 
@@ -503,9 +505,10 @@ public class AgendarActivity extends FragmentActivity {
 
                 agendamento.setDataConsulta(dataSelecionada);
                 agendamento.setDataAtual(dataAtual);
-                agendamento.setId_Cliente(String.valueOf(id));
-                agendamento.setId_Usuario(String.valueOf(idUsuarios));
+                agendamento.setIdCliente(String.valueOf(id));
+                agendamento.setIdUsuario(String.valueOf(idUsuarios));
                 agendamento.setId(String.valueOf(idkey));
+                agendamento.setNomeCliente(nomeCliente);
 
                 bancoDeDados.setValue(agendamento).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

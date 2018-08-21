@@ -9,9 +9,24 @@ public class Laboratorio implements Serializable {
     private String endereco;
     private String nome;
     private String telefone;
+    private String especialidade;
     private String horaAbrir, horaFechar;
 
     public Laboratorio() {
+    }
+
+    @Override
+    public String toString() {
+        return "Nome: " + nome + '\n' +
+                "Telefone: " + telefone;
+    }
+
+    public String getEspecialidade() {
+        return especialidade;
+    }
+
+    public void setEspecialidade(String especialidade) {
+        this.especialidade = especialidade;
     }
 
     public String getHoraAbrir() {

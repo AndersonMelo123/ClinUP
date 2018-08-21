@@ -26,6 +26,12 @@ public class Profissional implements Serializable {
         this.num_registro = num_registro;
     }
 
+    @Override
+    public String toString() {
+        return "Nome: " + nome + '\n' +
+                "Especialidade: " + especialidade;
+    }
+
     public String getHoraAbrir() {
         return horaAbrir;
     }
@@ -105,4 +111,5 @@ public class Profissional implements Serializable {
     public void setNum_registro(String num_registro) {
         this.num_registro = num_registro;
     }
+
 }

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +20,7 @@ import java.util.ArrayList;
 
 import br.com.projetofragmeto.clinup.R;
 import br.com.projetofragmeto.clinup.activity.CancelarAgendamentos;
+import br.com.projetofragmeto.clinup.adapter.AdapterPersonalizadoAgendamento;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
 import br.com.projetofragmeto.clinup.helper.Preferencias;
 import br.com.projetofragmeto.clinup.model.Agendamento;
@@ -46,13 +46,15 @@ public class ListaFragment extends Fragment {
         listView = view.findViewById(R.id.lv_agendamentos);
 
 
-        adapter = new ArrayAdapter(
+        final AdapterPersonalizadoAgendamento adapterPersonalizadoAgendamento = new AdapterPersonalizadoAgendamento(agendObjetos, getActivity());
+
+        /*adapter = new ArrayAdapter(
                 getActivity(), // pega o contexto da activity onde esse fragment está
                 R.layout.lista_busca, //layout da lista
                 agendamentos //array list contendo todos os contados
-        );
+        );*/
 
-        listView.setAdapter(adapter);
+        listView.setAdapter(adapterPersonalizadoAgendamento);
 
         firebase = ConfiguracaoFirebase.getFirebase().child("agendamento");
 
@@ -73,16 +75,17 @@ public class ListaFragment extends Fragment {
 
                         Agendamento ag = dados.getValue(Agendamento.class);//retorna cada objeto da consulta em a
 
-                        String idUsuarioAgendamento = ag.getId_Usuario();
+                        String idUsuarioAgendamento = ag.getIdUsuario();
                         if (idUsuarioAgendamento.equals(idUsuarios)) {
 
-                            String nome = ag.getNomeUsuario();
+                            String info = ag.toString();
                             agendObjetos.add(ag);//adiciona o profissional p em profObjetos
-                            agendamentos.add(nome);//adiciona o nome do profissional p em profissionais
+                            agendamentos.add(info);//adiciona o nome do profissional p em profissionais
+
                         }
                     }
 
-                    adapter.notifyDataSetChanged();//notifica ao adapter as mudanças ocorridas
+                    adapterPersonalizadoAgendamento.notifyDataSetChanged();//notifica ao adapter as mudanças ocorridas
                 }
             }
 
@@ -100,11 +103,11 @@ public class ListaFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), CancelarAgendamentos.class);
 
                 intent.putExtra("ID", agendObjetos.get(i).getId());
-                intent.putExtra("nome", agendObjetos.get(i).getNomeUsuario());
+                intent.putExtra("nome", agendObjetos.get(i).getNomeCliente());
                 intent.putExtra("dataAtual", agendObjetos.get(i).getDataAtual());
                 intent.putExtra("dataConsulta", agendObjetos.get(i).getDataConsulta());
-                intent.putExtra("plano", agendObjetos.get(i).getId_Plano());
-                intent.putExtra("cliente", agendObjetos.get(i).getId_Cliente());
+                intent.putExtra("plano", agendObjetos.get(i).getIdPlano());
+                intent.putExtra("cliente", agendObjetos.get(i).getIdCliente());
 
 
                 intent.putExtra("classe", Agendamento.class);

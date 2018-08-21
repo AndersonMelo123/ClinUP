@@ -26,6 +26,7 @@ import java.util.ArrayList;
 
 import br.com.projetofragmeto.clinup.R;
 import br.com.projetofragmeto.clinup.activity.PerfilCliente;
+import br.com.projetofragmeto.clinup.adapter.AdapterPersonalizadoLaboratorio;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
 import br.com.projetofragmeto.clinup.database.LaboratorioDB;
 import br.com.projetofragmeto.clinup.model.Laboratorio;
@@ -68,12 +69,14 @@ public class BuscarLaboratorioFragment extends Fragment implements Serializable 
 
         listView = view.findViewById(R.id.lv_laboratorio);
 
-        adapter = new ArrayAdapter(
+        final AdapterPersonalizadoLaboratorio adapterPersonalizado = new AdapterPersonalizadoLaboratorio(labObjetos, getActivity());
+
+        /*adapter = new ArrayAdapter(
                 getActivity(), // pega o contexto da activity onde esse fragment está
                 R.layout.lista_busca, //layout da lista
                 laboratorios //array list contendo todos os contados
-        );
-        listView.setAdapter(adapter); //seta o adaptados
+        );*/
+        listView.setAdapter(adapterPersonalizado); //seta o adaptados
 
         botaoBusca = view.findViewById(R.id.blf_bt_buscar);
         botaoFiltro = view.findViewById(R.id.blf_bp_filtro);
@@ -91,7 +94,7 @@ public class BuscarLaboratorioFragment extends Fragment implements Serializable 
 
                 intent.putExtra("email", labObjetos.get(i).getId());
                 intent.putExtra("nome", labObjetos.get(i).getNome());
-                intent.putExtra("id", labObjetos.get(i).getId());
+                intent.putExtra("id", labObjetos.get(i).getCnpj());
                 intent.putExtra("telefone", labObjetos.get(i).getTelefone());
 
                 intent.putExtra("horaAbrir",labObjetos.get(i).getHoraAbrir());
@@ -144,12 +147,12 @@ public class BuscarLaboratorioFragment extends Fragment implements Serializable 
                                 if (dataSnapshot.getValue() != null) {
                                     for (DataSnapshot dados : dataSnapshot.getChildren()) {
                                         Laboratorio l = dados.getValue(Laboratorio.class);
-                                        String nome = l.getNome();
+                                        String nome = l.toString();
                                         laboratorios.add(nome);
                                         labObjetos.add(l);
                                     }
 
-                                    adapter.notifyDataSetChanged();
+                                    adapterPersonalizado.notifyDataSetChanged();
                                 }
                             }
 
@@ -167,12 +170,12 @@ public class BuscarLaboratorioFragment extends Fragment implements Serializable 
                                 if (dataSnapshot.getValue() != null) {
                                     for (DataSnapshot dados : dataSnapshot.getChildren()) {
                                         Laboratorio l = dados.getValue(Laboratorio.class);
-                                        String nome = l.getNome();
+                                        String nome = l.toString();
                                         laboratorios.add(nome);
                                         labObjetos.add(l);
                                     }
 
-                                    adapter.notifyDataSetChanged();
+                                    adapterPersonalizado.notifyDataSetChanged();
                                 }
                             }
 

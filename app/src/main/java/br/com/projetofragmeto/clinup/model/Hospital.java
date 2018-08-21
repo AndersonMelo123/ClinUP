@@ -10,7 +10,22 @@ public class Hospital implements Serializable {
     private String endereco;
     private String nome;
     private String telefone;
+    private String especialidade;
     private String horaAbrir,horaFechar;
+
+    @Override
+    public String toString() {
+        return "Nome: " + nome + '\n' +
+                "Telefone: " + telefone;
+    }
+
+    public String getEspecialidade() {
+        return especialidade;
+    }
+
+    public void setEspecialidade(String especialidade) {
+        this.especialidade = especialidade;
+    }
 
     public String getHoraAbrir() {
         return horaAbrir;

@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -21,7 +22,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import br.com.projetofragmeto.clinup.R;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
+import br.com.projetofragmeto.clinup.helper.Preferencias;
 import br.com.projetofragmeto.clinup.model.Endereco;
+import br.com.projetofragmeto.clinup.model.Favoritos;
+import br.com.projetofragmeto.clinup.model.Usuario;
 
 public class PerfilCliente extends AppCompatActivity {
 
@@ -33,9 +37,12 @@ public class PerfilCliente extends AppCompatActivity {
     private String cnpj;
     private String cliente;
     private String classe;
+    private String nomeUser;
     //private TextView tv_id;
     private TextView tv_endereco;
 
+    DatabaseReference firebase;
+    Boolean verifica = false;
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -56,6 +63,7 @@ public class PerfilCliente extends AppCompatActivity {
 
         Button agendar = findViewById(R.id.botao_agendar);
         Button ligar = findViewById(R.id.botao_ligar);
+        final Button favoritos = findViewById(R.id.botao_favorito);
 
         TextView tv_nome = (TextView) findViewById(R.id.edit_perfil_nomeID);
         tv_endereco = (TextView) findViewById(R.id.edit_perfil_enderecoID);
@@ -79,13 +87,13 @@ public class PerfilCliente extends AppCompatActivity {
         String horaFechar = getIntent().getExtras().getString("horaFechar");
 
 
-        Log.i("HORA", horaAbrir + " às "+ horaFechar + " hr");
+        Log.i("HORA", horaAbrir + " às " + horaFechar + " hr");
 
         cliente = getIntent().getExtras().getString("cliente");
         classe = String.valueOf(getIntent().getSerializableExtra("classe").getClass());
 
-        if(horaAbrir != null && horaFechar != null){
-            tv_horario.setText(horaAbrir + " às "+ horaFechar + " hr");
+        if (horaAbrir != null && horaFechar != null) {
+            tv_horario.setText(horaAbrir + " às " + horaFechar + " hr");
             tv_horario.setEnabled(true);
         }
 
@@ -111,14 +119,13 @@ public class PerfilCliente extends AppCompatActivity {
         /*if (email != null) {
             tv_email.setText(email);
             tv_email.setEnabled(true);
-
         }*/
         if (cnpj != null) {
-            Log.i("Cnpj",cnpj);
+            Log.i("Cnpj", cnpj);
         }
 
         if (cliente != null) {
-            Log.i("cliente",cliente);
+            Log.i("cliente", cliente);
 
         }
         if (endereco != null) {
@@ -130,7 +137,7 @@ public class PerfilCliente extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     Endereco userEndereco = dataSnapshot.getValue(Endereco.class);
 
-                    tv_endereco.setText(String.valueOf(userEndereco.getLogradouro() + ", " + userEndereco.getNumero() + ", "+userEndereco.getBairro()));
+                    tv_endereco.setText(String.valueOf(userEndereco.getLogradouro() + ", " + userEndereco.getNumero() + ", " + userEndereco.getBairro()));
                     tv_endereco.setEnabled(false);
                 }
 
@@ -169,6 +176,96 @@ public class PerfilCliente extends AppCompatActivity {
             }
         });
 
+        Preferencias preferencesUser = new Preferencias(this);
+        final String idUsuarios = preferencesUser.getIdentificador(); // Obter o identificador do usuário que está logado
+
+
+        firebase = ConfiguracaoFirebase.getFirebase() // Consultando o usuário no banco de dados se existir ele pega
+                .child("usuarios").child(idUsuarios);
+
+        firebase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Usuario user = dataSnapshot.getValue(Usuario.class);
+
+                nomeUser = user.getNome();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        firebase = ConfiguracaoFirebase.getFirebase().child("favoritos");
+
+        favoritos.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceAsColor")
+            @Override
+            public void onClick(View view) {
+
+                firebase.addListenerForSingleValueEvent(new ValueEventListener() {//faz a consulta no banco
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        for (DataSnapshot dados : dataSnapshot.getChildren()) {
+
+                            Favoritos fav = dados.getValue(Favoritos.class);//retorna cada objeto da consulta em a
+
+                            String idUsuarioFavoritos = fav.getIdUsuario();
+                            String idFav = fav.getIdCliente();
+                            String tipoFav = fav.getTipo();
+
+                            Log.i("ObjetoID", id);
+                            Log.i("ObjetoID", idUsuarios);
+                            Log.i("ObjetoID", cliente);
+                            Log.i("ObjetoID", idFav);
+                            Log.i("ObjetoID", tipoFav);
+
+                            if (idUsuarioFavoritos.equals(idUsuarios) && idFav.equals(id) && tipoFav.equals(cliente)) {
+
+                                verifica = true;
+                            }
+                        }
+
+                        if (verifica) {
+
+                            Toast.makeText(PerfilCliente.this, "Usuário já está em Favoritos", Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            DatabaseReference bancoDeDados = ConfiguracaoFirebase.getFirebase();
+
+                            bancoDeDados = bancoDeDados.child("favoritos").push();
+
+                            final String idkey = bancoDeDados.getKey();
+
+                            final Favoritos favoritos = new Favoritos();
+
+                            favoritos.setNomeCliente(nome);
+                            favoritos.setIdCliente(id);
+                            favoritos.setIdUsuario(idUsuarios);
+                            favoritos.setTipo(cliente);
+                            favoritos.setId(String.valueOf(idkey));
+
+                            bancoDeDados.setValue(favoritos).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Toast.makeText(PerfilCliente.this, "Adicionado aos Favoritos", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    }
+
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });
+
+            }
+        });
+
 
     }
 
@@ -185,7 +282,7 @@ public class PerfilCliente extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) { //método para finalizar a activity caso seja apertado a setinha de voltar
-        if(item.getItemId() == android.R.id.home)
+        if (item.getItemId() == android.R.id.home)
             finish();
         return super.onOptionsItemSelected(item);
     }
