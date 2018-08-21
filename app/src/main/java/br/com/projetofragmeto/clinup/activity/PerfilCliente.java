@@ -215,8 +215,15 @@ public class PerfilCliente extends AppCompatActivity {
 
                             String idUsuarioFavoritos = fav.getId_Usuario();
                             String idFav = fav.getId_Cliente();
+                            String tipoFav = fav.getTipo();
 
-                            if (idUsuarioFavoritos.equals(idUsuarios) && idFav.equals(id)) {
+                            Log.i("ObjetoID", id);
+                            Log.i("ObjetoID", idUsuarios);
+                            Log.i("ObjetoID", cliente);
+                            Log.i("ObjetoID", idFav);
+                            Log.i("ObjetoID", tipoFav);
+
+                            if (idUsuarioFavoritos.equals(idUsuarios) && idFav.equals(id) && tipoFav.equals(cliente)) {
 
                                 verifica = true;
                             }

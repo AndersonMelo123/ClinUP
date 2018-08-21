@@ -75,7 +75,7 @@ public class ListaFragment extends Fragment {
 
                         Agendamento ag = dados.getValue(Agendamento.class);//retorna cada objeto da consulta em a
 
-                        String idUsuarioAgendamento = ag.getId_Usuario();
+                        String idUsuarioAgendamento = ag.getIdUsuario();
                         if (idUsuarioAgendamento.equals(idUsuarios)) {
 
                             String info = ag.toString();
@@ -103,11 +103,11 @@ public class ListaFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), CancelarAgendamentos.class);
 
                 intent.putExtra("ID", agendObjetos.get(i).getId());
-                intent.putExtra("nome", agendObjetos.get(i).getNome_Cliente());
+                intent.putExtra("nome", agendObjetos.get(i).getNomeCliente());
                 intent.putExtra("dataAtual", agendObjetos.get(i).getDataAtual());
                 intent.putExtra("dataConsulta", agendObjetos.get(i).getDataConsulta());
-                intent.putExtra("plano", agendObjetos.get(i).getId_Plano());
-                intent.putExtra("cliente", agendObjetos.get(i).getId_Cliente());
+                intent.putExtra("plano", agendObjetos.get(i).getIdPlano());
+                intent.putExtra("cliente", agendObjetos.get(i).getIdCliente());
 
 
                 intent.putExtra("classe", Agendamento.class);

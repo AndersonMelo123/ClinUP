@@ -48,7 +48,7 @@ public class AdapterPersonalizadoAgendamento extends BaseAdapter {
         TextView descricao = view.findViewById(R.id.lista_agendamento_personalizada_descricao);
         ImageView imagem = view.findViewById(R.id.lista_agendamento_personalizada_imagem);
 
-        nome.setText(agendamento.getNome_Cliente());
+        nome.setText(agendamento.getNomeCliente());
         descricao.setText(agendamento.getDataConsulta());
 
         //Categoria categoria = curso.getCategoria();

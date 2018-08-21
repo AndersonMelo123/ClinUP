@@ -185,7 +185,7 @@ public class AgendarActivity extends FragmentActivity {
                     telefone.setText(usuario.getTelefone());
 
                     agendamento.setNomeUsuario(usuario.getNome());
-                    agendamento.setId_Plano(String.valueOf(usuario.getPlanoDeSaude()));
+                    agendamento.setIdPlano(String.valueOf(usuario.getPlanoDeSaude()));
 
                 }
 
@@ -505,10 +505,10 @@ public class AgendarActivity extends FragmentActivity {
 
                 agendamento.setDataConsulta(dataSelecionada);
                 agendamento.setDataAtual(dataAtual);
-                agendamento.setId_Cliente(String.valueOf(id));
-                agendamento.setId_Usuario(String.valueOf(idUsuarios));
+                agendamento.setIdCliente(String.valueOf(id));
+                agendamento.setIdUsuario(String.valueOf(idUsuarios));
                 agendamento.setId(String.valueOf(idkey));
-                agendamento.setNome_Cliente(nomeCliente);
+                agendamento.setNomeCliente(nomeCliente);
 
                 bancoDeDados.setValue(agendamento).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
