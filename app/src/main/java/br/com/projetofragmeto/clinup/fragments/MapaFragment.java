@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -47,6 +48,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import br.com.projetofragmeto.clinup.R;
+import br.com.projetofragmeto.clinup.activity.BuscaGeralActivity;
 import br.com.projetofragmeto.clinup.activity.PerfilCliente;
 import br.com.projetofragmeto.clinup.adapter.CustomInfoWindowAdapter;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
@@ -56,6 +58,8 @@ import br.com.projetofragmeto.clinup.model.Hospital;
 import br.com.projetofragmeto.clinup.model.InfoWindowData;
 import br.com.projetofragmeto.clinup.model.Laboratorio;
 import br.com.projetofragmeto.clinup.model.Profissional;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class MapaFragment extends Fragment implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
@@ -94,6 +98,9 @@ public class MapaFragment extends Fragment implements
         mGoogleApiClient = buildGoogleApiClient();
 
         createLocationRequest();
+
+
+
     }
 
     public boolean getLocalization(Context context) {
@@ -247,7 +254,22 @@ public class MapaFragment extends Fragment implements
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_mapa, container, false);
+
+        FloatingActionButton fab = mView.findViewById(R.id.botaoBuscar); // Botão flutuante que leva para tela de busca
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToBuscaActivity();
+            }
+        });
+
         return mView;
+    }
+
+    public void goToBuscaActivity() {
+        Intent intent = new Intent(getApplicationContext(), BuscaGeralActivity.class);
+        startActivity(intent);
     }
 
     @Override
