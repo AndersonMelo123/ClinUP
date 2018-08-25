@@ -26,7 +26,7 @@ import br.com.projetofragmeto.clinup.helper.Preferencias;
 import br.com.projetofragmeto.clinup.model.Agendamento;
 
 
-public class ListaFragment extends Fragment {
+public class AgendamentosFragment extends Fragment {
 
     private ListView listView;
     private ArrayAdapter adapter;
@@ -34,7 +34,7 @@ public class ListaFragment extends Fragment {
     private DatabaseReference firebase;
     public ArrayList<Agendamento> agendObjetos = new ArrayList<Agendamento>();
 
-    public ListaFragment() {
+    public AgendamentosFragment() {
 
     }
 

@@ -4,11 +4,11 @@ import java.io.Serializable;
 
 public class Favoritos implements Serializable {
 
-    String id_Usuario, id_Cliente, nomeUsuario, nomeCliente, id, tipo;
+    String idUsuario, idCliente, nomeUsuario, nomeCliente, id, tipo;
 
-    public Favoritos(String id_Usuario, String id_Cliente, String nomeUsuario, String nomeCliente) {
-        this.id_Usuario = id_Usuario;
-        this.id_Cliente = id_Cliente;
+    public Favoritos(String idUsuario, String idCliente, String nomeUsuario, String nomeCliente) {
+        this.idUsuario = idUsuario;
+        this.idCliente = idCliente;
         this.nomeUsuario = nomeUsuario;
         this.nomeCliente = nomeCliente;
     }
@@ -41,19 +41,19 @@ public class Favoritos implements Serializable {
     }
 
     public String getIdUsuario() {
-        return id_Usuario;
+        return idUsuario;
     }
 
     public void setIdUsuario(String id_Usuario) {
-        this.id_Usuario = id_Usuario;
+        this.idUsuario = id_Usuario;
     }
 
     public String getIdCliente() {
-        return id_Cliente;
+        return idCliente;
     }
 
     public void setIdCliente(String id_Cliente) {
-        this.id_Cliente = id_Cliente;
+        this.idCliente = id_Cliente;
     }
 
     public String getNomeUsuario() {

@@ -78,7 +78,7 @@ public class PerfilCliente extends AppCompatActivity {
         telefone = getIntent().getExtras().getString("telefone");
         nome = getIntent().getExtras().getString("nome");
         String especialidade = getIntent().getExtras().getString("especialidade");
-        String numRegistro = getIntent().getExtras().getString("num_registro");
+        String numRegistro = getIntent().getExtras().getString("numRegistro");
         endereco = getIntent().getExtras().getString("endereco");
         email = getIntent().getExtras().getString("email");
         cnpj = getIntent().getExtras().getString("cnpj");
