@@ -535,7 +535,7 @@ public class MapaFragment extends Fragment implements
 
         CameraPosition Liberty = CameraPosition.builder()
                 .target(latLng)
-                .zoom(35)
+                .zoom(13)
                 .bearing(0)
                 .tilt(45)
                 .build();

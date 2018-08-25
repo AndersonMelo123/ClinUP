@@ -43,9 +43,9 @@
     <string name="titulo_dialog_Agendamento">Agendar</string>
     <string name="msg_dialog_agendamento">Para sua segurança, precisamos que você confirme se deseja realmente agendar</string>
     <string name="cidade">*Cidade</string>
-    <string name="bairro">*Bairro</string>
-    <string name="n">*Nº</string>
-    <string name="complemento">*Complemento</string>
+    <string name="bairro">Bairro</string>
+    <string name="n"> Nº</string>
+    <string name="complemento">Complemento</string>
     <string name="rua">*Rua</string>
     <string name="esqueci_o_cep">Esqueci o CEP</string>
     <string name="cep">*CEP</string>
@@ -109,5 +109,7 @@
     <string name="selecione_o_filtro">Selecione o Filtro</string>
 
     <string name="filtro2">Filtro:</string>
+    <string name="resultado_endere_os">Resultado (endereços)</string>
+    <string name="busque_seu_cep">Busque seu CEP</string>
 
 </resources>
