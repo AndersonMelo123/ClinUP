@@ -1,15 +1,20 @@
 package br.com.projetofragmeto.clinup.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,10 +27,8 @@ import br.com.projetofragmeto.clinup.model.Endereco;
 import br.com.projetofragmeto.clinup.model.Usuario;
 
 public class PerfilActivity extends AppCompatActivity {
-    private TextView nome;
-    private TextView email;
-    private TextView telefone;
-    private TextView dataNascimento;
+    private TextView nome, email, telefone, dataNascimento;
+    private ImageView foto;
     private TextView cpf;
     private TextView end1;
     private TextView end2;
@@ -37,7 +40,6 @@ public class PerfilActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil);
 
-
         android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbarActivity);
         toolbar.setTitle("Perfil");
         setSupportActionBar(toolbar);
@@ -47,6 +49,7 @@ public class PerfilActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
+        foto = findViewById(R.id.imageView2);
         nome = findViewById(R.id.nome_id);
         email = findViewById(R.id.email_id);
         telefone = findViewById(R.id.telefone_id);
@@ -66,44 +69,59 @@ public class PerfilActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {// método chamado sempre que os dados forem alterados no banco
 
-                Usuario usuario = dataSnapshot.getValue(Usuario.class);
+                if (dataSnapshot.exists()) {
+                    Usuario usuario = dataSnapshot.getValue(Usuario.class);
 
-                if (usuario != null) {
-                    nome.setText(usuario.getNome());
-                    email.setText(usuario.getEmail());
-                    dataNascimento.setText(usuario.getDataNascimento());
-                    telefone.setText(usuario.getNumTelefone());
-                    cpf.setText(usuario.getCpf());
+                    if (usuario != null) {
+                        nome.setText(usuario.getNome());
+                        email.setText(usuario.getEmail());
+                        dataNascimento.setText(usuario.getDataNascimento());
+                        telefone.setText(usuario.getNumTelefone());
+                        cpf.setText(usuario.getCpf());
 
-                    idEndereco = usuario.getEndereco();
+                        if (dataSnapshot.hasChild("endereco")) {
 
-                    Log.i("PERFIL","--------------------------------------------------------");
-                    //System.out.println(idEndereco);
+                            idEndereco = usuario.getEndereco();
+                            enderecoReferencia = ConfiguracaoFirebase.getFirebase().child("endereco").child(idEndereco); //retornando nulo e tá dando erro
 
+                            enderecoReferencia.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    Endereco endereco = dataSnapshot.getValue(Endereco.class);
 
-                    if(idEndereco != null){
-                        enderecoReferencia = ConfiguracaoFirebase.getFirebase().child("endereco").child(idEndereco); //retornando nulo e tá dando erro
+                                    if (endereco != null) {
 
-                        enderecoReferencia.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                Endereco endereco = dataSnapshot.getValue(Endereco.class);
-
-                                if(endereco != null){
-
-                                    end1.setText(endereco.getLogradouro()+", "+ endereco.getNumero()+", "+ endereco.getBairro());
-                                    end2.setText(endereco.getLocalidade()+", "+endereco.getUf());
-                                    System.out.println(endereco.getLogradouro()+", "+ endereco.getNumero()+", "+ endereco.getBairro());
-                                    System.out.println(endereco.getLocalidade()+", "+endereco.getUf());
-                                    System.out.println("--------------------------------------------------------");
+                                        end1.setText(endereco.getLogradouro() + ", " + endereco.getNumero() + ", " + endereco.getBairro());
+                                        end2.setText(endereco.getLocalidade() + ", " + endereco.getUf());
+                                        System.out.println(endereco.getLogradouro() + ", " + endereco.getNumero() + ", " + endereco.getBairro());
+                                        System.out.println(endereco.getLocalidade() + ", " + endereco.getUf());
+                                        System.out.println("--------------------------------------------------------");
+                                    }
                                 }
-                            }
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                            }
-                        });
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+                        }
+                        if (dataSnapshot.hasChild("foto")) {
+                            //Exibe a foto de perfil do usuário através do Glide
+                            Glide.with(getApplicationContext()).asBitmap().load(usuario.getFoto()).into(new BitmapImageViewTarget(foto) {
+                                @Override
+                                protected void setResource(Bitmap resource) {
+                                    //Transforma a foto em formato circular
+                                    RoundedBitmapDrawable circularBitmapDrawable =
+                                            RoundedBitmapDrawableFactory.create(PerfilActivity.this.getResources(), resource);
+                                    circularBitmapDrawable.setCircular(true);
+                                    foto.setImageDrawable(circularBitmapDrawable);
+                                }
+                            });
+                        } else {
+                            foto.setImageResource(R.mipmap.foto_defau_round);
+                        }
                     }
+
                 }
             }
 
@@ -112,9 +130,6 @@ public class PerfilActivity extends AppCompatActivity {
 
             }
         });
-
-
-
 
 
         editarCadastro.setOnClickListener(new View.OnClickListener() {

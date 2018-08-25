@@ -77,6 +77,9 @@ public class PrincipalActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
 
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         autenticacaoUsuario = ConfiguracaoFirebase.getFirebaseAutenticacao();
 
         viewPager = findViewById(R.id.viewpager);
@@ -100,10 +103,8 @@ public class PrincipalActivity extends AppCompatActivity {
             }
         });*/
 
-
         Preferencias preferencesUser = new Preferencias(PrincipalActivity.this);
         String idUsuarios = preferencesUser.getIdentificador();
-
 
         //initialize and create the image loader logic
         DrawerImageLoader.init(new AbstractDrawerImageLoader() {
@@ -117,7 +118,6 @@ public class PrincipalActivity extends AppCompatActivity {
                 Picasso.with(imageView.getContext()).cancelRequest(imageView);
             }
         });
-
 
         mReadDataOnce(idUsuarios, new OnGetDataListener() {
             @Override
@@ -151,7 +151,7 @@ public class PrincipalActivity extends AppCompatActivity {
                         profile = new ProfileDrawerItem().withEmail(emailUser).withName(nomeUser).withIcon(fotoUser);
 
                     } else {
-                        profile = new ProfileDrawerItem().withEmail(emailUser).withName(nomeUser).withIcon(R.mipmap.ic_launcher);
+                        profile = new ProfileDrawerItem().withEmail(emailUser).withName(nomeUser).withIcon(R.mipmap.foto_defau_round);
                     }
 
 
@@ -171,9 +171,6 @@ public class PrincipalActivity extends AppCompatActivity {
                             .build();
                     //################################# - Google - ################################################
 
-
-                    //################################# -  - ################################################
-
                     // Create the AccountHeader
                     AccountHeader headerResult = new AccountHeaderBuilder()
                             .withActivity(PrincipalActivity.this)
@@ -190,6 +187,9 @@ public class PrincipalActivity extends AppCompatActivity {
                     //if you want to update the items at a later time it is recommended to keep it in a variable
                     PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName("Home").withIcon(FontAwesome.Icon.faw_home);
                     PrimaryDrawerItem item2 = new PrimaryDrawerItem().withIdentifier(2).withName("Perfil").withIcon(FontAwesome.Icon.faw_user);
+                    PrimaryDrawerItem item3 = new PrimaryDrawerItem().withIdentifier(3).withName("Agendamentos").withIcon(FontAwesome.Icon.faw_calendar_check);
+                    PrimaryDrawerItem item4 = new PrimaryDrawerItem().withIdentifier(4).withName("Favoritos").withIcon(FontAwesome.Icon.faw_heart2);
+                    PrimaryDrawerItem item5 = new PrimaryDrawerItem().withIdentifier(5).withName("Buscar").withIcon(FontAwesome.Icon.faw_search);
 
                     //Cria o drawer e lembra o 'Drawer' resulto objeto
                     result = new DrawerBuilder()
@@ -198,7 +198,10 @@ public class PrincipalActivity extends AppCompatActivity {
                             .withToolbar(toolbar)
                             .addDrawerItems(
                                     item1,
-                                    item2
+                                    item2,
+                                    item3,
+                                    item4,
+                                    item5
                             )
                             .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                                 @Override
@@ -218,8 +221,19 @@ public class PrincipalActivity extends AppCompatActivity {
                                             startActivity(intent);
 
                                         }
-
                                         if (drawerItem.getIdentifier() == 3) {
+
+
+                                        }
+                                        if (drawerItem.getIdentifier() == 4) {
+
+
+                                        }
+                                        if (drawerItem.getIdentifier() == 5) {
+                                            goToBuscaActivity();
+                                        }
+
+                                        if (drawerItem.getIdentifier() == 6) {
                                             logout();
                                         }
                                     }
@@ -229,7 +243,7 @@ public class PrincipalActivity extends AppCompatActivity {
                             .withTranslucentStatusBar(false)
                             .build();
 
-                    result.addStickyFooterItem(new PrimaryDrawerItem().withIdentifier(3).withName("Sair").withIcon(FontAwesome.Icon.faw_sign_out_alt));
+                    result.addStickyFooterItem(new PrimaryDrawerItem().withIdentifier(6).withName("Sair").withIcon(FontAwesome.Icon.faw_sign_out_alt));
                 }
             }
 
@@ -255,7 +269,6 @@ public class PrincipalActivity extends AppCompatActivity {
         });
     }
 
-
     private void logout() {
 
         logOutGoogle();
@@ -280,14 +293,12 @@ public class PrincipalActivity extends AppCompatActivity {
         });
     }
 
-
     private void goLogInScreen() {
         Intent intent = new Intent(this, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish();
     }
-
 
     private void setupTabIcons() {
 
@@ -359,5 +370,6 @@ public class PrincipalActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
+
 
 }
