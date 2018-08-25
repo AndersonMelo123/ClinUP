@@ -29,7 +29,6 @@ import br.com.projetofragmeto.clinup.model.Usuario;
 public class PerfilActivity extends AppCompatActivity {
     private TextView nome, email, telefone, dataNascimento;
     private ImageView foto;
-    private android.support.v7.widget.Toolbar toolbar;
     private TextView cpf;
     private TextView end1;
     private TextView end2;
