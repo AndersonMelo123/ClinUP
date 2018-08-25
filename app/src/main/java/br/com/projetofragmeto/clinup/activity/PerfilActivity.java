@@ -1,12 +1,12 @@
 package br.com.projetofragmeto.clinup.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -29,13 +29,7 @@ import br.com.projetofragmeto.clinup.model.Usuario;
 public class PerfilActivity extends AppCompatActivity {
     private TextView nome, email, telefone, dataNascimento;
     private ImageView foto;
-    private Button editarCadastro;
-    private DatabaseReference usuarioReferencia;
     private android.support.v7.widget.Toolbar toolbar;
-    private TextView nome;
-    private TextView email;
-    private TextView telefone;
-    private TextView dataNascimento;
     private TextView cpf;
     private TextView end1;
     private TextView end2;
@@ -46,7 +40,6 @@ public class PerfilActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil);
-
 
         android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbarActivity);
         toolbar.setTitle("Perfil");
@@ -80,48 +73,39 @@ public class PerfilActivity extends AppCompatActivity {
                 if (dataSnapshot.exists()) {
                     Usuario usuario = dataSnapshot.getValue(Usuario.class);
 
-                if (usuario != null) {
-                    nome.setText(usuario.getNome());
-                    email.setText(usuario.getEmail());
-                    dataNascimento.setText(usuario.getDataNascimento());
-                    telefone.setText(usuario.getNumTelefone());
-                    cpf.setText(usuario.getCpf());
-
-                    idEndereco = usuario.getEndereco();
-
-                    Log.i("PERFIL","--------------------------------------------------------");
-                    //System.out.println(idEndereco);
-
-
-                    if(idEndereco != null){
-                        enderecoReferencia = ConfiguracaoFirebase.getFirebase().child("endereco").child(idEndereco); //retornando nulo e tá dando erro
-
-                        enderecoReferencia.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                Endereco endereco = dataSnapshot.getValue(Endereco.class);
-
-                                if(endereco != null){
-
-                                    end1.setText(endereco.getLogradouro()+", "+ endereco.getNumero()+", "+ endereco.getBairro());
-                                    end2.setText(endereco.getLocalidade()+", "+endereco.getUf());
-                                    System.out.println(endereco.getLogradouro()+", "+ endereco.getNumero()+", "+ endereco.getBairro());
-                                    System.out.println(endereco.getLocalidade()+", "+endereco.getUf());
-                                    System.out.println("--------------------------------------------------------");
-                                }
-                            }
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
-                    }
                     if (usuario != null) {
                         nome.setText(usuario.getNome());
                         email.setText(usuario.getEmail());
                         dataNascimento.setText(usuario.getDataNascimento());
-                        telefone.setText(usuario.getTelefone());
+                        telefone.setText(usuario.getNumTelefone());
+                        cpf.setText(usuario.getCpf());
 
+                        if (dataSnapshot.hasChild("endereco")) {
+
+                            idEndereco = usuario.getEndereco();
+                            enderecoReferencia = ConfiguracaoFirebase.getFirebase().child("endereco").child(idEndereco); //retornando nulo e tá dando erro
+
+                            enderecoReferencia.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    Endereco endereco = dataSnapshot.getValue(Endereco.class);
+
+                                    if (endereco != null) {
+
+                                        end1.setText(endereco.getLogradouro() + ", " + endereco.getNumero() + ", " + endereco.getBairro());
+                                        end2.setText(endereco.getLocalidade() + ", " + endereco.getUf());
+                                        System.out.println(endereco.getLogradouro() + ", " + endereco.getNumero() + ", " + endereco.getBairro());
+                                        System.out.println(endereco.getLocalidade() + ", " + endereco.getUf());
+                                        System.out.println("--------------------------------------------------------");
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+                        }
                         if (dataSnapshot.hasChild("foto")) {
                             //Exibe a foto de perfil do usuário através do Glide
                             Glide.with(getApplicationContext()).asBitmap().load(usuario.getFoto()).into(new BitmapImageViewTarget(foto) {
@@ -134,10 +118,11 @@ public class PerfilActivity extends AppCompatActivity {
                                     foto.setImageDrawable(circularBitmapDrawable);
                                 }
                             });
-                        }else{
+                        } else {
                             foto.setImageResource(R.mipmap.foto_defau_round);
                         }
                     }
+
                 }
             }
 
