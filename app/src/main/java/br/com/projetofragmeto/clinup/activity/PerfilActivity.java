@@ -1,14 +1,22 @@
 package br.com.projetofragmeto.clinup.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -20,10 +28,8 @@ import br.com.projetofragmeto.clinup.helper.Preferencias;
 import br.com.projetofragmeto.clinup.model.Usuario;
 
 public class PerfilActivity extends AppCompatActivity {
-    private TextView nome;
-    private TextView email;
-    private TextView telefone;
-    private TextView dataNascimento;
+    private TextView nome, email, telefone, dataNascimento;
+    private ImageView foto;
     private Button editarCadastro;
     private DatabaseReference usuarioReferencia;
     private android.support.v7.widget.Toolbar toolbar;
@@ -32,7 +38,6 @@ public class PerfilActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil);
-
 
         toolbar = findViewById(R.id.toolbarActivity);
         toolbar.setTitle("Perfil");
@@ -43,6 +48,7 @@ public class PerfilActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
+        foto = findViewById(R.id.imageView2);
         nome = findViewById(R.id.nome_id);
         email = findViewById(R.id.email_id);
         telefone = findViewById(R.id.telefone_id);
@@ -63,13 +69,31 @@ public class PerfilActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {// método chamado sempre que os dados forem alterados no banco
 
-                Usuario usuario = dataSnapshot.getValue(Usuario.class);
+                if (dataSnapshot.exists()) {
+                    Usuario usuario = dataSnapshot.getValue(Usuario.class);
 
-                if (usuario != null) {
-                    nome.setText(usuario.getNome());
-                    email.setText(usuario.getEmail());
-                    dataNascimento.setText(usuario.getDataNascimento());
-                    telefone.setText(usuario.getTelefone());
+                    if (usuario != null) {
+                        nome.setText(usuario.getNome());
+                        email.setText(usuario.getEmail());
+                        dataNascimento.setText(usuario.getDataNascimento());
+                        telefone.setText(usuario.getTelefone());
+
+                        if (dataSnapshot.hasChild("foto")) {
+                            //Exibe a foto de perfil do usuário através do Glide
+                            Glide.with(getApplicationContext()).asBitmap().load(usuario.getFoto()).into(new BitmapImageViewTarget(foto) {
+                                @Override
+                                protected void setResource(Bitmap resource) {
+                                    //Transforma a foto em formato circular
+                                    RoundedBitmapDrawable circularBitmapDrawable =
+                                            RoundedBitmapDrawableFactory.create(PerfilActivity.this.getResources(), resource);
+                                    circularBitmapDrawable.setCircular(true);
+                                    foto.setImageDrawable(circularBitmapDrawable);
+                                }
+                            });
+                        }else{
+                            foto.setImageResource(R.mipmap.foto_defau_round);
+                        }
+                    }
                 }
             }
 
