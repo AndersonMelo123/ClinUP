@@ -486,8 +486,8 @@ public class AgendarActivity extends FragmentActivity {
                                    final Agendamento agendamento,
                                    final ArrayList<DataSnapshot> datas) { //método que valida o email e senha e exclui a conta do usuário
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        View view = getLayoutInflater().inflate(R.layout.dialog_confirmar_agendamento, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this).setTitle("Agendar")
+                .setMessage("Deseja confirmar este agendamento?");
 
         builder.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
             @Override
@@ -565,7 +565,6 @@ public class AgendarActivity extends FragmentActivity {
             }
         });
 
-        builder.setView(view);
         AlertDialog dialog = builder.create();
         dialog.show();
     }

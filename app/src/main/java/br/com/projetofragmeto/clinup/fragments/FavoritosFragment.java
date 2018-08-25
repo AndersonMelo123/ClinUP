@@ -253,8 +253,8 @@ public class FavoritosFragment extends Fragment {
     }
 
     private void excluirFavoritos(final String getId) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        View view = getLayoutInflater().inflate(R.layout.dialog_excluir_favorito, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext()).setTitle("Excluir")
+                .setMessage("Deseja mesmo exluir este favorito?");
 
         builder.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
             @Override
@@ -276,7 +276,6 @@ public class FavoritosFragment extends Fragment {
             }
         });
 
-        builder.setView(view);
         AlertDialog dialog = builder.create();
         dialog.show();
     }
