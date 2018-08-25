@@ -244,4 +244,9 @@ public class CadastroEndereco extends AppCompatActivity {
         else return !cidade.getText().toString().isEmpty();
     }
 
+    @Override
+    public void onBackPressed() {
+        confirmarEndereco();
+    }
+
 }

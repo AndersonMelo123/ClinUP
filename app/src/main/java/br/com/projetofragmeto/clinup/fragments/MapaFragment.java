@@ -304,7 +304,7 @@ public class MapaFragment extends Fragment implements
                 Log.i("Localização", String.valueOf(ultimaLocalizacao.getLatitude() + ultimaLocalizacao.getLongitude()));
             } else {
                 Log.i("Localização", "mLastLocation == null\n");
-                showSettingsAlert();
+                //showSettingsAlert();
 
             }
 
