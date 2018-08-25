@@ -23,7 +23,6 @@ import br.com.projetofragmeto.clinup.R;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
 import br.com.projetofragmeto.clinup.helper.Preferencias;
 import br.com.projetofragmeto.clinup.model.Endereco;
-import br.com.projetofragmeto.clinup.model.Usuario;
 import br.com.projetofragmeto.clinup.utils.Util;
 import br.com.projetofragmeto.clinup.helper.ZipCodeListener;
 
