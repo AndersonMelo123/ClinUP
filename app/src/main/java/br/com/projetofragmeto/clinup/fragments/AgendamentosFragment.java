@@ -34,10 +34,6 @@ public class AgendamentosFragment extends Fragment {
     private DatabaseReference firebase;
     public ArrayList<Agendamento> agendObjetos = new ArrayList<Agendamento>();
 
-    public AgendamentosFragment() {
-
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
