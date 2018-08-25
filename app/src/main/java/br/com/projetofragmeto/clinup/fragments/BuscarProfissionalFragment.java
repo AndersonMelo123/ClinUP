@@ -106,12 +106,12 @@ public class BuscarProfissionalFragment extends Fragment implements Serializable
 
                 intent.putExtra("email", profObjetos.get(i).getId());
                 intent.putExtra("nome", profObjetos.get(i).getNome());
-                intent.putExtra("id", profObjetos.get(i).getNum_registro());
+                intent.putExtra("id", profObjetos.get(i).getNumRegistro());
                 intent.putExtra("telefone", profObjetos.get(i).getTelefone());
                 intent.putExtra("endereco", profObjetos.get(i).getEndereco());
                 intent.putExtra("especialidade", profObjetos.get(i).getEspecialidade());
                 intent.putExtra("formacao", profObjetos.get(i).getFormacao());
-                intent.putExtra("Num_registro", profObjetos.get(i).getNum_registro());
+                intent.putExtra("Num_registro", profObjetos.get(i).getNumRegistro());
 
                 intent.putExtra("horaAbrir",profObjetos.get(i).getHoraAbrir());
                 intent.putExtra("horaFechar",profObjetos.get(i).getHoraFechar());
