@@ -28,7 +28,6 @@ public class ZipCodeSearchActivity extends AppCompatActivity implements AdapterV
     private List<Endereco> enderecos;
     private Util util;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

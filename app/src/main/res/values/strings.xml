@@ -43,7 +43,7 @@
     <string name="titulo_dialog_Agendamento">Agendar</string>
     <string name="msg_dialog_agendamento">Para sua segurança, precisamos que você confirme se deseja realmente agendar</string>
     <string name="cidade">*Cidade</string>
-    <string name="bairro">Bairro</string>
+    <string name="bairro">*Bairro</string>
     <string name="n"> Nº</string>
     <string name="complemento">Complemento</string>
     <string name="rua">*Rua</string>

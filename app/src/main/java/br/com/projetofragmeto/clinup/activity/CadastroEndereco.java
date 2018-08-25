@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -38,6 +39,8 @@ public class CadastroEndereco extends AppCompatActivity {
 
     private Endereco enderecoUsuario;
 
+    private Spinner spStates;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +63,7 @@ public class CadastroEndereco extends AppCompatActivity {
         etZipCode = findViewById(R.id.et_zip_code);
         etZipCode.addTextChangedListener(new ZipCodeListener(this));
 
-        final Spinner spStates = findViewById(R.id.sp_state);
+        spStates = findViewById(R.id.sp_state);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter
                 .createFromResource(this,
                         R.array.states,
@@ -84,40 +87,46 @@ public class CadastroEndereco extends AppCompatActivity {
         complemento = findViewById(R.id.et_complement);
         CEP = findViewById(R.id.et_zip_code);
 
+
         botaoCadastrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                enderecoUsuario = new Endereco();
+                if (validarDados()) { // Verifica se os dados não estão vazios
 
-                enderecoUsuario.setBairro(bairro.getText().toString());
-                enderecoUsuario.setLogradouro(rua.getText().toString());
-                enderecoUsuario.setLocalidade(cidade.getText().toString());
-                enderecoUsuario.setComplemento(complemento.getText().toString());
-                enderecoUsuario.setCep(CEP.getText().toString());
-                enderecoUsuario.setUf(spStates.getSelectedItem().toString());
-                enderecoUsuario.setNumero(numero.getText().toString());
+                    enderecoUsuario = new Endereco();
 
+                    enderecoUsuario.setBairro(bairro.getText().toString());
+                    enderecoUsuario.setLogradouro(rua.getText().toString());
+                    enderecoUsuario.setLocalidade(cidade.getText().toString());
+                    enderecoUsuario.setComplemento(complemento.getText().toString());
+                    enderecoUsuario.setCep(CEP.getText().toString());
+                    enderecoUsuario.setUf(spStates.getSelectedItem().toString());
+                    enderecoUsuario.setNumero(numero.getText().toString());
 
-                Preferencias preferencesUser = new Preferencias(CadastroEndereco.this);
-                final String idUsuario = preferencesUser.getIdentificador(); // Obter o identificador do usuário que está logado
+                    Preferencias preferencesUser = new Preferencias(CadastroEndereco.this);
+                    final String idUsuario = preferencesUser.getIdentificador(); // Obter o identificador do usuário que está logado
 
-                usuarioReferencia = ConfiguracaoFirebase.getFirebase().child("endereco").push();
-                final String id = usuarioReferencia.getKey();
-                enderecoUsuario.setId(id);
+                    usuarioReferencia = ConfiguracaoFirebase.getFirebase().child("endereco").push();
+                    final String id = usuarioReferencia.getKey();
+                    enderecoUsuario.setId(id);
 
-                usuarioReferencia.setValue(enderecoUsuario);
+                    usuarioReferencia.setValue(enderecoUsuario);
 
-                usuarioReferencia = ConfiguracaoFirebase.getFirebase();
-                usuarioReferencia.child("usuarios").child(idUsuario).child("endereco").setValue(id).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            abrirTelaPrincipal();
+                    usuarioReferencia = ConfiguracaoFirebase.getFirebase();
+                    usuarioReferencia.child("usuarios").child(idUsuario).child("endereco").setValue(id).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                abrirTelaPrincipal();
+                            }
                         }
-                    }
-                });
+                    });
 
+                }
+                else{
+                    Snackbar.make(findViewById(R.id.enderecoID), "Você precisa preencher os campos ; para cadastrar e continuar", Snackbar.LENGTH_LONG).show();
+                }
             }
         });
     }
@@ -218,5 +227,25 @@ public class CadastroEndereco extends AppCompatActivity {
         alerta.show();
     }
 
+    private boolean validarDados() {
+
+        if (CEP.getText().toString().isEmpty())
+            return false;
+
+        else if (rua.getText().toString().isEmpty())
+            return false;
+
+        else if (bairro.getText().toString().isEmpty())
+            return false;
+
+        else if (spStates.getSelectedItem().toString().isEmpty())
+            return false;
+
+        else if (cidade.getText().toString().isEmpty())
+            return false;
+
+        else
+            return true;
+    }
 
 }
