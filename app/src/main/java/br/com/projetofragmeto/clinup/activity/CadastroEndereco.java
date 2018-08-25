@@ -241,11 +241,7 @@ public class CadastroEndereco extends AppCompatActivity {
         else if (spStates.getSelectedItem().toString().isEmpty())
             return false;
 
-        else if (cidade.getText().toString().isEmpty())
-            return false;
-
-        else
-            return true;
+        else return !cidade.getText().toString().isEmpty();
     }
 
 }
