@@ -304,7 +304,7 @@ public class MapaFragment extends Fragment implements
                 Log.i("Localização", String.valueOf(ultimaLocalizacao.getLatitude() + ultimaLocalizacao.getLongitude()));
             } else {
                 Log.i("Localização", "mLastLocation == null\n");
-                showSettingsAlert();
+                //showSettingsAlert();
 
             }
 
@@ -535,7 +535,7 @@ public class MapaFragment extends Fragment implements
 
         CameraPosition Liberty = CameraPosition.builder()
                 .target(latLng)
-                .zoom(35)
+                .zoom(13)
                 .bearing(0)
                 .tilt(45)
                 .build();

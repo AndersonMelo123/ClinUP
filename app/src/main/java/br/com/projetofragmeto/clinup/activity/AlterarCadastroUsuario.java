@@ -2,14 +2,17 @@ package br.com.projetofragmeto.clinup.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -56,6 +59,17 @@ public class AlterarCadastroUsuario extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alterar_cadastro_usuario);
+
+        //configurações da Toolbar
+        Toolbar toolbar = findViewById(R.id.toolbarActivity);
+        toolbar.setTitle("Editar");
+        toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
+        setSupportActionBar(toolbar);
+
+        if(getSupportActionBar() != null) {//setinha de voltar
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
 
         autenticacaoUsuario = ConfiguracaoFirebase.getFirebaseAutenticacao();
         user = ConfiguracaoFirebase.getUsuarioLogado(); // retorna o usuário que está logado no momento
@@ -321,6 +335,20 @@ public class AlterarCadastroUsuario extends AppCompatActivity {
 
     public void irParaPerfilCliente() {
         Intent intent = new Intent(this, PerfilActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) { //método para finalizar a activity caso seja apertado a setinha de voltar
+        if(item.getItemId() == android.R.id.home)
+            irParaPerfilCliente();
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(AlterarCadastroUsuario.this,PerfilActivity.class);
         startActivity(intent);
         finish();
     }

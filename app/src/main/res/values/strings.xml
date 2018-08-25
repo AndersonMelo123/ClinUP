@@ -15,7 +15,7 @@
     <string name="google_sign_up">Continue with Google</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="digite_seu_e_mail">Digite seu e-mail</string>
+    <string name="digite_seu_e_mail">*Digite seu e-mail</string>
     <string name="digite_sua_senha">Digite sua senha</string>
     <string name="digite_seu_nome">Digite seu nome</string>
 
@@ -23,8 +23,7 @@
     <string name="fb_login_protocol_scheme">fb478683035902050</string>
     <string name="msg_dialog_excluir_conta">Para sua segurança, precisamos confirmar o seu e-mail e senha</string>
     <string name="titulo_dialog_excluir_conta">Excluir Conta</string>
-    <string name="text_email">E-mail</string>
-    <string name="text_senha">Senha</string>
+    <string name="text_senha">*Senha</string>
     <string name="title_activity_principal">ClinUP</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -44,8 +43,8 @@
     <string name="msg_dialog_agendamento">Para sua segurança, precisamos que você confirme se deseja realmente agendar</string>
     <string name="cidade">*Cidade</string>
     <string name="bairro">*Bairro</string>
-    <string name="n">*Nº</string>
-    <string name="complemento">*Complemento</string>
+    <string name="n"> Nº</string>
+    <string name="complemento">Complemento</string>
     <string name="rua">*Rua</string>
     <string name="esqueci_o_cep">Esqueci o CEP</string>
     <string name="cep">*CEP</string>
@@ -53,7 +52,7 @@
     <string name="logo_clinup">Logo ClinUP</string>
     <string name="visualizar_perfil"><u>Clique para visualizar perfil</u></string>
     <string name="_87_99999_9999">(87)99999–9999</string>
-    <string name="nome">Nome</string>
+    <string name="nome">*Nome</string>
     <string name="dd_mm_aaaa">dd/mm/aaaa</string>
     <string name="n_registro">Nº Registro</string>
     <string name="agendar">Agendar</string>
@@ -62,8 +61,8 @@
     <string name="especialidade">Especialidade</string>
     <string name="n_mero_de_registro">Número de Registro</string>
     <string name="n_o_informado">Não Informado</string>
-    <string name="e_mail">E-mail</string>
-    <string name="cpf">CPF</string>
+    <string name="e_mail">*E-mail</string>
+    <string name="cpf">*CPF</string>
     <string name="data_de_nascimento">Data de Nascimento</string>
     <string name="editar_cadastro">Editar Cadastro</string>
     <string name="buscar">Buscar</string>
@@ -109,5 +108,11 @@
     <string name="selecione_o_filtro">Selecione o Filtro</string>
 
     <string name="filtro2">Filtro:</string>
+    <string name="resultado_endere_os">Resultado (endereços)</string>
+    <string name="busque_seu_cep">Busque seu CEP</string>
+    <string name="numero">(87)99999-9999</string>
+    <string name="n_plano_de_sa_de">Nº Plano de Saúde</string>
+    <string name="plano_de_sa_de_opicional">Plano de Saúde (Opicional)</string>
+
 
 </resources>
