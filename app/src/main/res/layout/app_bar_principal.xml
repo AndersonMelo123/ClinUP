@@ -25,6 +25,7 @@
 
     <include layout="@layout/content_principal" />
 
+    <!--
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="58dp"
@@ -34,7 +35,7 @@
         app:backgroundTint="@color/colorPrimary"
         app:srcCompat="@android:drawable/ic_search_category_default"
         />
-
+    -->
 
 
 </android.support.design.widget.CoordinatorLayout>
