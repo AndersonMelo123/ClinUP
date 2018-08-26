@@ -168,11 +168,11 @@ public class FavoritosFragment extends Fragment {
 
                 intent1.putExtra("email", laboratorio.getId());
                 intent1.putExtra("nome", laboratorio.getNome());
-                intent1.putExtra("id", laboratorio.getCnpj());
+                intent1.putExtra("id", laboratorio.getId());
                 intent1.putExtra("endereco", laboratorio.getEndereco());
                 intent1.putExtra("telefone", laboratorio.getTelefone());
                 intent1.putExtra("especialidade", laboratorio.getEspecialidade());
-                intent1.putExtra("num_registro", laboratorio.getCnpj());
+                intent1.putExtra("numRegistro", laboratorio.getCnpj());
 
                 intent1.putExtra("horaAbrir", laboratorio.getHoraAbrir());
                 intent1.putExtra("horaFechar", laboratorio.getHoraFechar());
@@ -189,12 +189,12 @@ public class FavoritosFragment extends Fragment {
 
                 intent2.putExtra("nome", clinica.getNome());
                 intent2.putExtra("email", clinica.getEmail());
-                intent2.putExtra("id", clinica.getCnpj());
+                intent2.putExtra("id", clinica.getId());
                 intent2.putExtra("endereco", clinica.getEndereco());
                 intent2.putExtra("telefone", clinica.getTelefone());
                 intent2.putExtra("cnpj", clinica.getCnpj());
                 intent2.putExtra("especialidade", clinica.getEspecialidade());
-                intent2.putExtra("num_registro", clinica.getCnpj());
+                intent2.putExtra("numRegistro", clinica.getCnpj());
 
                 intent2.putExtra("horaAbrir", clinica.getHoraAbrir());
                 intent2.putExtra("horaFechar", clinica.getHoraFechar());
@@ -212,12 +212,12 @@ public class FavoritosFragment extends Fragment {
 
                 intent3.putExtra("email", hospital.getEmail());
                 intent3.putExtra("nome", hospital.getNome());
-                intent3.putExtra("id", hospital.getCnpj());
+                intent3.putExtra("id", hospital.getId());
                 intent3.putExtra("endereco", hospital.getEndereco());
                 intent3.putExtra("telefone", hospital.getTelefone());
                 intent3.putExtra("cnpj", hospital.getCnpj());
                 intent3.putExtra("especialidade", hospital.getEspecialidade());
-                intent3.putExtra("num_registro", hospital.getCnpj());
+                intent3.putExtra("numRegistro", hospital.getCnpj());
 
                 intent3.putExtra("horaAbrir", hospital.getHoraAbrir());
                 intent3.putExtra("horaFechar", hospital.getHoraFechar());
@@ -235,12 +235,12 @@ public class FavoritosFragment extends Fragment {
 
                 intent.putExtra("email", profissional.getId());
                 intent.putExtra("nome", profissional.getNome());
-                intent.putExtra("id", profissional.getNum_registro());
+                intent.putExtra("id", profissional.getId());
                 intent.putExtra("telefone", profissional.getTelefone());
                 intent.putExtra("endereco", profissional.getEndereco());
                 intent.putExtra("especialidade", profissional.getEspecialidade());
                 intent.putExtra("formacao", profissional.getFormacao());
-                intent.putExtra("Num_registro", profissional.getNum_registro());
+                intent.putExtra("numRegistro", profissional.getNumRegistro());
 
                 intent.putExtra("horaAbrir", profissional.getHoraAbrir());
                 intent.putExtra("horaFechar", profissional.getHoraFechar());
@@ -253,8 +253,8 @@ public class FavoritosFragment extends Fragment {
     }
 
     private void excluirFavoritos(final String getId) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        View view = getLayoutInflater().inflate(R.layout.dialog_excluir_favorito, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext()).setTitle("Excluir")
+                .setMessage("Deseja mesmo exluir este favorito?");
 
         builder.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
             @Override
@@ -276,7 +276,6 @@ public class FavoritosFragment extends Fragment {
             }
         });
 
-        builder.setView(view);
         AlertDialog dialog = builder.create();
         dialog.show();
     }

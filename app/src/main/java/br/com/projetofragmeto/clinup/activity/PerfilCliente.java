@@ -78,7 +78,7 @@ public class PerfilCliente extends AppCompatActivity {
         telefone = getIntent().getExtras().getString("telefone");
         nome = getIntent().getExtras().getString("nome");
         String especialidade = getIntent().getExtras().getString("especialidade");
-        String numRegistro = getIntent().getExtras().getString("num_registro");
+        String numRegistro = getIntent().getExtras().getString("numRegistro");
         endereco = getIntent().getExtras().getString("endereco");
         email = getIntent().getExtras().getString("email");
         cnpj = getIntent().getExtras().getString("cnpj");
@@ -201,7 +201,7 @@ public class PerfilCliente extends AppCompatActivity {
 
         firebase = ConfiguracaoFirebase.getFirebase().child("favoritos");
 
-        favoritos.setOnClickListener(new View.OnClickListener() {
+        favoritos.setOnClickListener(new View.OnClickListener() { //adiciona cliente aos favoritos
             @SuppressLint("ResourceAsColor")
             @Override
             public void onClick(View view) {
@@ -217,12 +217,6 @@ public class PerfilCliente extends AppCompatActivity {
                             String idUsuarioFavoritos = fav.getIdUsuario();
                             String idFav = fav.getIdCliente();
                             String tipoFav = fav.getTipo();
-
-                            Log.i("ObjetoID", id);
-                            Log.i("ObjetoID", idUsuarios);
-                            Log.i("ObjetoID", cliente);
-                            Log.i("ObjetoID", idFav);
-                            Log.i("ObjetoID", tipoFav);
 
                             if (idUsuarioFavoritos.equals(idUsuarios) && idFav.equals(id) && tipoFav.equals(cliente)) {
 
@@ -258,7 +252,6 @@ public class PerfilCliente extends AppCompatActivity {
                         }
                     }
 
-
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
                     }
@@ -266,7 +259,6 @@ public class PerfilCliente extends AppCompatActivity {
 
             }
         });
-
 
     }
 
