@@ -188,8 +188,9 @@ public class PerfilCliente extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Usuario user = dataSnapshot.getValue(Usuario.class);
 
-                nomeUser = user.getNome();
-
+                if (user != null) {
+                    nomeUser = user.getNome();
+                }
             }
 
             @Override

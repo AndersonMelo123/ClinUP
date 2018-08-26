@@ -63,9 +63,9 @@ public class AddressAdapter extends BaseAdapter {
         TextView tvNeighbor;
 
         private void setViews( View view ){
-            tvZipCode = (TextView) view.findViewById(R.id.tv_zip_code);
-            tvStreet = (TextView) view.findViewById(R.id.tv_street);
-            tvNeighbor = (TextView) view.findViewById(R.id.tv_neighbor);
+            tvZipCode = view.findViewById(R.id.tv_zip_code);
+            tvStreet = view.findViewById(R.id.tv_street);
+            tvNeighbor = view.findViewById(R.id.tv_neighbor);
         }
 
         private void setData( Endereco endereco){

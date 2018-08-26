@@ -34,6 +34,7 @@ public class AgendamentosFragment extends Fragment {
     private DatabaseReference firebase;
     public ArrayList<Agendamento> agendObjetos = new ArrayList<Agendamento>();
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -104,7 +105,6 @@ public class AgendamentosFragment extends Fragment {
                 intent.putExtra("dataConsulta", agendObjetos.get(i).getDataConsulta());
                 intent.putExtra("plano", agendObjetos.get(i).getIdPlano());
                 intent.putExtra("cliente", agendObjetos.get(i).getIdCliente());
-
 
                 intent.putExtra("classe", Agendamento.class);
                 startActivity(intent);

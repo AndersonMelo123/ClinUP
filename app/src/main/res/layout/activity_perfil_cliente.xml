@@ -39,7 +39,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="@string/nome"
+            android:text="@string/nNome"
             android:textColor="@color/caldroid_333"
             android:textSize="@dimen/nameTitle"
             android:textStyle="bold"
