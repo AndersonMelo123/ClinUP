@@ -1,8 +1,11 @@
 package br.com.projetofragmeto.clinup.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -25,19 +28,29 @@ public class ZipCodeSearchActivity extends AppCompatActivity implements AdapterV
     private List<Endereco> enderecos;
     private Util util;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_zip_code_search);
 
         enderecos = new ArrayList<>();
-        lvAddress = (ListView) findViewById(R.id.lv_address);
+        lvAddress = findViewById(R.id.lv_address);
         AddressAdapter adapter = new AddressAdapter(this, enderecos);
         lvAddress.setAdapter( adapter );
         lvAddress.setOnItemClickListener( this );
 
-        spStates = (Spinner) findViewById(R.id.sp_state);
+        //configurações da Toolbar
+        Toolbar toolbar = findViewById(R.id.toolbarActivityEsqueciCep);
+        toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
+        setSupportActionBar(toolbar);
+
+        if(getSupportActionBar() != null) {//setinha de voltar
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
+
+        spStates = findViewById(R.id.sp_state);
         spStates.setAdapter( ArrayAdapter.createFromResource(this, R.array.states, android.R.layout.simple_spinner_item) );
 
         util = new Util(this,
@@ -96,5 +109,13 @@ public class ZipCodeSearchActivity extends AppCompatActivity implements AdapterV
         intent.putExtra( Endereco.ZIP_CODE_KEY, zipCode );
         setResult( RESULT_OK, intent );
         finish();
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) { //método para finalizar a activity caso seja apertado a setinha de voltar
+        if(item.getItemId() == android.R.id.home)
+            finish();
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -105,7 +105,6 @@ public class AgendamentosFragment extends Fragment {
                 intent.putExtra("plano", agendObjetos.get(i).getIdPlano());
                 intent.putExtra("cliente", agendObjetos.get(i).getIdCliente());
 
-
                 intent.putExtra("classe", Agendamento.class);
                 startActivity(intent);
             }
