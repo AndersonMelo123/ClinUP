@@ -26,7 +26,7 @@ import br.com.projetofragmeto.clinup.helper.Preferencias;
 import br.com.projetofragmeto.clinup.model.Agendamento;
 
 
-public class AgendamentosFragment extends Fragment {
+public class ListaFragment extends Fragment {
 
     private ListView listView;
     private ArrayAdapter adapter;
@@ -38,7 +38,7 @@ public class AgendamentosFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_agendamentos, container, false);
+        View view = inflater.inflate(R.layout.fragment_lista, container, false);
         agendamentos = new ArrayList();
         listView = view.findViewById(R.id.lv_agendamentos);
 
