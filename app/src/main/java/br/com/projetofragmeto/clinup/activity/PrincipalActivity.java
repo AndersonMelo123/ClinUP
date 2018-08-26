@@ -58,6 +58,7 @@ import br.com.projetofragmeto.clinup.model.Usuario;
 
 public class PrincipalActivity extends AppCompatActivity {
 
+    //Drawerr com valor nulo para fechar caso o usuario aperte "voltar"
     private Drawer result = null;
 
     private String nomeUser, emailUser, fotoUser;
@@ -70,7 +71,6 @@ public class PrincipalActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,20 +93,11 @@ public class PrincipalActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-        //FloatingActionButton fab = findViewById(R.id.fab);
-        /*
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                goToBuscaActivity();
-            }
-        });*/
-
+        // Pegar o ID do usuário logado
         Preferencias preferencesUser = new Preferencias(PrincipalActivity.this);
         String idUsuarios = preferencesUser.getIdentificador();
 
-        //initialize and create the image loader logic
+        //Cria a imagem no navigation drawer
         DrawerImageLoader.init(new AbstractDrawerImageLoader() {
             @Override
             public void set(ImageView imageView, Uri uri, Drawable placeholder) {
@@ -118,6 +109,24 @@ public class PrincipalActivity extends AppCompatActivity {
                 Picasso.with(imageView.getContext()).cancelRequest(imageView);
             }
         });
+
+        //################################# - Google - ################################################
+
+        // Para fazer o logout e encerrar a sessão do google caso ele esteja logado pelo google
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        googleApiClient = new GoogleApiClient.Builder(PrincipalActivity.this)
+                .enableAutoManage(PrincipalActivity.this, new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+                        Toast.makeText(PrincipalActivity.this, "Login inválido", Toast.LENGTH_LONG).show();
+                    }
+                })
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+        //################################# - Google - ################################################
 
         mReadDataOnce(idUsuarios, new OnGetDataListener() {
             @Override
@@ -154,24 +163,7 @@ public class PrincipalActivity extends AppCompatActivity {
                         profile = new ProfileDrawerItem().withEmail(emailUser).withName(nomeUser).withIcon(R.mipmap.foto_defau_round);
                     }
 
-
-                    //################################# - Google - ################################################
-                    GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                            .requestEmail()
-                            .build();
-
-                    googleApiClient = new GoogleApiClient.Builder(PrincipalActivity.this)
-                            .enableAutoManage(PrincipalActivity.this, new GoogleApiClient.OnConnectionFailedListener() {
-                                @Override
-                                public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                                    Toast.makeText(PrincipalActivity.this, "Login inválido", Toast.LENGTH_LONG).show();
-                                }
-                            })
-                            .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                            .build();
-                    //################################# - Google - ################################################
-
-                    // Create the AccountHeader
+                    // Cria o AccountHeader
                     AccountHeader headerResult = new AccountHeaderBuilder()
                             .withActivity(PrincipalActivity.this)
                             .withHeaderBackground(R.drawable.background_cadastro)
@@ -184,7 +176,7 @@ public class PrincipalActivity extends AppCompatActivity {
                             })
                             .build();
 
-                    //if you want to update the items at a later time it is recommended to keep it in a variable
+                    //Se você quiser atualizar os itens mais tarde, é recomendável mantê-los em uma variável
                     PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName("Home").withIcon(FontAwesome.Icon.faw_home);
                     PrimaryDrawerItem item2 = new PrimaryDrawerItem().withIdentifier(2).withName("Perfil").withIcon(FontAwesome.Icon.faw_user);
                     PrimaryDrawerItem item3 = new PrimaryDrawerItem().withIdentifier(3).withName("Agendamentos").withIcon(FontAwesome.Icon.faw_calendar_check);
@@ -204,10 +196,14 @@ public class PrincipalActivity extends AppCompatActivity {
                                     item5
                             )
                             .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                                //Cline no item do Navigation Drawer
                                 @Override
                                 public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                                    Intent intent = null;
+                                    boolean valor = false;
+                                    int item = 0;
+
                                     if (drawerItem != null) {
-                                        Intent intent = null;
                                         if (drawerItem.getIdentifier() == 1) {
 
                                             intent = new Intent(PrincipalActivity.this, PrincipalActivity.class);
@@ -222,11 +218,13 @@ public class PrincipalActivity extends AppCompatActivity {
 
                                         }
                                         if (drawerItem.getIdentifier() == 3) {
-
+                                            valor = true;
+                                            item = 1;
 
                                         }
                                         if (drawerItem.getIdentifier() == 4) {
-
+                                            valor = true;
+                                            item = 2;
 
                                         }
                                         if (drawerItem.getIdentifier() == 5) {
@@ -234,8 +232,13 @@ public class PrincipalActivity extends AppCompatActivity {
                                         }
 
                                         if (drawerItem.getIdentifier() == 6) {
-                                            logout();
+                                            deslogarUsuario();
                                         }
+                                    }
+
+                                    //Muda o fragmento
+                                    if (valor) {
+                                        viewPager.setCurrentItem(item);
                                     }
                                     return false;
                                 }
@@ -269,11 +272,11 @@ public class PrincipalActivity extends AppCompatActivity {
         });
     }
 
-    private void logout() {
+    private void deslogarUsuario() {
 
-        logOutGoogle();
+        logOutGoogle(); // Faz logout do google
         autenticacaoUsuario.signOut();
-        FirebaseAuth.getInstance().signOut();
+        FirebaseAuth.getInstance().signOut(); // Faz o logOut do banco
         LoginManager.getInstance().logOut(); // Faz o logOut do facebook
 
         goLogInScreen(); //Vai para a tela de login

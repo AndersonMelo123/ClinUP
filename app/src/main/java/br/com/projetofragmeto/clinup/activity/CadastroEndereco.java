@@ -125,7 +125,7 @@ public class CadastroEndereco extends AppCompatActivity {
 
                 }
                 else{
-                    Snackbar.make(findViewById(R.id.enderecoID), "Você precisa preencher os campos ; para cadastrar e continuar", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(findViewById(R.id.enderecoID), "Você precisa preencher os campos para cadastrar e continuar", Snackbar.LENGTH_LONG).show();
                 }
             }
         });

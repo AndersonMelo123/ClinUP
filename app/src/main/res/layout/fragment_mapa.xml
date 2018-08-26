@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.MapaFragment">
+    tools:context=".fragments.MapaFragment"
+    android:id="@+id/mapaFrame">
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/botaoBuscar"
