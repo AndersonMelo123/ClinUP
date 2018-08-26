@@ -115,8 +115,8 @@ public class CancelarAgendamentos extends AppCompatActivity {
     }
 
     private void cancelarAgendamento(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        View view = getLayoutInflater().inflate(R.layout.dialog_excluir_agendamento, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this).setTitle("Cancelar")
+                .setMessage("Deseja mesmo cancelar este agendamento?");
 
         builder.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
             @Override
@@ -144,7 +144,6 @@ public class CancelarAgendamentos extends AppCompatActivity {
             }
         });
 
-        builder.setView(view);
         AlertDialog dialog = builder.create();
         dialog.show();
     }

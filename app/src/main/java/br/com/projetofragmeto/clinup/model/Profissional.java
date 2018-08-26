@@ -8,7 +8,7 @@ public class Profissional implements Serializable {
     private String especialidade;
     private String formacao;
     private String nome;
-    private String num_registro;
+    private String numRegistro;
     private String id;
     private String telefone;
     private Dias dias;
@@ -18,12 +18,12 @@ public class Profissional implements Serializable {
     public Profissional() {
     }
 
-    public Profissional(String nome, String endereco, String especialidade, String formacao, String num_registro) {
+    public Profissional(String nome, String endereco, String especialidade, String formacao, String numRegistro) {
         this.endereco = endereco;
         this.especialidade = especialidade;
         this.formacao = formacao;
         this.nome = nome;
-        this.num_registro = num_registro;
+        this.numRegistro = numRegistro;
     }
 
     @Override
@@ -104,12 +104,12 @@ public class Profissional implements Serializable {
         this.nome = nome;
     }
 
-    public String getNum_registro() {
-        return num_registro;
+    public String getNumRegistro() {
+        return numRegistro;
     }
 
-    public void setNum_registro(String num_registro) {
-        this.num_registro = num_registro;
+    public void setNumRegistro(String numRegistro) {
+        this.numRegistro = numRegistro;
     }
 
 }

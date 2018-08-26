@@ -631,7 +631,7 @@ public class MapaFragment extends Fragment implements
                 infoWindowData.setTelefone(((Profissional) classe).getTelefone());
                 infoWindowData.setEspecialidade(((Profissional) classe).getEspecialidade());
                 infoWindowData.setFormacao(((Profissional) classe).getFormacao());
-                infoWindowData.setNumRegistro(((Profissional) classe).getNum_registro());
+                infoWindowData.setNumRegistro(((Profissional) classe).getNumRegistro());
                 infoWindowData.setCliente("profissionais");
                 infoWindowData.setClasse(Profissional.class);
 
