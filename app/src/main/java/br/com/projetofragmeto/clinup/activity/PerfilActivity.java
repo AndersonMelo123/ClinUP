@@ -29,9 +29,7 @@ import br.com.projetofragmeto.clinup.model.Usuario;
 public class PerfilActivity extends AppCompatActivity {
     private TextView nome, email, telefone, dataNascimento;
     private ImageView foto;
-    private TextView cpf;
-    private TextView end1;
-    private TextView end2;
+    private TextView cpf, end1, end2;
     private String idEndereco;
     private DatabaseReference enderecoReferencia;
 
@@ -93,9 +91,6 @@ public class PerfilActivity extends AppCompatActivity {
 
                                         end1.setText(endereco.getLogradouro() + ", " + endereco.getNumero() + ", " + endereco.getBairro());
                                         end2.setText(endereco.getLocalidade() + ", " + endereco.getUf());
-                                        System.out.println(endereco.getLogradouro() + ", " + endereco.getNumero() + ", " + endereco.getBairro());
-                                        System.out.println(endereco.getLocalidade() + ", " + endereco.getUf());
-                                        System.out.println("--------------------------------------------------------");
                                     }
                                 }
 
@@ -121,7 +116,6 @@ public class PerfilActivity extends AppCompatActivity {
                             foto.setImageResource(R.mipmap.foto_defau_round);
                         }
                     }
-
                 }
             }
 
