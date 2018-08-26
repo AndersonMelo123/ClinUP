@@ -17,10 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.projetofragmeto.clinup.R;
-import br.com.projetofragmeto.clinup.model.Endereco;
 import br.com.projetofragmeto.clinup.adapter.AddressAdapter;
-import br.com.projetofragmeto.clinup.utils.Util;
 import br.com.projetofragmeto.clinup.helper.ZipCodeRequest;
+import br.com.projetofragmeto.clinup.model.Endereco;
+import br.com.projetofragmeto.clinup.utils.Util;
 
 public class ZipCodeSearchActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private Spinner spStates;
