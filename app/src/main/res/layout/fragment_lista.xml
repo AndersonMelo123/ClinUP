@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.ListaFragment">
+    tools:context=".fragments.ListaFragment"
+    android:id="@+id/agendamentosFrame">
 
     <ListView
         android:id="@+id/lv_agendamentos"

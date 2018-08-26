@@ -29,7 +29,6 @@ import br.com.projetofragmeto.clinup.model.Agendamento;
 public class ListaFragment extends Fragment {
 
     private ListView listView;
-    private ArrayAdapter adapter;
     public ArrayList agendamentos;//retorna o nome dos profissionais da consulta para exibir na listview
     private DatabaseReference firebase;
     public ArrayList<Agendamento> agendObjetos = new ArrayList<Agendamento>();

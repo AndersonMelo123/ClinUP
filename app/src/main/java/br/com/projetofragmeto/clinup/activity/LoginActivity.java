@@ -264,11 +264,11 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
 
-                            Usuario usuarioRecuperado = dataSnapshot.getValue(Usuario.class);
-
-                            Preferencias preferencias = new Preferencias(LoginActivity.this);
-                            preferencias.salvarDados(identificadorUsuarioLogado, usuarioRecuperado.getNome());
-
+                            if (dataSnapshot.exists()) {
+                                Usuario usuarioRecuperado = dataSnapshot.getValue(Usuario.class);
+                                Preferencias preferencias = new Preferencias(LoginActivity.this);
+                                preferencias.salvarDados(identificadorUsuarioLogado, usuarioRecuperado.getNome());
+                            }
                         }
 
                         @Override
