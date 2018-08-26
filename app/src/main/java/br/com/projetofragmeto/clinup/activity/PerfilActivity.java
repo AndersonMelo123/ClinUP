@@ -126,6 +126,7 @@ public class PerfilActivity extends AppCompatActivity {
         });
 
 
+        // Se o usuário apertar o botão de Editar Cadastro
         editarCadastro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -141,6 +142,7 @@ public class PerfilActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    // Método que chama a tela de Editar Cadastro
     public void editarCadastro() {
         Intent intent = new Intent(getApplicationContext(), AlterarCadastroUsuario.class);
         startActivity(intent);

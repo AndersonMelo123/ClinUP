@@ -25,6 +25,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import br.com.projetofragmeto.clinup.R;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
 import br.com.projetofragmeto.clinup.database.PlanoDeSaudeImplements;
@@ -37,7 +40,7 @@ import br.com.projetofragmeto.clinup.utils.MaskUtil;
 public class AlterarCadastroUsuario extends AppCompatActivity {
 
     // Atributos para serem utilizados nessa classe
-    private EditText nome, email, cpf, nomePlano, numPlano, dataNascimento, numTelefone;
+    private EditText nome, email, cpf, nomePlano, numPlano, dataNascimento, numTelefone, endereco, foto;
     private TextInputLayout nomeIn, emailIn, cpfIn, nomePlanoIn, numPlanoIn, dataNascimentoIn, numTelefoneIn;
 
     private Button botaoSalvar;
@@ -66,7 +69,7 @@ public class AlterarCadastroUsuario extends AppCompatActivity {
         toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
         setSupportActionBar(toolbar);
 
-        if(getSupportActionBar() != null) {//setinha de voltar
+        if (getSupportActionBar() != null) {//setinha de voltar
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
@@ -105,7 +108,7 @@ public class AlterarCadastroUsuario extends AppCompatActivity {
         maskUtil.maskTelefone(numTelefone);
 
         Preferencias preferencesUser = new Preferencias(AlterarCadastroUsuario.this);
-        String idUsuarios = preferencesUser.getIdentificador(); // Obter o identificador do usuário que está logado
+        final String idUsuarios = preferencesUser.getIdentificador(); // Obter o identificador do usuário que está logado
         // Essa funcão pega o identificador salvo em outra activity(tela)
 
         firebase = ConfiguracaoFirebase.getFirebase() // Consultando o usuário no banco de dados se existir ele pega
@@ -122,14 +125,14 @@ public class AlterarCadastroUsuario extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot != null) {
 
-                    Usuario usuario = dataSnapshot.getValue(Usuario.class);
+                    Usuario nUsuario = dataSnapshot.getValue(Usuario.class);
 
-                    if (usuario != null) {
-                        nome.setText(usuario.getNome());
-                        email.setText(usuario.getEmail());
-                        cpf.setText(usuario.getCpf());
-                        numTelefone.setText(usuario.getNumTelefone());
-                        dataNascimento.setText(usuario.getDataNascimento());
+                    if (nUsuario != null) {
+                        nome.setText(nUsuario.getNome());
+                        email.setText(nUsuario.getEmail());
+                        cpf.setText(nUsuario.getCpf());
+                        numTelefone.setText(nUsuario.getNumTelefone());
+                        dataNascimento.setText(nUsuario.getDataNascimento());
                     }
                 }
             }
@@ -183,21 +186,34 @@ public class AlterarCadastroUsuario extends AppCompatActivity {
             public void onClick(View view) {
 
                 if (submitForm()) {
-                    usuario = new Usuario();
-                    planoDeSaude = new PlanoDeSaude();
-                    Plano = new PlanoDeSaudeImplements(getApplicationContext());
 
-                    usuario.setNome(nome.getText().toString());
-                    usuario.setEmail(email.getText().toString());
-                    usuario.setCpf(cpf.getText().toString());
-                    usuario.setNumTelefone(numTelefone.getText().toString());
-                    usuario.setDataNascimento(dataNascimento.getText().toString());
-                    String idUsuarioLogado = Base64Custom.codificarBase64(usuario.getEmail());
-                    usuario.setId(idUsuarioLogado);
+                    // Atualização dos dados no banco
+                    Map<String, Object> usuarioUpdates = new HashMap<>();
+                    usuarioUpdates.put("nome", nome.getText().toString());
+                    usuarioUpdates.put("dataNascimento", dataNascimento.getText().toString());
+                    usuarioUpdates.put("email", email.getText().toString());
+                    usuarioUpdates.put("numTelefone", numTelefone.getText().toString());
+                    usuarioUpdates.put("cpf", cpf.getText().toString());
 
-                    usuario.salvar();
+                    if (!nomePlano.getText().toString().isEmpty() && !numPlano.getText().toString().isEmpty()) {
 
-                    Plano.inserirPlanodeSaude(planoDeSaude, usuario.getId(), nomePlano.getText().toString(), numPlano.getText().toString());
+                        Log.i("DiferenteVazio", "entrou");
+                        DatabaseReference planoSaudeBanco = ConfiguracaoFirebase.getFirebase().child("planodesaude").child(idUsuarios);
+                        Map<String, Object> planoDeSaudeUpdate = new HashMap<>();
+                        planoDeSaudeUpdate.put("id", idUsuarios);
+                        planoDeSaudeUpdate.put("idUsuario", idUsuarios);
+                        planoDeSaudeUpdate.put("nomePlano", nomePlano.getText().toString());
+                        planoDeSaudeUpdate.put("numPlano", numPlano.getText().toString());
+
+                        usuarioUpdates.put("planoDeSaude", idUsuarios);
+
+                        planoSaudeBanco.updateChildren(planoDeSaudeUpdate);
+                        firebase.updateChildren(usuarioUpdates);
+
+
+                    }
+                    firebase.updateChildren(usuarioUpdates);
+
 
                     irParaPerfilCliente();
                 }
@@ -229,28 +245,8 @@ public class AlterarCadastroUsuario extends AppCompatActivity {
         }
     }
 
-    //Método que salva o id do usuário nas preferências para login automático ao abrir aplicativo
-    private void salvarPreferencias(String key, String value) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(key, value);
-        editor.commit();
-    }
-
-
     private boolean submitForm() {
-        if (!validarNome()) {
-            return false;
-        }
-
-        if (!validarEmail()) {
-            return false;
-        }
-
-        if (!validarCpf()) {
-            return false;
-        }
-        return true;
+        return validarNome() && validarEmail() && validarCpf();
 
     }
 
@@ -280,7 +276,6 @@ public class AlterarCadastroUsuario extends AppCompatActivity {
         return true;
     }
 
-
     private boolean validarCpf() {
         if (cpf.getText().toString().trim().isEmpty()) {
             cpfIn.setError(getString(R.string.err_msg_cpf));
@@ -292,7 +287,6 @@ public class AlterarCadastroUsuario extends AppCompatActivity {
 
         return true;
     }
-
 
     private static boolean isValidEmail(String email) {
         return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
@@ -341,14 +335,14 @@ public class AlterarCadastroUsuario extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) { //método para finalizar a activity caso seja apertado a setinha de voltar
-        if(item.getItemId() == android.R.id.home)
+        if (item.getItemId() == android.R.id.home)
             irParaPerfilCliente();
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(AlterarCadastroUsuario.this,PerfilActivity.class);
+        Intent intent = new Intent(AlterarCadastroUsuario.this, PerfilActivity.class);
         startActivity(intent);
         finish();
     }
