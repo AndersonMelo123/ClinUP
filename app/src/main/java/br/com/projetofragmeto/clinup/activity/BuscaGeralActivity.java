@@ -87,6 +87,7 @@ public class BuscaGeralActivity extends AppCompatActivity {
         listView.setAdapter(adapter); //seta o adaptados
 
 
+
         filtroBT.setOnClickListener(new View.OnClickListener() {// quando o usuário escolher o filtro
             @Override
             public void onClick(View view) {
@@ -121,8 +122,8 @@ public class BuscaGeralActivity extends AppCompatActivity {
                                                 listaAuxiliar.add(nome);//adiciona o nome do profissional p em listaNomes
                                             }
                                             //listaNomes = profissionalDB.buscarDados(dataSnapshot,listaNomes);
-                                            adapter.notifyDataSetChanged();//notifica ao adapter as mudanças ocorridas
-
+                                            //adapter.notifyDataSetChanged();//notifica ao adapter as mudanças ocorridas
+                                            adapter.notifyDataSetChanged();
                                             Log.i("ARRAY", listaNomes.toString()); //exibe array com o nome de todos os profissioais
 
                                         }
@@ -153,7 +154,7 @@ public class BuscaGeralActivity extends AppCompatActivity {
                                                 intent.putExtra("endereco", profObjetos.get(j).getEndereco());
                                                 intent.putExtra("especialidade", profObjetos.get(j).getEspecialidade());
                                                 intent.putExtra("formacao", profObjetos.get(j).getFormacao());
-                                                intent.putExtra("num_registro", profObjetos.get(j).getNum_registro());
+                                                intent.putExtra("numRegistro", profObjetos.get(j).getNumRegistro());
 
                                                 intent.putExtra("horaAbrir",profObjetos.get(j).getHoraAbrir());
                                                 intent.putExtra("horaFechar",profObjetos.get(j).getHoraFechar());
@@ -215,7 +216,7 @@ public class BuscaGeralActivity extends AppCompatActivity {
                                                 intent.putExtra("telefone", clinObjetos.get(i).getTelefone() );
                                                 intent.putExtra("cnpj", clinObjetos.get(i).getCnpj() );
                                                 intent.putExtra("especialidade", clinObjetos.get(i).getEspecialidade() );
-                                                intent.putExtra("num_registro", clinObjetos.get(i).getCnpj() );
+                                                intent.putExtra("numRegistro", clinObjetos.get(i).getCnpj() );
 
 
                                                 intent.putExtra("horaAbrir",clinObjetos.get(i).getHoraAbrir());
@@ -276,7 +277,7 @@ public class BuscaGeralActivity extends AppCompatActivity {
                                                 intent.putExtra("telefone", hospObjetos.get(i).getTelefone());
                                                 intent.putExtra("cnpj", hospObjetos.get(i).getCnpj());
                                                 intent.putExtra("especialidade", hospObjetos.get(i).getEspecialidade() );
-                                                intent.putExtra("num_registro", hospObjetos.get(i).getCnpj() );
+                                                intent.putExtra("numRegistro", hospObjetos.get(i).getCnpj() );
 
                                                 intent.putExtra("horaAbrir",hospObjetos.get(i).getHoraAbrir());
                                                 intent.putExtra("horaFechar",hospObjetos.get(i).getHoraFechar());
@@ -335,7 +336,7 @@ public class BuscaGeralActivity extends AppCompatActivity {
                                                 intent.putExtra("endereco", labObjetos.get(i).getEndereco());
                                                 intent.putExtra("telefone", labObjetos.get(i).getTelefone());
                                                 intent.putExtra("especialidade", labObjetos.get(i).getEspecialidade() );
-                                                intent.putExtra("num_registro", labObjetos.get(i).getCnpj() );
+                                                intent.putExtra("numRegistro", labObjetos.get(i).getCnpj() );
 
                                                 intent.putExtra("horaAbrir",labObjetos.get(i).getHoraAbrir());
                                                 intent.putExtra("horaFechar",labObjetos.get(i).getHoraFechar());
