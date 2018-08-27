@@ -131,10 +131,7 @@ public class CancelarAgendamentos extends AppCompatActivity {
                 startActivity(intent);
                 finish();
 
-
             }
-
-
         });
 
         builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {

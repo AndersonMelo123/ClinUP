@@ -264,7 +264,7 @@ public class FavoritosFragment extends Fragment {
 
                 bancoDados.removeValue();
 
-                Toast.makeText(getContext(), "Excluido o com sucesso", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Excluido com sucesso", Toast.LENGTH_SHORT).show();
 
             }
         });

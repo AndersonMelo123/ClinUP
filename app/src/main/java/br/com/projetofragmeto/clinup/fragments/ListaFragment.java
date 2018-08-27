@@ -42,14 +42,7 @@ public class ListaFragment extends Fragment {
         agendamentos = new ArrayList();
         listView = view.findViewById(R.id.lv_agendamentos);
 
-
         final AdapterPersonalizadoAgendamento adapterPersonalizadoAgendamento = new AdapterPersonalizadoAgendamento(agendObjetos, getActivity());
-
-        /*adapter = new ArrayAdapter(
-                getActivity(), // pega o contexto da activity onde esse fragment está
-                R.layout.lista_busca, //layout da lista
-                agendamentos //array list contendo todos os contados
-        );*/
 
         listView.setAdapter(adapterPersonalizadoAgendamento);
 
@@ -58,7 +51,6 @@ public class ListaFragment extends Fragment {
         agendamentos.clear();//limpa o array profissionais
         agendObjetos.clear();//limpa o array profObjetos
 
-
         Preferencias preferencesUser = new Preferencias(getContext());
         final String idUsuarios = preferencesUser.getIdentificador();
 
@@ -66,6 +58,8 @@ public class ListaFragment extends Fragment {
         firebase.addValueEventListener(new ValueEventListener() {//faz a consulta no banco
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                agendamentos.clear();
+                agendObjetos.clear();
                 if (dataSnapshot.getValue() != null) {
 
                     for (DataSnapshot dados : dataSnapshot.getChildren()) {
