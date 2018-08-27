@@ -10,6 +10,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -44,7 +45,12 @@ public class AgendarActivity extends FragmentActivity {
     private ArrayList<Date> DesativarDatas = new ArrayList<>();
     private ArrayList<Date> AtivarDatas = new ArrayList<>();
 
-    private String id, cliente, nomeCliente, especialidadeCli, enderecoCli, telefoneCli, emailCli;
+    private String id;
+    private String nomeCliente;
+    private String especialidadeCli;
+    private String enderecoCli;
+    private String telefoneCli;
+    private String emailCli;
 
     private TextView nome;
     private TextView especialidade;
@@ -65,15 +71,13 @@ public class AgendarActivity extends FragmentActivity {
 
     private Agendamento agendamento = new Agendamento();
 
-    private android.support.v7.widget.Toolbar toolbar;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agendar);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        toolbar = findViewById(R.id.toolbarActivity);
+        Toolbar toolbar = findViewById(R.id.toolbarActivity);
         toolbar.setTitle("Agendamento");
 
         nome = findViewById(R.id.nome);
@@ -108,7 +112,7 @@ public class AgendarActivity extends FragmentActivity {
 
 
         id = getIntent().getExtras().getString("id"); // Pegar o ID do cliente do fragment_Buscar...
-        cliente = getIntent().getExtras().getString("cliente");
+        String cliente = getIntent().getExtras().getString("cliente");
         nomeCliente = getIntent().getExtras().getString("nome");
         classe = getIntent().getSerializableExtra("classe").getClass();
         especialidadeCli = getIntent().getExtras().getString("especialidade");
