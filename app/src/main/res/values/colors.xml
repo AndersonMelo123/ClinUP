@@ -7,7 +7,7 @@
     <color name="ColorAccent">#3d958a</color>
     <color name="Cinza">#878787</color>
     <color name="Black">#000000</color>
-    <color name="White">#FFF</color>
+    <color name="White">#ffffff</color>
     <color name="Red">#FF0000</color>
 
     <!-- Material DEFAULT colors -->
