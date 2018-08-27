@@ -1,6 +1,7 @@
 package br.com.projetofragmeto.clinup.activity;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         autenticacaoUsuario = ConfiguracaoFirebase.getFirebaseAutenticacao();
         user = ConfiguracaoFirebase.getUsuarioLogado(); // retorna o usuário que está logado no momento

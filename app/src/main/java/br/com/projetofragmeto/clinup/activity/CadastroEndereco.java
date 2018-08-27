@@ -2,6 +2,7 @@ package br.com.projetofragmeto.clinup.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -45,6 +46,7 @@ public class CadastroEndereco extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         //configurações da Toolbar
         Toolbar toolbar = findViewById(R.id.toolbarActivityEndereco);
@@ -125,7 +127,7 @@ public class CadastroEndereco extends AppCompatActivity {
 
                 }
                 else{
-                    Snackbar.make(findViewById(R.id.enderecoID), "Você precisa preencher os campos ; para cadastrar e continuar", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(findViewById(R.id.enderecoID), "Você precisa preencher os campos para cadastrar e continuar", Snackbar.LENGTH_LONG).show();
                 }
             }
         });

@@ -1,10 +1,9 @@
 package br.com.projetofragmeto.clinup.activity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -25,10 +24,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import br.com.projetofragmeto.clinup.R;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
-import br.com.projetofragmeto.clinup.database.PlanoDeSaudeImplements;
-import br.com.projetofragmeto.clinup.helper.Base64Custom;
 import br.com.projetofragmeto.clinup.helper.Preferencias;
 import br.com.projetofragmeto.clinup.model.PlanoDeSaude;
 import br.com.projetofragmeto.clinup.model.Usuario;
@@ -49,16 +49,11 @@ public class AlterarCadastroUsuario extends AppCompatActivity {
     private ValueEventListener valueEventListenerPlano;
     private FirebaseAuth autenticacaoUsuario;
 
-    private Usuario usuario;
-
-    private PlanoDeSaude planoDeSaude;
-    private PlanoDeSaudeImplements Plano;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alterar_cadastro_usuario);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         //configurações da Toolbar
         Toolbar toolbar = findViewById(R.id.toolbarActivity);
@@ -66,7 +61,7 @@ public class AlterarCadastroUsuario extends AppCompatActivity {
         toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
         setSupportActionBar(toolbar);
 
-        if(getSupportActionBar() != null) {//setinha de voltar
+        if (getSupportActionBar() != null) {//setinha de voltar
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
@@ -105,7 +100,7 @@ public class AlterarCadastroUsuario extends AppCompatActivity {
         maskUtil.maskTelefone(numTelefone);
 
         Preferencias preferencesUser = new Preferencias(AlterarCadastroUsuario.this);
-        String idUsuarios = preferencesUser.getIdentificador(); // Obter o identificador do usuário que está logado
+        final String idUsuarios = preferencesUser.getIdentificador(); // Obter o identificador do usuário que está logado
         // Essa funcão pega o identificador salvo em outra activity(tela)
 
         firebase = ConfiguracaoFirebase.getFirebase() // Consultando o usuário no banco de dados se existir ele pega
@@ -122,14 +117,14 @@ public class AlterarCadastroUsuario extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot != null) {
 
-                    Usuario usuario = dataSnapshot.getValue(Usuario.class);
+                    Usuario nUsuario = dataSnapshot.getValue(Usuario.class);
 
-                    if (usuario != null) {
-                        nome.setText(usuario.getNome());
-                        email.setText(usuario.getEmail());
-                        cpf.setText(usuario.getCpf());
-                        numTelefone.setText(usuario.getNumTelefone());
-                        dataNascimento.setText(usuario.getDataNascimento());
+                    if (nUsuario != null) {
+                        nome.setText(nUsuario.getNome());
+                        email.setText(nUsuario.getEmail());
+                        cpf.setText(nUsuario.getCpf());
+                        numTelefone.setText(nUsuario.getNumTelefone());
+                        dataNascimento.setText(nUsuario.getDataNascimento());
                     }
                 }
             }
@@ -183,21 +178,36 @@ public class AlterarCadastroUsuario extends AppCompatActivity {
             public void onClick(View view) {
 
                 if (submitForm()) {
-                    usuario = new Usuario();
-                    planoDeSaude = new PlanoDeSaude();
-                    Plano = new PlanoDeSaudeImplements(getApplicationContext());
 
-                    usuario.setNome(nome.getText().toString());
-                    usuario.setEmail(email.getText().toString());
-                    usuario.setCpf(cpf.getText().toString());
-                    usuario.setNumTelefone(numTelefone.getText().toString());
-                    usuario.setDataNascimento(dataNascimento.getText().toString());
-                    String idUsuarioLogado = Base64Custom.codificarBase64(usuario.getEmail());
-                    usuario.setId(idUsuarioLogado);
+                    if (nomePlano.getText().toString().isEmpty() && !numPlano.getText().toString().isEmpty()) {
+                        nomePlanoValida();
+                        return;
+                    }
+                    if (!nomePlano.getText().toString().isEmpty() && numPlano.getText().toString().isEmpty()) {
+                        numPlanoValida();
+                        return;
+                    }
 
-                    usuario.salvar();
+                    // Atualização do banco do usuários
+                    Map<String, Object> usuarioUpdates = new HashMap<>();
+                    usuarioUpdates.put("nome", nome.getText().toString());
+                    usuarioUpdates.put("dataNascimento", dataNascimento.getText().toString());
+                    usuarioUpdates.put("email", email.getText().toString());
+                    usuarioUpdates.put("numTelefone", numTelefone.getText().toString());
+                    usuarioUpdates.put("cpf", cpf.getText().toString());
 
-                    Plano.inserirPlanodeSaude(planoDeSaude, usuario.getId(), nomePlano.getText().toString(), numPlano.getText().toString());
+                    // Atualização do banco dos planos de saúde
+                    DatabaseReference planoSaudeBanco = ConfiguracaoFirebase.getFirebase().child("planodesaude").child(idUsuarios);
+                    Map<String, Object> planoDeSaudeUpdate = new HashMap<>();
+                    planoDeSaudeUpdate.put("id", idUsuarios);
+                    planoDeSaudeUpdate.put("idUsuario", idUsuarios);
+                    planoDeSaudeUpdate.put("nomePlano", nomePlano.getText().toString());
+                    planoDeSaudeUpdate.put("numPlano", numPlano.getText().toString());
+
+                    usuarioUpdates.put("planoDeSaude", idUsuarios);
+
+                    planoSaudeBanco.updateChildren(planoDeSaudeUpdate);
+                    firebase.updateChildren(usuarioUpdates);
 
                     irParaPerfilCliente();
                 }
@@ -229,28 +239,8 @@ public class AlterarCadastroUsuario extends AppCompatActivity {
         }
     }
 
-    //Método que salva o id do usuário nas preferências para login automático ao abrir aplicativo
-    private void salvarPreferencias(String key, String value) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(key, value);
-        editor.commit();
-    }
-
-
     private boolean submitForm() {
-        if (!validarNome()) {
-            return false;
-        }
-
-        if (!validarEmail()) {
-            return false;
-        }
-
-        if (!validarCpf()) {
-            return false;
-        }
-        return true;
+        return validarNome() && validarEmail() && validarCpf();
 
     }
 
@@ -280,7 +270,6 @@ public class AlterarCadastroUsuario extends AppCompatActivity {
         return true;
     }
 
-
     private boolean validarCpf() {
         if (cpf.getText().toString().trim().isEmpty()) {
             cpfIn.setError(getString(R.string.err_msg_cpf));
@@ -288,6 +277,30 @@ public class AlterarCadastroUsuario extends AppCompatActivity {
             return false;
         } else {
             cpfIn.setErrorEnabled(false);
+        }
+
+        return true;
+    }
+
+    private boolean nomePlanoValida() {
+        if (nomePlano.getText().toString().trim().isEmpty()) {
+            nomePlanoIn.setError("Se preencheu o número do plano é preciso dizer qual é o nome do plano");
+            requestFocus(nomePlano);
+            return false;
+        } else {
+            nomePlanoIn.setErrorEnabled(false);
+        }
+
+        return true;
+    }
+
+    private boolean numPlanoValida() {
+        if (numPlano.getText().toString().trim().isEmpty()) {
+            numPlanoIn.setError("Se preencheu o nome do plano é preciso dizer qual é o número do plano");
+            requestFocus(numPlano);
+            return false;
+        } else {
+            numPlanoIn.setErrorEnabled(false);
         }
 
         return true;
@@ -341,14 +354,14 @@ public class AlterarCadastroUsuario extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) { //método para finalizar a activity caso seja apertado a setinha de voltar
-        if(item.getItemId() == android.R.id.home)
+        if (item.getItemId() == android.R.id.home)
             irParaPerfilCliente();
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(AlterarCadastroUsuario.this,PerfilActivity.class);
+        Intent intent = new Intent(AlterarCadastroUsuario.this, PerfilActivity.class);
         startActivity(intent);
         finish();
     }

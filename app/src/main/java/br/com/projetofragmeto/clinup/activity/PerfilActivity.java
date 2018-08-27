@@ -1,6 +1,7 @@
 package br.com.projetofragmeto.clinup.activity;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -29,9 +30,7 @@ import br.com.projetofragmeto.clinup.model.Usuario;
 public class PerfilActivity extends AppCompatActivity {
     private TextView nome, email, telefone, dataNascimento;
     private ImageView foto;
-    private TextView cpf;
-    private TextView end1;
-    private TextView end2;
+    private TextView cpf, end1, end2;
     private String idEndereco;
     private DatabaseReference enderecoReferencia;
 
@@ -39,6 +38,7 @@ public class PerfilActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbarActivity);
         toolbar.setTitle("Perfil");
@@ -93,9 +93,6 @@ public class PerfilActivity extends AppCompatActivity {
 
                                         end1.setText(endereco.getLogradouro() + ", " + endereco.getNumero() + ", " + endereco.getBairro());
                                         end2.setText(endereco.getLocalidade() + ", " + endereco.getUf());
-                                        System.out.println(endereco.getLogradouro() + ", " + endereco.getNumero() + ", " + endereco.getBairro());
-                                        System.out.println(endereco.getLocalidade() + ", " + endereco.getUf());
-                                        System.out.println("--------------------------------------------------------");
                                     }
                                 }
 
@@ -121,7 +118,6 @@ public class PerfilActivity extends AppCompatActivity {
                             foto.setImageResource(R.mipmap.foto_defau_round);
                         }
                     }
-
                 }
             }
 
@@ -132,6 +128,7 @@ public class PerfilActivity extends AppCompatActivity {
         });
 
 
+        // Se o usuário apertar o botão de Editar Cadastro
         editarCadastro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -147,6 +144,7 @@ public class PerfilActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    // Método que chama a tela de Editar Cadastro
     public void editarCadastro() {
         Intent intent = new Intent(getApplicationContext(), AlterarCadastroUsuario.class);
         startActivity(intent);

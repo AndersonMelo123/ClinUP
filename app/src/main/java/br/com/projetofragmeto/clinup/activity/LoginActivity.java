@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -82,6 +83,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
@@ -264,11 +266,11 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
 
-                            Usuario usuarioRecuperado = dataSnapshot.getValue(Usuario.class);
-
-                            Preferencias preferencias = new Preferencias(LoginActivity.this);
-                            preferencias.salvarDados(identificadorUsuarioLogado, usuarioRecuperado.getNome());
-
+                            if (dataSnapshot.exists()) {
+                                Usuario usuarioRecuperado = dataSnapshot.getValue(Usuario.class);
+                                Preferencias preferencias = new Preferencias(LoginActivity.this);
+                                preferencias.salvarDados(identificadorUsuarioLogado, usuarioRecuperado.getNome());
+                            }
                         }
 
                         @Override
