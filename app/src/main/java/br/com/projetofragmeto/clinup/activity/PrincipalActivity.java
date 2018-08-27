@@ -51,9 +51,8 @@ import java.util.List;
 import br.com.projetofragmeto.clinup.R;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
 import br.com.projetofragmeto.clinup.database.OnGetDataListener;
-
+import br.com.projetofragmeto.clinup.fragments.AgendamentosFragment;
 import br.com.projetofragmeto.clinup.fragments.FavoritosFragment;
-import br.com.projetofragmeto.clinup.fragments.ListaFragment;
 import br.com.projetofragmeto.clinup.fragments.MapaFragment;
 import br.com.projetofragmeto.clinup.helper.Preferencias;
 import br.com.projetofragmeto.clinup.model.Usuario;
@@ -328,7 +327,7 @@ public class PrincipalActivity extends AppCompatActivity {
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new MapaFragment(), "Localização");
-        adapter.addFragment(new ListaFragment(), "Consultas");
+        adapter.addFragment(new AgendamentosFragment(), "Consultas");
         adapter.addFragment(new FavoritosFragment(), "Favoritos");
         viewPager.setAdapter(adapter);
     }
