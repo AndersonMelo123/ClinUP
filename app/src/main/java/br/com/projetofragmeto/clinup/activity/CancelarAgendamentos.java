@@ -60,7 +60,7 @@ public class CancelarAgendamentos extends AppCompatActivity {
 
 
         nome = findViewById(R.id.nome_l);
-        planoSaud = findViewById(R.id.planoSaud);
+        planoSaud = findViewById(R.id.email);
         dataAgendamento = findViewById(R.id.dataAgendamento);
         dataConsulta = findViewById(R.id.dataConsulta);
         cancelar = (Button) findViewById(R.id.cancelarAgendamento);
@@ -136,10 +136,7 @@ public class CancelarAgendamentos extends AppCompatActivity {
                 startActivity(intent);
                 finish();
 
-
             }
-
-
         });
 
         builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {

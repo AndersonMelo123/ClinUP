@@ -308,7 +308,7 @@ public class PrincipalActivity extends AppCompatActivity {
     private void setupTabIcons() {
 
         TextView tabOne = (TextView) LayoutInflater.from(PrincipalActivity.this).inflate(R.layout.custom_tab, null);
-        tabOne.setText("Localização");
+        tabOne.setText("Perto de mim");
         tabOne.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_tab_mapa, 0, 0);
         tabLayout.getTabAt(0).setCustomView(tabOne);
 

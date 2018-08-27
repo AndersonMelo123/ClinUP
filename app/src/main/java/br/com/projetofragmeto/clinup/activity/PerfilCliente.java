@@ -30,11 +30,12 @@ import br.com.projetofragmeto.clinup.model.Usuario;
 
 public class PerfilCliente extends AppCompatActivity {
 
-    private String id;
+    private String id, idFavorito;
     private String telefone;
     private String nome;
     private String email;
     private String endereco;
+    private String enderecoAgendamento;
     private String cnpj;
     private String cliente;
     private String classe;
@@ -79,7 +80,7 @@ public class PerfilCliente extends AppCompatActivity {
 
         telefone = getIntent().getExtras().getString("telefone");
         nome = getIntent().getExtras().getString("nome");
-        String especialidade = getIntent().getExtras().getString("especialidade");
+        final String especialidade = getIntent().getExtras().getString("especialidade");
         String numRegistro = getIntent().getExtras().getString("numRegistro");
         endereco = getIntent().getExtras().getString("endereco");
         email = getIntent().getExtras().getString("email");
@@ -139,7 +140,8 @@ public class PerfilCliente extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     Endereco userEndereco = dataSnapshot.getValue(Endereco.class);
 
-                    tv_endereco.setText(String.valueOf(userEndereco.getLogradouro() + ", " + userEndereco.getNumero() + ", " + userEndereco.getBairro()));
+                    enderecoAgendamento = String.valueOf(userEndereco.getLogradouro() + ", " + userEndereco.getNumero() + ", " + userEndereco.getBairro());
+                    tv_endereco.setText(enderecoAgendamento);
                     tv_endereco.setEnabled(false);
                 }
 
@@ -151,6 +153,34 @@ public class PerfilCliente extends AppCompatActivity {
 
         }
 
+        Preferencias preferencesUser = new Preferencias(this);
+        final String idUsuarios = preferencesUser.getIdentificador(); // Obter o identificador do usuário que está logado
+
+        DatabaseReference ref = ConfiguracaoFirebase.getFirebase().child("favoritos");
+
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot dados : dataSnapshot.getChildren()) {
+
+                    Favoritos fav = dados.getValue(Favoritos.class);
+
+                    if (fav.getIdCliente().equals(id) && fav.getTipo().equals(cliente) && idUsuarios.equals(fav.getIdUsuario())) {
+
+                        favoritos.setBackgroundResource(R.drawable.ic_favorite_red);
+
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
 
         agendar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,10 +191,10 @@ public class PerfilCliente extends AppCompatActivity {
                 intent.putExtra("nome", nome);
                 intent.putExtra("email", email);
                 intent.putExtra("id", id);
-                intent.putExtra("endereco", endereco);
+                intent.putExtra("endereco", enderecoAgendamento);
                 intent.putExtra("telefone", telefone);
                 intent.putExtra("cnpj", cnpj);
-
+                intent.putExtra("especialidade", especialidade);
                 intent.putExtra("cliente", cliente);
                 intent.putExtra("classe", classe);
                 startActivity(intent);
@@ -178,8 +208,8 @@ public class PerfilCliente extends AppCompatActivity {
             }
         });
 
-        Preferencias preferencesUser = new Preferencias(this);
-        final String idUsuarios = preferencesUser.getIdentificador(); // Obter o identificador do usuário que está logado
+        //Preferencias preferencesUser = new Preferencias(this);
+        //final String idUsuarios = preferencesUser.getIdentificador(); // Obter o identificador do usuário que está logado
 
 
         firebase = ConfiguracaoFirebase.getFirebase() // Consultando o usuário no banco de dados se existir ele pega
@@ -221,14 +251,22 @@ public class PerfilCliente extends AppCompatActivity {
                             String tipoFav = fav.getTipo();
 
                             if (idUsuarioFavoritos.equals(idUsuarios) && idFav.equals(id) && tipoFav.equals(cliente)) {
-
+                                idFavorito = fav.getId();
                                 verifica = true;
                             }
                         }
 
                         if (verifica) {
 
-                            Toast.makeText(PerfilCliente.this, "Usuário já está em Favoritos", Toast.LENGTH_SHORT).show();
+                            final DatabaseReference bancoDados = ConfiguracaoFirebase.getFirebase().child("favoritos").child(idFavorito);
+
+                            bancoDados.removeValue();
+
+                            favoritos.setBackgroundResource(R.drawable.ic_favorite);
+
+                            Toast.makeText(PerfilCliente.this, "Removido dos favoritos", Toast.LENGTH_SHORT).show();
+                            verifica = false;
+                            //Toast.makeText(PerfilCliente.this, "Usuário já está em Favoritos", Toast.LENGTH_SHORT).show();
 
                         } else {
                             DatabaseReference bancoDeDados = ConfiguracaoFirebase.getFirebase();
@@ -237,17 +275,18 @@ public class PerfilCliente extends AppCompatActivity {
 
                             final String idkey = bancoDeDados.getKey();
 
-                            final Favoritos favoritos = new Favoritos();
+                            final Favoritos favorito = new Favoritos();
 
-                            favoritos.setNomeCliente(nome);
-                            favoritos.setIdCliente(id);
-                            favoritos.setIdUsuario(idUsuarios);
-                            favoritos.setTipo(cliente);
-                            favoritos.setId(String.valueOf(idkey));
+                            favorito.setNomeCliente(nome);
+                            favorito.setIdCliente(id);
+                            favorito.setIdUsuario(idUsuarios);
+                            favorito.setTipo(cliente);
+                            favorito.setId(String.valueOf(idkey));
 
-                            bancoDeDados.setValue(favoritos).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            bancoDeDados.setValue(favorito).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
+                                    favoritos.setBackgroundResource(R.drawable.ic_favorite_red);
                                     Toast.makeText(PerfilCliente.this, "Adicionado aos Favoritos", Toast.LENGTH_SHORT).show();
                                 }
                             });
