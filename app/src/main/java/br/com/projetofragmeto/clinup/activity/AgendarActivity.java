@@ -182,7 +182,7 @@ public class AgendarActivity extends FragmentActivity {
                     email.setText(usuario.getEmail());
                     planoDeSaude.setText(usuario.getPlanoDeSaude());
                     dataNascimento.setText(usuario.getDataNascimento());
-                    telefone.setText(usuario.getTelefone());
+                    telefone.setText(usuario.getNumTelefone());
 
                     agendamento.setNomeUsuario(usuario.getNome());
                     agendamento.setIdPlano(String.valueOf(usuario.getPlanoDeSaude()));

@@ -1,15 +1,18 @@
 package br.com.projetofragmeto.clinup.fragments;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,7 +36,7 @@ public class ListaFragment extends Fragment {
     public ArrayList agendamentos;//retorna o nome dos profissionais da consulta para exibir na listview
     private DatabaseReference firebase;
     public ArrayList<Agendamento> agendObjetos = new ArrayList<Agendamento>();
-
+    private String getId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -105,8 +108,48 @@ public class ListaFragment extends Fragment {
             }
         });
 
+        //pega o clic no list view e exclui o agendamento
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                getId = agendObjetos.get(i).getId();
+
+                cancelarAgendamento(getId);
+                return true;
+            }
+        });
+
 
         return view;
+    }
+
+    private void cancelarAgendamento(final String idKey){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext()).setTitle("Cancelar")
+                .setMessage("Deseja mesmo exluir este agendamento?");
+
+        builder.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                final DatabaseReference bancoDados = ConfiguracaoFirebase.getFirebase().child("agendamento").child(idKey);
+
+                bancoDados.removeValue();
+
+                Toast.makeText(getContext(), "Agendamento excluido com sucesso", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Toast.makeText(getContext(), "Cancelar", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
 }
