@@ -1,6 +1,7 @@
 package br.com.projetofragmeto.clinup.activity;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
@@ -52,6 +53,7 @@ public class AlterarCadastroUsuario extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alterar_cadastro_usuario);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         //configurações da Toolbar
         Toolbar toolbar = findViewById(R.id.toolbarActivity);
