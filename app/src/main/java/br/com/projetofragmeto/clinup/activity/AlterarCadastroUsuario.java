@@ -1,10 +1,8 @@
 package br.com.projetofragmeto.clinup.activity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -30,8 +28,6 @@ import java.util.Map;
 
 import br.com.projetofragmeto.clinup.R;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
-import br.com.projetofragmeto.clinup.database.PlanoDeSaudeImplements;
-import br.com.projetofragmeto.clinup.helper.Base64Custom;
 import br.com.projetofragmeto.clinup.helper.Preferencias;
 import br.com.projetofragmeto.clinup.model.PlanoDeSaude;
 import br.com.projetofragmeto.clinup.model.Usuario;
@@ -51,12 +47,6 @@ public class AlterarCadastroUsuario extends AppCompatActivity {
     private ValueEventListener valueEventListenerUsuario;
     private ValueEventListener valueEventListenerPlano;
     private FirebaseAuth autenticacaoUsuario;
-
-    private Usuario usuario;
-
-    private PlanoDeSaude planoDeSaude;
-    private PlanoDeSaudeImplements Plano;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
