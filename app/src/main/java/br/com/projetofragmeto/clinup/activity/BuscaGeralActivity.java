@@ -340,12 +340,13 @@ public class BuscaGeralActivity extends AppCompatActivity {
                                                 intent.putExtra("especialidade", labObjetos.get(i).getEspecialidade() );
                                                 intent.putExtra("numRegistro", labObjetos.get(i).getCnpj() );
 
-                                                intent.putExtra("horaAbrir",labObjetos.get(i).getHoraAbrir());
-                                                intent.putExtra("horaFechar",labObjetos.get(i).getHoraFechar());
+                                                intent.putExtra("horaAbrir",labObjetos.get(j).getHoraAbrir());
+                                                intent.putExtra("horaFechar",labObjetos.get(j).getHoraFechar());
 
                                                 intent.putExtra("cliente", "laboratorios");
                                                 intent.putExtra("classe", Laboratorio.class);
                                                 startActivity(intent);
+                                                break;
                                             }
                                         }
                                     }

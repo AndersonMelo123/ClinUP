@@ -80,25 +80,28 @@ public class CancelarAgendamentos extends AppCompatActivity {
 
         nome.setText(getNome);
 
-        DatabaseReference planoRef = ConfiguracaoFirebase.getFirebase().child("planodesaude").child(getPlano);
+        if(getPlano != null){
 
-        planoRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            DatabaseReference planoRef = ConfiguracaoFirebase.getFirebase().child("planodesaude").child(getPlano);
 
-                if (dataSnapshot.exists()) {
-                    PlanoDeSaude userPlano = dataSnapshot.getValue(PlanoDeSaude.class);
+            planoRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                    if (dataSnapshot.hasChild("nomePlano"))
-                        planoSaud.setText(String.valueOf(userPlano.getNomePlano()));
+                    if (dataSnapshot.exists()) {
+                        PlanoDeSaude userPlano = dataSnapshot.getValue(PlanoDeSaude.class);
+
+                        if (dataSnapshot.hasChild("nomePlano"))
+                            planoSaud.setText(String.valueOf(userPlano.getNomePlano()));
+                    }
                 }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        }
 
         dataAgendamento.setText(getDataAtual);
         dataConsulta.setText(getDataConsulta);
