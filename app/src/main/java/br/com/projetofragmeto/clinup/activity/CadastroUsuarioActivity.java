@@ -3,6 +3,7 @@ package br.com.projetofragmeto.clinup.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -55,6 +56,7 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro_usuario);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         // Instanciando os ID do "activity_cadastro_usuario.xml"
         nome = findViewById(R.id.edit_cadastro_nomeID);

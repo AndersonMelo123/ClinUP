@@ -1,6 +1,7 @@
 package br.com.projetofragmeto.clinup.activity;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -37,6 +38,7 @@ public class PerfilActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbarActivity);
         toolbar.setTitle("Perfil");
