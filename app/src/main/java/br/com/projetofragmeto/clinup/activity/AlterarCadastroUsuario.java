@@ -36,7 +36,7 @@ import br.com.projetofragmeto.clinup.utils.MaskUtil;
 public class AlterarCadastroUsuario extends AppCompatActivity {
 
     // Atributos para serem utilizados nessa classe
-    private EditText nome, email, cpf, nomePlano, numPlano, dataNascimento, numTelefone, endereco, foto;
+    private EditText nome, email, cpf, nomePlano, numPlano, dataNascimento, numTelefone;
     private TextInputLayout nomeIn, emailIn, cpfIn, nomePlanoIn, numPlanoIn, dataNascimentoIn, numTelefoneIn;
 
     private Button botaoSalvar;
@@ -177,7 +177,16 @@ public class AlterarCadastroUsuario extends AppCompatActivity {
 
                 if (submitForm()) {
 
-                    // Atualização dos dados no banco
+                    if (nomePlano.getText().toString().isEmpty() && !numPlano.getText().toString().isEmpty()) {
+                        nomePlanoValida();
+                        return;
+                    }
+                    if (!nomePlano.getText().toString().isEmpty() && numPlano.getText().toString().isEmpty()) {
+                        numPlanoValida();
+                        return;
+                    }
+
+                    // Atualização do banco do usuários
                     Map<String, Object> usuarioUpdates = new HashMap<>();
                     usuarioUpdates.put("nome", nome.getText().toString());
                     usuarioUpdates.put("dataNascimento", dataNascimento.getText().toString());
@@ -185,25 +194,18 @@ public class AlterarCadastroUsuario extends AppCompatActivity {
                     usuarioUpdates.put("numTelefone", numTelefone.getText().toString());
                     usuarioUpdates.put("cpf", cpf.getText().toString());
 
-                    if (!nomePlano.getText().toString().isEmpty() && !numPlano.getText().toString().isEmpty()) {
+                    // Atualização do banco dos planos de saúde
+                    DatabaseReference planoSaudeBanco = ConfiguracaoFirebase.getFirebase().child("planodesaude").child(idUsuarios);
+                    Map<String, Object> planoDeSaudeUpdate = new HashMap<>();
+                    planoDeSaudeUpdate.put("id", idUsuarios);
+                    planoDeSaudeUpdate.put("idUsuario", idUsuarios);
+                    planoDeSaudeUpdate.put("nomePlano", nomePlano.getText().toString());
+                    planoDeSaudeUpdate.put("numPlano", numPlano.getText().toString());
 
-                        Log.i("DiferenteVazio", "entrou");
-                        DatabaseReference planoSaudeBanco = ConfiguracaoFirebase.getFirebase().child("planodesaude").child(idUsuarios);
-                        Map<String, Object> planoDeSaudeUpdate = new HashMap<>();
-                        planoDeSaudeUpdate.put("id", idUsuarios);
-                        planoDeSaudeUpdate.put("idUsuario", idUsuarios);
-                        planoDeSaudeUpdate.put("nomePlano", nomePlano.getText().toString());
-                        planoDeSaudeUpdate.put("numPlano", numPlano.getText().toString());
+                    usuarioUpdates.put("planoDeSaude", idUsuarios);
 
-                        usuarioUpdates.put("planoDeSaude", idUsuarios);
-
-                        planoSaudeBanco.updateChildren(planoDeSaudeUpdate);
-                        firebase.updateChildren(usuarioUpdates);
-
-
-                    }
+                    planoSaudeBanco.updateChildren(planoDeSaudeUpdate);
                     firebase.updateChildren(usuarioUpdates);
-
 
                     irParaPerfilCliente();
                 }
@@ -277,6 +279,31 @@ public class AlterarCadastroUsuario extends AppCompatActivity {
 
         return true;
     }
+
+    private boolean nomePlanoValida() {
+        if (nomePlano.getText().toString().trim().isEmpty()) {
+            nomePlanoIn.setError("Se preencheu o número do plano é preciso dizer qual é o nome do plano");
+            requestFocus(nomePlano);
+            return false;
+        } else {
+            nomePlanoIn.setErrorEnabled(false);
+        }
+
+        return true;
+    }
+
+    private boolean numPlanoValida() {
+        if (numPlano.getText().toString().trim().isEmpty()) {
+            numPlanoIn.setError("Se preencheu o nome do plano é preciso dizer qual é o número do plano");
+            requestFocus(numPlano);
+            return false;
+        } else {
+            numPlanoIn.setErrorEnabled(false);
+        }
+
+        return true;
+    }
+
 
     private static boolean isValidEmail(String email) {
         return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
