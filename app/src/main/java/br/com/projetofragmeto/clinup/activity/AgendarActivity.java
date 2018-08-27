@@ -37,8 +37,6 @@ import br.com.projetofragmeto.clinup.R;
 import br.com.projetofragmeto.clinup.config.ConfiguracaoFirebase;
 import br.com.projetofragmeto.clinup.helper.Preferencias;
 import br.com.projetofragmeto.clinup.model.Agendamento;
-import br.com.projetofragmeto.clinup.model.Endereco;
-import br.com.projetofragmeto.clinup.model.PlanoDeSaude;
 import br.com.projetofragmeto.clinup.model.Usuario;
 
 public class AgendarActivity extends FragmentActivity {
@@ -46,9 +44,14 @@ public class AgendarActivity extends FragmentActivity {
     private ArrayList<Date> DesativarDatas = new ArrayList<>();
     private ArrayList<Date> AtivarDatas = new ArrayList<>();
 
-    private String id, cliente, nomeCliente;
+    private String id, cliente, nomeCliente, especialidadeCli, enderecoCli, telefoneCli, emailCli;
 
-    private TextView nome, endereco, telefone, dataNascimento, planoDeSaude, email, dataAgendamento;
+    private TextView nome;
+    private TextView especialidade;
+    private TextView endereco;
+    private TextView telefone;
+    private TextView email;
+    private TextView dataAgendamento;
 
     private DatabaseReference usuarioReferencia;
 
@@ -62,6 +65,7 @@ public class AgendarActivity extends FragmentActivity {
 
     private Agendamento agendamento = new Agendamento();
 
+    private android.support.v7.widget.Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,12 +73,14 @@ public class AgendarActivity extends FragmentActivity {
         setContentView(R.layout.activity_agendar);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
+        toolbar = findViewById(R.id.toolbarActivity);
+        toolbar.setTitle("Agendamento");
+
         nome = findViewById(R.id.nome);
         endereco = findViewById(R.id.endereco);
         telefone = findViewById(R.id.telefone);
-        planoDeSaude = findViewById(R.id.planoSaud);
-        dataNascimento = findViewById(R.id.dataNascimento);
         email = findViewById(R.id.email);
+        especialidade = findViewById(R.id.especialidade);
 
         dataAgendamento = findViewById(R.id.tv_DataID);
 
@@ -105,7 +111,10 @@ public class AgendarActivity extends FragmentActivity {
         cliente = getIntent().getExtras().getString("cliente");
         nomeCliente = getIntent().getExtras().getString("nome");
         classe = getIntent().getSerializableExtra("classe").getClass();
-
+        especialidadeCli = getIntent().getExtras().getString("especialidade");
+        enderecoCli = getIntent().getExtras().getString("endereco");
+        telefoneCli = getIntent().getExtras().getString("telefone");
+        emailCli = getIntent().getExtras().getString("email");
 
         firebase = ConfiguracaoFirebase.getFirebase().child(cliente).child("001").child("dias");
 
@@ -179,62 +188,16 @@ public class AgendarActivity extends FragmentActivity {
 
 
                 if (usuario != null) {
-                    nome.setText(usuario.getNome());
-                    endereco.setText(usuario.getEndereco());
-                    email.setText(usuario.getEmail());
-                    planoDeSaude.setText(usuario.getPlanoDeSaude());
-                    dataNascimento.setText(usuario.getDataNascimento());
-                    telefone.setText(usuario.getNumTelefone());
+                    nome.setText(nomeCliente);
+                    especialidade.setText(especialidadeCli);
+                    endereco.setText(enderecoCli);
+                    email.setText(emailCli);
+                    telefone.setText(telefoneCli);
 
                     agendamento.setNomeUsuario(usuario.getNome());
                     agendamento.setIdPlano(String.valueOf(usuario.getPlanoDeSaude()));
 
                 }
-
-                if (dataSnapshot.hasChild("endereco")) {
-
-                    String end = usuario.getEndereco();
-
-                    DatabaseReference usuarioRef = ConfiguracaoFirebase.getFirebase().child("endereco").child(end);
-
-                    usuarioRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            Endereco userEndereco = dataSnapshot.getValue(Endereco.class);
-
-                            endereco.setText(String.valueOf(userEndereco.getLogradouro() + ", " + userEndereco.getNumero()));
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-                }
-
-
-                if (dataSnapshot.hasChild("planoDeSaude")) {
-                    String planoSaude = usuario.getPlanoDeSaude();
-
-                    DatabaseReference planoRef = ConfiguracaoFirebase.getFirebase().child("planodesaude").child(planoSaude);
-
-                    planoRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                            PlanoDeSaude userPlano = dataSnapshot.getValue(PlanoDeSaude.class);
-
-                            planoDeSaude.setText(String.valueOf(userPlano.getNomePlano()));
-
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-                }
-
 
             }
 
@@ -244,9 +207,7 @@ public class AgendarActivity extends FragmentActivity {
             }
         });
 
-        bt_agendar.setOnClickListener(new View.OnClickListener()
-
-        {
+        bt_agendar.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
 

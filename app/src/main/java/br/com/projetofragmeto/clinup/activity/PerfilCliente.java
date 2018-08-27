@@ -35,6 +35,7 @@ public class PerfilCliente extends AppCompatActivity {
     private String nome;
     private String email;
     private String endereco;
+    private String enderecoAgendamento;
     private String cnpj;
     private String cliente;
     private String classe;
@@ -79,7 +80,7 @@ public class PerfilCliente extends AppCompatActivity {
 
         telefone = getIntent().getExtras().getString("telefone");
         nome = getIntent().getExtras().getString("nome");
-        String especialidade = getIntent().getExtras().getString("especialidade");
+        final String especialidade = getIntent().getExtras().getString("especialidade");
         String numRegistro = getIntent().getExtras().getString("numRegistro");
         endereco = getIntent().getExtras().getString("endereco");
         email = getIntent().getExtras().getString("email");
@@ -139,7 +140,8 @@ public class PerfilCliente extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     Endereco userEndereco = dataSnapshot.getValue(Endereco.class);
 
-                    tv_endereco.setText(String.valueOf(userEndereco.getLogradouro() + ", " + userEndereco.getNumero() + ", " + userEndereco.getBairro()));
+                    enderecoAgendamento = String.valueOf(userEndereco.getLogradouro() + ", " + userEndereco.getNumero() + ", " + userEndereco.getBairro());
+                    tv_endereco.setText(enderecoAgendamento);
                     tv_endereco.setEnabled(false);
                 }
 
@@ -189,10 +191,10 @@ public class PerfilCliente extends AppCompatActivity {
                 intent.putExtra("nome", nome);
                 intent.putExtra("email", email);
                 intent.putExtra("id", id);
-                intent.putExtra("endereco", endereco);
+                intent.putExtra("endereco", enderecoAgendamento);
                 intent.putExtra("telefone", telefone);
                 intent.putExtra("cnpj", cnpj);
-
+                intent.putExtra("especialidade", especialidade);
                 intent.putExtra("cliente", cliente);
                 intent.putExtra("classe", classe);
                 startActivity(intent);

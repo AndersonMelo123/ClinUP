@@ -1,178 +1,229 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/agendar_id"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:background="@drawable/background_cadastro"
+    tools:context=".activity.AgendarActivity"
+    tools:layout_editor_absoluteY="25dp">
 
-    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/agendar_id"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/darker_gray"
-        tools:context=".activity.AgendarActivity">
+    <include
+        android:id="@+id/toolbarActivity"
+        layout="@layout/toolbar_activity"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="40dp" />
 
+    <ScrollView
+        android:id="@+id/scrollView4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="70dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
 
-        <Button
-            android:id="@+id/bt_agendarID"
-            android:layout_width="0dp"
-            android:layout_height="45dp"
-            android:layout_marginBottom="5dp"
-            android:text="@string/botao_agendar"
-            android:theme="@style/botaoPadrao"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/tv_DataID"
-            android:layout_width="322dp"
-            android:layout_height="39dp"
-            android:layout_marginTop="24dp"
-            android:background="#4d000000"
-            android:gravity="center"
-            android:textAlignment="center"
-            android:textColor="@color/White"
-            android:textSize="18sp"
-            android:visibility="visible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.494"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/email" />
-
-        <TextView
-            android:id="@+id/nome"
-            android:layout_width="322dp"
-            android:layout_height="39dp"
-            android:layout_marginTop="16dp"
-            android:background="#4d000000"
-            android:gravity="center"
-            android:textAlignment="center"
-            android:textColor="@color/White"
-            android:textSize="18sp"
-            android:visibility="visible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.494"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/endereco"
-            android:layout_width="322dp"
-            android:layout_height="39dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            android:background="#4d000000"
-            android:gravity="center"
-            android:textAlignment="center"
-            android:textColor="@color/White"
-            android:textSize="18sp"
-            android:visibility="visible"
-            app:layout_constraintBottom_toTopOf="@+id/telefone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.494"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/nome" />
-
-        <TextView
-            android:id="@+id/telefone"
-            android:layout_width="322dp"
-            android:layout_height="39dp"
-            android:layout_marginBottom="8dp"
-            android:background="#4d000000"
-            android:gravity="center"
-            android:textAlignment="center"
-            android:textColor="@color/White"
-            android:textSize="18sp"
-            android:visibility="visible"
-            app:layout_constraintBottom_toTopOf="@+id/planoSaud"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.494"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/endereco" />
-
-        <TextView
-            android:id="@+id/planoSaud"
-            android:layout_width="322dp"
-            android:layout_height="39dp"
-            android:layout_marginBottom="8dp"
-            android:background="#4d000000"
-            android:gravity="center"
-            android:textAlignment="center"
-            android:textColor="@color/White"
-            android:textSize="18sp"
-            android:visibility="visible"
-            app:layout_constraintBottom_toTopOf="@+id/dataNascimento"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.494"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/telefone" />
-
-        <TextView
-            android:id="@+id/dataNascimento"
-            android:layout_width="322dp"
-            android:layout_height="39dp"
-            android:layout_marginBottom="8dp"
-            android:background="#4d000000"
-            android:gravity="center"
-            android:textAlignment="center"
-            android:textColor="@color/White"
-            android:textSize="18sp"
-            android:visibility="visible"
-            app:layout_constraintBottom_toTopOf="@+id/email"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.494"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/planoSaud" />
-
-        <TextView
-            android:id="@+id/email"
-            android:layout_width="322dp"
-            android:layout_height="39dp"
-            android:layout_marginTop="8dp"
-            android:background="#4d000000"
-            android:gravity="center"
-            android:textAlignment="center"
-            android:textColor="@color/White"
-            android:textSize="18sp"
-            android:visibility="visible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.494"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dataNascimento" />
-
-
-        <android.support.v4.widget.NestedScrollView
-            android:id="@+id/scrollView2"
-            android:layout_width="330dp"
-            android:layout_height="300dp"
-            android:layout_marginBottom="24dp"
-            android:layout_marginTop="24dp"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:background="@drawable/rounded"
-            android:fillViewport="true"
-            app:layout_constraintBottom_toTopOf="@+id/bt_agendarID"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.493"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_DataID">
+            android:orientation="vertical"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp">
 
-            <FrameLayout
-                android:id="@+id/calendar1"
-                android:layout_width="270dp"
-                android:layout_height="0dp"
-                android:layout_gravity="top|center"
-                android:background="@color/White"
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="200dp"
+                android:layout_height="25dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginStart="28dp"
+                android:layout_marginTop="18dp"
+                android:text="Dados do Agendamento:"
+                android:textColor="@color/Black"
+                android:textSize="18sp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toTopOf="@+id/dataAgendamento"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/email"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <TextView
+                android:id="@+id/nome"
+                android:layout_width="300dp"
+                android:layout_height="48dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="4dp"
+                android:background="@color/caldroid_lighter_gray"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:textColor="@android:color/background_dark"
+                android:textSize="18sp"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.494"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/especialidade"
+                android:layout_width="300dp"
+                android:layout_height="48dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/caldroid_lighter_gray"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:textColor="@android:color/background_dark"
+                android:textSize="18sp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toTopOf="@+id/endereco"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.494"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/nome" />
+
+            <TextView
+                android:id="@+id/endereco"
+                android:layout_width="300dp"
+                android:layout_height="48dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="25dp"
+                android:background="@color/caldroid_lighter_gray"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:textColor="@android:color/background_dark"
+                android:textSize="18sp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toTopOf="@+id/email"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.494"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/especialidade" />
+
+            <TextView
+                android:id="@+id/email"
+                android:layout_width="300dp"
+                android:layout_height="48dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="25dp"
+                android:background="@color/caldroid_lighter_gray"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:textColor="@android:color/background_dark"
+                android:textSize="18sp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toTopOf="@+id/telefone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.494"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/endereco" />
+
+            <TextView
+                android:id="@+id/telefone"
+                android:layout_width="300dp"
+                android:layout_height="48dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="25dp"
+                android:background="@color/caldroid_lighter_gray"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:textColor="@android:color/background_dark"
+                android:textSize="18sp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toTopOf="@+id/email"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.494"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/email" />
+
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="280dp"
+                android:layout_height="25dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginStart="28dp"
+                android:layout_marginTop="28dp"
+                android:text="Selecione a data do agendamento:"
+                android:textColor="@color/Black"
+                android:textSize="18sp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toTopOf="@+id/dataAgendamento"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/email"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <TextView
+                android:id="@+id/tv_DataID"
+                android:layout_width="300dp"
+                android:layout_height="39dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="4dp"
+                android:background="@color/caldroid_lighter_gray"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:textColor="@android:color/background_dark"
+                android:textSize="18sp"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.494"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/email" />
+
+            <android.support.v4.widget.NestedScrollView
+                android:id="@+id/scrollView2"
+                android:layout_width="330dp"
+                android:layout_height="300dp"
+                android:layout_marginBottom="24dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/rounded"
+                android:fillViewport="true"
+                app:layout_constraintBottom_toTopOf="@+id/bt_agendarID"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.493"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_DataID">
+
+                <FrameLayout
+                    android:id="@+id/calendar1"
+                    android:layout_width="270dp"
+                    android:layout_height="0dp"
+                    android:layout_gravity="top|center"
+                    android:background="@color/caldroid_lighter_gray"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0">
+
+                </FrameLayout>
+            </android.support.v4.widget.NestedScrollView>
+
+            <Button
+                android:id="@+id/bt_agendarID"
+                android:layout_width="310dp"
+                android:layout_height="55dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="25dp"
+                android:text="@string/botao_agendar"
+                android:theme="@style/botaoPadrao"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0">
-
-            </FrameLayout>
-        </android.support.v4.widget.NestedScrollView>
-    </android.support.constraint.ConstraintLayout>
-</ScrollView>
+                tools:ignore="Suspicious0dp" />
+        </LinearLayout>
+    </ScrollView>
+</android.support.constraint.ConstraintLayout>

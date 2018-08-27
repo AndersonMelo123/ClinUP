@@ -149,14 +149,14 @@ public class BuscaGeralActivity extends AppCompatActivity {
                                             if(profObjetos.get(j).getNome().equals(listaNomes.get(i))){
                                                 Log.i("VALOR",profObjetos.get(j).getNome() + ":"+ listaNomes.get(i));
 
-                                                intent.putExtra("email", profObjetos.get(j).getId());
+                                                intent.putExtra("email", profObjetos.get(j).getEmail());
                                                 intent.putExtra("nome", profObjetos.get(j).getNome());
                                                 intent.putExtra("id", profObjetos.get(j).getId());
                                                 intent.putExtra("telefone", profObjetos.get(j).getTelefone());
                                                 intent.putExtra("endereco", profObjetos.get(j).getEndereco());
                                                 intent.putExtra("especialidade", profObjetos.get(j).getEspecialidade());
                                                 intent.putExtra("formacao", profObjetos.get(j).getFormacao());
-                                                intent.putExtra("numRegistro", profObjetos.get(j).getNumRegistro());
+                                                intent.putExtra("numRegistro", profObjetos.get(j).getId());
 
                                                 intent.putExtra("horaAbrir",profObjetos.get(j).getHoraAbrir());
                                                 intent.putExtra("horaFechar",profObjetos.get(j).getHoraFechar());
@@ -332,7 +332,7 @@ public class BuscaGeralActivity extends AppCompatActivity {
                                             if(labObjetos.get(j).getNome().equals(listaNomes.get(i))){
                                                 Log.i("VALOR",labObjetos.get(j).getNome() + ":"+ listaNomes.get(i));
 
-                                                intent.putExtra("email", labObjetos.get(i).getId());
+                                                intent.putExtra("email", labObjetos.get(i).getEmail());
                                                 intent.putExtra("nome", labObjetos.get(i).getNome());
                                                 intent.putExtra("id", labObjetos.get(i).getId());
                                                 intent.putExtra("endereco", labObjetos.get(i).getEndereco());

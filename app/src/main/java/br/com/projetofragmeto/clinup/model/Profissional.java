@@ -11,6 +11,7 @@ public class Profissional implements Serializable {
     private String numRegistro;
     private String id;
     private String telefone;
+    private String email;
     private Dias dias;
     private String horaAbrir,horaFechar;
 
@@ -30,6 +31,14 @@ public class Profissional implements Serializable {
     public String toString() {
         return "Nome: " + nome + '\n' +
                 "Especialidade: " + especialidade;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getHoraAbrir() {
