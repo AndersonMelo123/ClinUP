@@ -254,7 +254,7 @@ public class FavoritosFragment extends Fragment {
 
     private void excluirFavoritos(final String getId) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext()).setTitle("Excluir")
-                .setMessage("Deseja mesmo exluir este favorito?");
+                .setMessage("Deseja mesmo excluir este favorito?");
 
         builder.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
             @Override
