@@ -210,22 +210,7 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
     }
 
     private boolean submitForm() {
-        if (!validarNome()) {
-            return false;
-        }
-
-        if (!validarEmail()) {
-            return false;
-        }
-
-        if (!validarSenha()) {
-            return false;
-        }
-
-        if (!validarCpf()) {
-            return false;
-        }
-        return true;
+        return validarNome() && validarEmail() && validarSenha() && validarCpf();
 
     }
 

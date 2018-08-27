@@ -110,12 +110,13 @@
     <string name="filtro2">Filtro:</string>
     <string name="resultado_endere_os">Resultado (endereços)</string>
     <string name="busque_seu_cep">Busque seu CEP</string>
-    <string name="numero">(87)99999-9999</string>
+    <string name="numero">(87)99999–9999</string>
     <string name="n_plano_de_sa_de">Nº Plano de Saúde</string>
     <string name="plano_de_sa_de_opicional">Plano de Saúde (Opicional)</string>
     <string name="nNome">Nome</string>
     <string name="nE_mail">E-mail</string>
     <string name="nCpf">CPF</string>
+    <string name="digite_e_mail">*Digite seu e-mail</string>
 
 
 </resources>
