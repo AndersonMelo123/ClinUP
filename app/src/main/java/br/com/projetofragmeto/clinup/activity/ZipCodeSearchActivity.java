@@ -1,6 +1,7 @@
 package br.com.projetofragmeto.clinup.activity;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -32,7 +33,8 @@ public class ZipCodeSearchActivity extends AppCompatActivity implements AdapterV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_zip_code_search);
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        
         enderecos = new ArrayList<>();
         lvAddress = findViewById(R.id.lv_address);
         AddressAdapter adapter = new AddressAdapter(this, enderecos);

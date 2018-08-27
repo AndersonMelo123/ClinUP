@@ -26,7 +26,7 @@ import br.com.projetofragmeto.clinup.helper.Preferencias;
 import br.com.projetofragmeto.clinup.model.Agendamento;
 
 
-public class ListaFragment extends Fragment {
+public class AgendamentosFragment extends Fragment {
 
     private ListView listView;
     public ArrayList agendamentos;//retorna o nome dos profissionais da consulta para exibir na listview
