@@ -332,20 +332,21 @@ public class BuscaGeralActivity extends AppCompatActivity {
                                             if(labObjetos.get(j).getNome().equals(listaNomes.get(i))){
                                                 Log.i("VALOR",labObjetos.get(j).getNome() + ":"+ listaNomes.get(i));
 
-                                                intent.putExtra("email", labObjetos.get(i).getId());
-                                                intent.putExtra("nome", labObjetos.get(i).getNome());
-                                                intent.putExtra("id", labObjetos.get(i).getId());
-                                                intent.putExtra("endereco", labObjetos.get(i).getEndereco());
-                                                intent.putExtra("telefone", labObjetos.get(i).getTelefone());
-                                                intent.putExtra("especialidade", labObjetos.get(i).getEspecialidade() );
-                                                intent.putExtra("numRegistro", labObjetos.get(i).getCnpj() );
+                                                intent.putExtra("email", labObjetos.get(j).getId());
+                                                intent.putExtra("nome", labObjetos.get(j).getNome());
+                                                intent.putExtra("id", labObjetos.get(j).getId());
+                                                intent.putExtra("endereco", labObjetos.get(j).getEndereco());
+                                                intent.putExtra("telefone", labObjetos.get(j).getTelefone());
+                                                intent.putExtra("especialidade", labObjetos.get(j).getEspecialidade() );
+                                                intent.putExtra("numRegistro", labObjetos.get(j).getCnpj() );
 
-                                                intent.putExtra("horaAbrir",labObjetos.get(i).getHoraAbrir());
-                                                intent.putExtra("horaFechar",labObjetos.get(i).getHoraFechar());
+                                                intent.putExtra("horaAbrir",labObjetos.get(j).getHoraAbrir());
+                                                intent.putExtra("horaFechar",labObjetos.get(j).getHoraFechar());
 
                                                 intent.putExtra("cliente", "laboratorios");
                                                 intent.putExtra("classe", Laboratorio.class);
                                                 startActivity(intent);
+                                                break;
                                             }
                                         }
                                     }

@@ -114,8 +114,6 @@ public class PerfilActivity extends AppCompatActivity {
                                     foto.setImageDrawable(circularBitmapDrawable);
                                 }
                             });
-                        } else {
-                            foto.setImageResource(R.mipmap.foto_defau_round);
                         }
                     }
                 }
