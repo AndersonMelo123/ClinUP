@@ -149,7 +149,7 @@ public class FavoritosFragment extends Fragment {
 
                 getId = favObjetos.get(i).getId();
 
-                excluir_Favoritos(getId);
+                excluirFavoritos(getId);
                 return true;
             }
         });
@@ -252,7 +252,7 @@ public class FavoritosFragment extends Fragment {
         }
     }
 
-    private void excluir_Favoritos(final String getId) {
+    private void excluirFavoritos(final String getId) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext()).setTitle("Excluir")
                 .setMessage("Deseja mesmo excluir este favorito?");
 
