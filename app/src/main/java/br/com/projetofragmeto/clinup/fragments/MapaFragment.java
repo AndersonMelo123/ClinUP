@@ -589,6 +589,8 @@ public class MapaFragment extends Fragment implements
                 infoWindowData.setEndereco(((Clinica) classe).getEndereco());
                 infoWindowData.setTelefone(((Clinica) classe).getTelefone());
                 infoWindowData.setCnpj(((Clinica) classe).getCnpj());
+                infoWindowData.setEspecialidade(((Clinica) classe).getEspecialidade());
+                infoWindowData.setNumRegistro(((Clinica)classe).getCnpj());
                 infoWindowData.setCliente("clinica");
                 infoWindowData.setClasse(Clinica.class);
 
@@ -602,7 +604,11 @@ public class MapaFragment extends Fragment implements
                 infoWindowData.setNome(((Laboratorio) classe).getNome());
                 infoWindowData.setEmail(((Laboratorio) classe).getEmail());
                 infoWindowData.setId(((Laboratorio) classe).getId());
+                infoWindowData.setEndereco(((Laboratorio) classe).getEndereco());
                 infoWindowData.setTelefone(((Laboratorio) classe).getTelefone());
+                infoWindowData.setEspecialidade(((Laboratorio) classe).getEspecialidade());
+                infoWindowData.setNumRegistro(((Laboratorio) classe).getCnpj());
+                infoWindowData.setCnpj(((Laboratorio) classe).getCnpj());
                 infoWindowData.setCliente("laboratorios");
                 infoWindowData.setClasse(Laboratorio.class);
                 marcadores.put(marcador, infoWindowData);
@@ -617,6 +623,8 @@ public class MapaFragment extends Fragment implements
                 infoWindowData.setEndereco(((Hospital) classe).getEndereco());
                 infoWindowData.setTelefone(((Hospital) classe).getTelefone());
                 infoWindowData.setCnpj(((Hospital) classe).getCnpj());
+                infoWindowData.setEspecialidade(((Hospital) classe).getEspecialidade());
+                infoWindowData.setNumRegistro(((Hospital) classe).getCnpj());
                 infoWindowData.setCliente("hospitais");
                 infoWindowData.setClasse(Hospital.class);
                 marcadores.put(marcador, infoWindowData);
@@ -625,13 +633,13 @@ public class MapaFragment extends Fragment implements
             default:
 
                 infoWindowData.setNome(((Profissional) classe).getNome());
-                infoWindowData.setEmail(((Profissional) classe).getId());
+                infoWindowData.setEmail(((Profissional) classe).getEmail());
                 infoWindowData.setId(((Profissional) classe).getId());
                 infoWindowData.setEndereco(((Profissional) classe).getEndereco());
                 infoWindowData.setTelefone(((Profissional) classe).getTelefone());
                 infoWindowData.setEspecialidade(((Profissional) classe).getEspecialidade());
                 infoWindowData.setFormacao(((Profissional) classe).getFormacao());
-                infoWindowData.setNumRegistro(((Profissional) classe).getNumRegistro());
+                infoWindowData.setNumRegistro(((Profissional) classe).getId());
                 infoWindowData.setCliente("profissionais");
                 infoWindowData.setClasse(Profissional.class);
 
@@ -654,6 +662,8 @@ public class MapaFragment extends Fragment implements
                 intent.putExtra("endereco", infoWindowData.getEndereco());
                 intent.putExtra("telefone", infoWindowData.getTelefone());
                 intent.putExtra("cnpj", infoWindowData.getCnpj());
+                intent.putExtra("especialidade", infoWindowData.getEspecialidade());
+                intent.putExtra("numRegistro", infoWindowData.getCnpj());
 
                 intent.putExtra("cliente", "clinica");
                 intent.putExtra("classe", Clinica.class);
@@ -666,7 +676,12 @@ public class MapaFragment extends Fragment implements
                 intent.putExtra("nome", infoWindowData.getNome());
                 intent.putExtra("email", infoWindowData.getEmail());
                 intent.putExtra("id", infoWindowData.getId());
+                intent.putExtra("endereco", infoWindowData.getEndereco());
                 intent.putExtra("telefone", infoWindowData.getTelefone());
+                intent.putExtra("cnpj", infoWindowData.getCnpj());
+                intent.putExtra("especialidade", infoWindowData.getEspecialidade());
+                intent.putExtra("cnpj", infoWindowData.getCnpj());
+                intent.putExtra("numRegistro", infoWindowData.getCnpj());
 
                 intent.putExtra("cliente", "laboratorios");
                 intent.putExtra("classe", Laboratorio.class);
@@ -681,6 +696,8 @@ public class MapaFragment extends Fragment implements
                 intent.putExtra("endereco", infoWindowData.getEndereco());
                 intent.putExtra("telefone", infoWindowData.getTelefone());
                 intent.putExtra("cnpj", infoWindowData.getCnpj());
+                intent.putExtra("especialidade", infoWindowData.getEspecialidade());
+                intent.putExtra("numRegistro", infoWindowData.getCnpj());
 
                 intent.putExtra("cliente", "hospitais");
                 intent.putExtra("classe", Hospital.class);
@@ -689,13 +706,13 @@ public class MapaFragment extends Fragment implements
                 break;
             default:
                 intent.putExtra("nome", infoWindowData.getNome());
-                intent.putExtra("email", infoWindowData.getId());
+                intent.putExtra("email", infoWindowData.getEmail());
                 intent.putExtra("id", infoWindowData.getId());
                 intent.putExtra("endereco", infoWindowData.getEndereco());
                 intent.putExtra("telefone", infoWindowData.getTelefone());
                 intent.putExtra("especialidade", infoWindowData.getEspecialidade());
                 intent.putExtra("formacao", infoWindowData.getFormacao());
-                intent.putExtra("Num_registro", infoWindowData.getNumRegistro());
+                intent.putExtra("numRegistro", infoWindowData.getId());
 
                 intent.putExtra("cliente", "profissionais");
                 intent.putExtra("classe", Profissional.class);
