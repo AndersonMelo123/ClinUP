@@ -57,7 +57,7 @@
 
         <TextView
             android:id="@+id/nome_l"
-            android:layout_width="300dp"
+            android:layout_width="310dp"
             android:layout_height="39dp"
             android:layout_marginLeft="24dp"
             android:layout_marginRight="24dp"
@@ -90,22 +90,22 @@
                 app:layout_constraintTop_toBottomOf="@+id/nome_l"
                 app:layout_constraintVertical_bias="0.888" />
 
-            <TextView
-                android:id="@+id/email"
-                android:layout_width="300dp"
-                android:layout_height="39dp"
-                android:layout_marginLeft="24dp"
-                android:layout_marginTop="6dp"
-                android:background="@color/caldroid_lighter_gray"
-                android:gravity="center"
-                android:textAlignment="center"
-                android:textColor="@android:color/background_dark"
-                android:textSize="18sp"
-                android:theme="@style/StyleEditText"
-                android:visibility="visible"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/nome_l" />
+        <TextView
+            android:id="@+id/email"
+            android:layout_width="310dp"
+            android:layout_height="39dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="6dp"
+            android:background="@color/caldroid_lighter_gray"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textColor="@android:color/background_dark"
+            android:textSize="18sp"
+            android:theme="@style/StyleEditText"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nome_l" />
 
             <TextView
                 android:id="@+id/textView12"
@@ -123,22 +123,22 @@
                 app:layout_constraintTop_toBottomOf="@+id/email"
                 app:layout_constraintVertical_bias="1.0" />
 
-            <TextView
-                android:id="@+id/dataAgendamento"
-                android:layout_width="300dp"
-                android:layout_height="39dp"
-                android:layout_marginLeft="24dp"
-                android:layout_marginTop="6dp"
-                android:background="@color/caldroid_lighter_gray"
-                android:gravity="center"
-                android:textAlignment="center"
-                android:textColor="@android:color/background_dark"
-                android:textSize="18sp"
-                android:theme="@style/StyleEditText"
-                android:visibility="visible"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/nome_l" />
+        <TextView
+            android:id="@+id/dataAgendamento"
+            android:layout_width="310dp"
+            android:layout_height="39dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="6dp"
+            android:background="@color/caldroid_lighter_gray"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textColor="@android:color/background_dark"
+            android:textSize="18sp"
+            android:theme="@style/StyleEditText"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nome_l" />
 
             <TextView
                 android:id="@+id/textView16"
@@ -156,36 +156,36 @@
                 app:layout_constraintTop_toBottomOf="@+id/dataAgendamento"
                 app:layout_constraintVertical_bias="1.0" />
 
-            <TextView
-                android:id="@+id/dataConsulta"
-                android:layout_width="300dp"
-                android:layout_height="39dp"
-                android:layout_marginLeft="24dp"
-                android:layout_marginTop="6dp"
-                android:background="@color/caldroid_lighter_gray"
-                android:gravity="center"
-                android:textAlignment="center"
-                android:textColor="@android:color/background_dark"
-                android:textSize="18sp"
-                android:theme="@style/StyleEditText"
-                android:visibility="visible"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/nome_l" />
+        <TextView
+            android:id="@+id/dataConsulta"
+            android:layout_width="310dp"
+            android:layout_height="39dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="6dp"
+            android:background="@color/caldroid_lighter_gray"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textColor="@android:color/background_dark"
+            android:textSize="18sp"
+            android:theme="@style/StyleEditText"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nome_l" />
 
-            <Button
-                android:id="@+id/cancelarAgendamento"
-                android:layout_width="310dp"
-                android:layout_height="53dp"
-                android:layout_marginLeft="6dp"
-                android:layout_marginStart="18dp"
-                android:layout_marginTop="20dp"
-                android:text="@string/botao_cancelar"
-                android:theme="@style/botaoPadrao"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.425"
-                app:layout_constraintStart_toStartOf="parent" />
+        <Button
+            android:id="@+id/cancelarAgendamento"
+            android:layout_width="320dp"
+            android:layout_height="53dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/botao_cancelar"
+            android:theme="@style/botaoPadrao"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.425"
+            app:layout_constraintStart_toStartOf="parent" />
 
         </LinearLayout>
     </ScrollView>

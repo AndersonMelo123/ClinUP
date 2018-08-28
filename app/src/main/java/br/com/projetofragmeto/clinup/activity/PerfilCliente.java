@@ -119,10 +119,7 @@ public class PerfilCliente extends AppCompatActivity {
             tv_numRegistro.setEnabled(false);
 
         }
-        /*if (email != null) {
-            tv_email.setText(email);
-            tv_email.setEnabled(true);
-        }*/
+       
         if (cnpj != null) {
             Log.i("Cnpj", cnpj);
         }
@@ -207,10 +204,6 @@ public class PerfilCliente extends AppCompatActivity {
                 ligar(view);
             }
         });
-
-        //Preferencias preferencesUser = new Preferencias(this);
-        //final String idUsuarios = preferencesUser.getIdentificador(); // Obter o identificador do usuário que está logado
-
 
         firebase = ConfiguracaoFirebase.getFirebase() // Consultando o usuário no banco de dados se existir ele pega
                 .child("usuarios").child(idUsuarios);
