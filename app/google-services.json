@@ -23,8 +23,20 @@
           }
         },
         {
-          "client_id": "402161144898-dltitg0crgdvpjf7l6er2876iffgueco.apps.googleusercontent.com",
-          "client_type": 3
+          "client_id": "402161144898-kj4gh60igtki2huk36boki44ip4sotvm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.projetofragmeto.clinup",
+            "certificate_hash": "0fa94988ba04ef32835099544e4c9044798c5994"
+          }
+        },
+        {
+          "client_id": "402161144898-fpjkmpda80bla6fm7h5pct5vp6n9vf7v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.projetofragmeto.clinup",
+            "certificate_hash": "1d0e06bb7d6a85696c25a711b28ca9031bff169f"
+          }
         },
         {
           "client_id": "402161144898-dltitg0crgdvpjf7l6er2876iffgueco.apps.googleusercontent.com",

@@ -119,7 +119,7 @@ public class PerfilCliente extends AppCompatActivity {
             tv_numRegistro.setEnabled(false);
 
         }
-       
+
         if (cnpj != null) {
             Log.i("Cnpj", cnpj);
         }
