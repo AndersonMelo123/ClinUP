@@ -664,7 +664,6 @@ public class MapaFragment extends Fragment implements
                 intent.putExtra("cnpj", infoWindowData.getCnpj());
                 intent.putExtra("especialidade", infoWindowData.getEspecialidade());
                 intent.putExtra("numRegistro", infoWindowData.getCnpj());
-
                 intent.putExtra("cliente", "clinica");
                 intent.putExtra("classe", Clinica.class);
                 startActivity(intent);
@@ -682,7 +681,6 @@ public class MapaFragment extends Fragment implements
                 intent.putExtra("especialidade", infoWindowData.getEspecialidade());
                 intent.putExtra("cnpj", infoWindowData.getCnpj());
                 intent.putExtra("numRegistro", infoWindowData.getCnpj());
-
                 intent.putExtra("cliente", "laboratorios");
                 intent.putExtra("classe", Laboratorio.class);
                 startActivity(intent);
@@ -698,7 +696,6 @@ public class MapaFragment extends Fragment implements
                 intent.putExtra("cnpj", infoWindowData.getCnpj());
                 intent.putExtra("especialidade", infoWindowData.getEspecialidade());
                 intent.putExtra("numRegistro", infoWindowData.getCnpj());
-
                 intent.putExtra("cliente", "hospitais");
                 intent.putExtra("classe", Hospital.class);
                 startActivity(intent);
@@ -713,7 +710,6 @@ public class MapaFragment extends Fragment implements
                 intent.putExtra("especialidade", infoWindowData.getEspecialidade());
                 intent.putExtra("formacao", infoWindowData.getFormacao());
                 intent.putExtra("numRegistro", infoWindowData.getId());
-
                 intent.putExtra("cliente", "profissionais");
                 intent.putExtra("classe", Profissional.class);
                 startActivity(intent);
