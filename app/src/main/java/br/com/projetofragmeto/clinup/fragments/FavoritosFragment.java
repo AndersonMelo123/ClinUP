@@ -149,7 +149,7 @@ public class FavoritosFragment extends Fragment {
 
                 getId = favObjetos.get(i).getId();
 
-                excluirFavoritos(getId);
+                excluir_Favoritos(getId);
                 return true;
             }
         });
@@ -166,7 +166,7 @@ public class FavoritosFragment extends Fragment {
 
                 Intent intent1 = new Intent(getContext(), PerfilCliente.class);
 
-                intent1.putExtra("email", laboratorio.getId());
+                intent1.putExtra("email", laboratorio.getEmail());
                 intent1.putExtra("nome", laboratorio.getNome());
                 intent1.putExtra("id", laboratorio.getId());
                 intent1.putExtra("endereco", laboratorio.getEndereco());
@@ -233,14 +233,14 @@ public class FavoritosFragment extends Fragment {
 
                 Intent intent = new Intent(getContext(), PerfilCliente.class);
 
-                intent.putExtra("email", profissional.getId());
+                intent.putExtra("email", profissional.getEmail());
                 intent.putExtra("nome", profissional.getNome());
                 intent.putExtra("id", profissional.getId());
                 intent.putExtra("telefone", profissional.getTelefone());
                 intent.putExtra("endereco", profissional.getEndereco());
                 intent.putExtra("especialidade", profissional.getEspecialidade());
                 intent.putExtra("formacao", profissional.getFormacao());
-                intent.putExtra("numRegistro", profissional.getNumRegistro());
+                intent.putExtra("numRegistro", profissional.getId());
 
                 intent.putExtra("horaAbrir", profissional.getHoraAbrir());
                 intent.putExtra("horaFechar", profissional.getHoraFechar());
@@ -252,7 +252,7 @@ public class FavoritosFragment extends Fragment {
         }
     }
 
-    private void excluirFavoritos(final String getId) {
+    private void excluir_Favoritos(final String getId) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext()).setTitle("Excluir")
                 .setMessage("Deseja mesmo excluir este favorito?");
 
