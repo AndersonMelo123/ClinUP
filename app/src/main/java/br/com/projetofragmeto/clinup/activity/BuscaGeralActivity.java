@@ -11,7 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -52,11 +51,13 @@ public class BuscaGeralActivity extends AppCompatActivity {
 
     private ArrayList<Laboratorio> labObjetos = new ArrayList<>();//retorna todos as Clinicas da consulta no banco
 
-    private String[] filtro = {"Profissionais","Clínicas","Hospitais","Laboratórios"};
-    String filtragem = filtro[0];
+    private String[] filtro = {"Profissionais", "Clínicas", "Hospitais", "Laboratórios"};
+    private String filtragem = filtro[0];
+    private boolean isDefault = true;
 
 
     private DatabaseReference firebase; // referencia do banco de dados
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,17 +70,20 @@ public class BuscaGeralActivity extends AppCompatActivity {
         toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
         setSupportActionBar(toolbar);
 
-        if(getSupportActionBar() != null) {//setinha de voltar
+        if (getSupportActionBar() != null) {//setinha de voltar
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
         listView = findViewById(R.id.lista);
-        EditText textoBusca = findViewById(R.id.et_buscar);
+        final EditText textoBusca = findViewById(R.id.et_buscar);
         textView = findViewById(R.id.tv_filtro);
         Button filtroBT = findViewById(R.id.bt_filtro);
 
         firebase = ConfiguracaoFirebase.getFirebase(); // referêcia do firebase para acessar o banco
+
+        buscaDefault();
+        listviewDefault();
 
         adapter = new ArrayAdapter<>(
                 this, // pega o contexto da activity onde esse fragment está
@@ -87,7 +91,6 @@ public class BuscaGeralActivity extends AppCompatActivity {
                 listaNomes //array list contendo todos os contados
         );
         listView.setAdapter(adapter); //seta o adaptados
-
 
 
         filtroBT.setOnClickListener(new View.OnClickListener() {// quando o usuário escolher o filtro
@@ -102,31 +105,28 @@ public class BuscaGeralActivity extends AppCompatActivity {
                         textView.setText(filtragem);
                         dialogInterface.dismiss();
 
-                        listaAuxiliar.clear();
-                        listaNomes.clear();
 
-                        switch (textView.getText().toString()){
-                            case("Profissionais"):
-                                //Log.i("FILTRO",filtragem);
+
+                        switch (textView.getText().toString()) {
+                            case ("Profissionais"):
+                                isDefault = false;
 
                                 firebase.child("profissionais").addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
+                                        listaAuxiliar.clear();
+                                        listaNomes.clear();
+                                        profObjetos.clear();
 
                                         if (dataSnapshot.getValue() != null) {
-                                            //listaNomes.clear();
                                             for (DataSnapshot dados : dataSnapshot.getChildren()) {
                                                 Profissional p = dados.getValue(Profissional.class);//retorna cada objeto da consulta em p
                                                 String nome = p.getNome();
-                                                Log.i("NOME", nome);
                                                 profObjetos.add(p);//adiciona o profissional p em profObjetos
                                                 listaAuxiliar.add(nome);//adiciona o nome do profissional p em listaNomes
+                                                listaNomes.add(nome);//adiciona o nome do profissional p em listaNomes
                                             }
-                                            //listaNomes = profissionalDB.buscarDados(dataSnapshot,listaNomes);
-                                            //adapter.notifyDataSetChanged();//notifica ao adapter as mudanças ocorridas
                                             adapter.notifyDataSetChanged();
-                                            Log.i("ARRAY", listaNomes.toString()); //exibe array com o nome de todos os profissioais
 
                                         }
                                     }
@@ -145,9 +145,8 @@ public class BuscaGeralActivity extends AppCompatActivity {
 
                                         Intent intent = new Intent(BuscaGeralActivity.this, PerfilCliente.class);
 
-                                        for(int j = 0; j < profObjetos.size();j++){
-                                            if(profObjetos.get(j).getNome().equals(listaNomes.get(i))){
-                                                Log.i("VALOR",profObjetos.get(j).getNome() + ":"+ listaNomes.get(i));
+                                        for (int j = 0; j < profObjetos.size(); j++) {
+                                            if (profObjetos.get(j).getNome().equals(listaNomes.get(i))) {
 
                                                 intent.putExtra("email", profObjetos.get(j).getEmail());
                                                 intent.putExtra("nome", profObjetos.get(j).getNome());
@@ -158,8 +157,8 @@ public class BuscaGeralActivity extends AppCompatActivity {
                                                 intent.putExtra("formacao", profObjetos.get(j).getFormacao());
                                                 intent.putExtra("numRegistro", profObjetos.get(j).getId());
 
-                                                intent.putExtra("horaAbrir",profObjetos.get(j).getHoraAbrir());
-                                                intent.putExtra("horaFechar",profObjetos.get(j).getHoraFechar());
+                                                intent.putExtra("horaAbrir", profObjetos.get(j).getHoraAbrir());
+                                                intent.putExtra("horaFechar", profObjetos.get(j).getHoraFechar());
 
                                                 intent.putExtra("cliente", "profissionais");
                                                 intent.putExtra("classe", Profissional.class);
@@ -171,22 +170,25 @@ public class BuscaGeralActivity extends AppCompatActivity {
                                     }
                                 });
                                 break;
-                            case("Clínicas"):
-                                //Log.i("FILTRO",filtragem);
+                            case ("Clínicas"):
 
                                 firebase.child("clinica").addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-
-                                        if(dataSnapshot.getValue() != null){
+                                        listaAuxiliar.clear();
+                                        listaNomes.clear();
+                                        profObjetos.clear();
+                                        if (dataSnapshot.getValue() != null) {
                                             //clinicas = clinicaDB.buscarDados(dataSnapshot,clinicas);
 
-                                            for(DataSnapshot dados: dataSnapshot.getChildren()){
+                                            for (DataSnapshot dados : dataSnapshot.getChildren()) {
                                                 Clinica c = dados.getValue(Clinica.class);
                                                 String nome = c.getNome();
                                                 clinObjetos.add(c);
                                                 listaAuxiliar.add(nome);
+                                                listaNomes.add(nome);//adiciona o nome do profissional p em listaNomes
+
                                             }
 
 
@@ -207,25 +209,23 @@ public class BuscaGeralActivity extends AppCompatActivity {
 
                                         Intent intent = new Intent(BuscaGeralActivity.this, PerfilCliente.class);
 
-                                        for(int j = 0; j < clinObjetos.size();j++){
-                                            if(clinObjetos.get(j).getNome().equals(listaNomes.get(i))){
-                                                Log.i("VALOR",clinObjetos.get(j).getNome() + ":"+ listaNomes.get(i));
+                                        for (int j = 0; j < clinObjetos.size(); j++) {
+                                            if (clinObjetos.get(j).getNome().equals(listaNomes.get(i))) {
 
-                                                intent.putExtra("nome",clinObjetos.get(i).getNome());
-                                                intent.putExtra("email", clinObjetos.get(i).getEmail() );
-                                                intent.putExtra("id", clinObjetos.get(i).getId() );
-                                                intent.putExtra("endereco", clinObjetos.get(i).getEndereco() );
-                                                intent.putExtra("telefone", clinObjetos.get(i).getTelefone() );
-                                                intent.putExtra("cnpj", clinObjetos.get(i).getCnpj() );
-                                                intent.putExtra("especialidade", clinObjetos.get(i).getEspecialidade() );
-                                                intent.putExtra("numRegistro", clinObjetos.get(i).getCnpj() );
+                                                intent.putExtra("nome", clinObjetos.get(j).getNome());
+                                                intent.putExtra("email", clinObjetos.get(j).getEmail());
+                                                intent.putExtra("id", clinObjetos.get(j).getId());
+                                                intent.putExtra("endereco", clinObjetos.get(j).getEndereco());
+                                                intent.putExtra("telefone", clinObjetos.get(j).getTelefone());
+                                                intent.putExtra("cnpj", clinObjetos.get(j).getCnpj());
+                                                intent.putExtra("especialidade", clinObjetos.get(j).getEspecialidade());
+                                                intent.putExtra("numRegistro", clinObjetos.get(j).getCnpj());
 
+                                                intent.putExtra("horaAbrir", clinObjetos.get(j).getHoraAbrir());
+                                                intent.putExtra("horaFechar", clinObjetos.get(j).getHoraFechar());
 
-                                                intent.putExtra("horaAbrir",clinObjetos.get(i).getHoraAbrir());
-                                                intent.putExtra("horaFechar",clinObjetos.get(i).getHoraFechar());
-
-                                                intent.putExtra("cliente","clinica");
-                                                intent.putExtra("classe",Clinica.class);
+                                                intent.putExtra("cliente", "clinica");
+                                                intent.putExtra("classe", Clinica.class);
                                                 startActivity(intent);
                                             }
                                         }
@@ -234,13 +234,14 @@ public class BuscaGeralActivity extends AppCompatActivity {
                                     }
                                 });
                                 break;
-                            case("Hospitais"):
-                                //Log.i("FILTRO",filtragem);
+                            case ("Hospitais"):
                                 firebase.child("hospitais").addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-
+                                        listaAuxiliar.clear();
+                                        listaNomes.clear();
+                                        profObjetos.clear();
                                         if (dataSnapshot.getValue() != null) {
                                             //hospitais = hospitalDB.buscarDados(dataSnapshot,hospitais);
                                             //hospitais.clear();
@@ -249,6 +250,8 @@ public class BuscaGeralActivity extends AppCompatActivity {
                                                 String nome = h.getNome();
                                                 hospObjetos.add(h);
                                                 listaAuxiliar.add(nome);
+                                                listaNomes.add(nome);//adiciona o nome do profissional p em listaNomes
+
                                             }
                                             adapter.notifyDataSetChanged();
                                         }
@@ -268,22 +271,20 @@ public class BuscaGeralActivity extends AppCompatActivity {
 
                                         Intent intent = new Intent(BuscaGeralActivity.this, PerfilCliente.class);
 
-                                        for(int j = 0; j < hospObjetos.size();j++){
-                                            if(hospObjetos.get(j).getNome().equals(listaNomes.get(i))){
-                                                Log.i("VALOR",hospObjetos.get(j).getNome() + ":"+ listaNomes.get(i));
+                                        for (int j = 0; j < hospObjetos.size(); j++) {
+                                            if (hospObjetos.get(j).getNome().equals(listaNomes.get(i))) {
 
-                                                intent.putExtra("email", hospObjetos.get(i).getEmail());
-                                                intent.putExtra("nome", hospObjetos.get(i).getNome());
-                                                intent.putExtra("id", hospObjetos.get(i).getId());
-                                                intent.putExtra("endereco", hospObjetos.get(i).getEndereco());
-                                                intent.putExtra("telefone", hospObjetos.get(i).getTelefone());
-                                                intent.putExtra("cnpj", hospObjetos.get(i).getCnpj());
-                                                intent.putExtra("especialidade", hospObjetos.get(i).getEspecialidade() );
-                                                intent.putExtra("numRegistro", hospObjetos.get(i).getCnpj() );
+                                                intent.putExtra("email", hospObjetos.get(j).getEmail());
+                                                intent.putExtra("nome", hospObjetos.get(j).getNome());
+                                                intent.putExtra("id", hospObjetos.get(j).getId());
+                                                intent.putExtra("endereco", hospObjetos.get(j).getEndereco());
+                                                intent.putExtra("telefone", hospObjetos.get(j).getTelefone());
+                                                intent.putExtra("cnpj", hospObjetos.get(j).getCnpj());
+                                                intent.putExtra("especialidade", hospObjetos.get(j).getEspecialidade());
+                                                intent.putExtra("numRegistro", hospObjetos.get(j).getCnpj());
 
-                                                intent.putExtra("horaAbrir",hospObjetos.get(i).getHoraAbrir());
-                                                intent.putExtra("horaFechar",hospObjetos.get(i).getHoraFechar());
-
+                                                intent.putExtra("horaAbrir", hospObjetos.get(j).getHoraAbrir());
+                                                intent.putExtra("horaFechar", hospObjetos.get(j).getHoraFechar());
 
                                                 intent.putExtra("cliente", "hospitais");
                                                 intent.putExtra("classe", Hospital.class);
@@ -295,12 +296,13 @@ public class BuscaGeralActivity extends AppCompatActivity {
                                     }
                                 });
                                 break;
-                            case("Laboratórios"):
-                                //Log.i("FILTRO",filtragem);
+                            case ("Laboratórios"):
                                 firebase.child("laboratorios").addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
+                                        listaAuxiliar.clear();
+                                        listaNomes.clear();
+                                        profObjetos.clear();
 
                                         if (dataSnapshot.getValue() != null) {
                                             for (DataSnapshot dados : dataSnapshot.getChildren()) {
@@ -308,6 +310,8 @@ public class BuscaGeralActivity extends AppCompatActivity {
                                                 String nome = l.getNome();
                                                 labObjetos.add(l);
                                                 listaAuxiliar.add(nome);
+                                                listaNomes.add(nome);//adiciona o nome do profissional p em listaNomes
+
                                             }
 
                                             adapter.notifyDataSetChanged();
@@ -328,20 +332,19 @@ public class BuscaGeralActivity extends AppCompatActivity {
 
                                         Intent intent = new Intent(BuscaGeralActivity.this, PerfilCliente.class);
 
-                                        for(int j = 0; j < labObjetos.size();j++){
-                                            if(labObjetos.get(j).getNome().equals(listaNomes.get(i))){
-                                                Log.i("VALOR",labObjetos.get(j).getNome() + ":"+ listaNomes.get(i));
+                                        for (int j = 0; j < labObjetos.size(); j++) {
+                                            if (labObjetos.get(j).getNome().equals(listaNomes.get(i))) {
 
                                                 intent.putExtra("email", labObjetos.get(j).getEmail());
                                                 intent.putExtra("nome", labObjetos.get(j).getNome());
                                                 intent.putExtra("id", labObjetos.get(j).getId());
                                                 intent.putExtra("endereco", labObjetos.get(j).getEndereco());
                                                 intent.putExtra("telefone", labObjetos.get(j).getTelefone());
-                                                intent.putExtra("especialidade", labObjetos.get(j).getEspecialidade() );
-                                                intent.putExtra("numRegistro", labObjetos.get(j).getCnpj() );
+                                                intent.putExtra("especialidade", labObjetos.get(j).getEspecialidade());
+                                                intent.putExtra("numRegistro", labObjetos.get(j).getCnpj());
 
-                                                intent.putExtra("horaAbrir",labObjetos.get(j).getHoraAbrir());
-                                                intent.putExtra("horaFechar",labObjetos.get(j).getHoraFechar());
+                                                intent.putExtra("horaAbrir", labObjetos.get(j).getHoraAbrir());
+                                                intent.putExtra("horaFechar", labObjetos.get(j).getHoraFechar());
 
                                                 intent.putExtra("cliente", "laboratorios");
                                                 intent.putExtra("classe", Laboratorio.class);
@@ -392,23 +395,87 @@ public class BuscaGeralActivity extends AppCompatActivity {
     }
 
     //percorre os dados que foram carregados no banco, verificando se a string passada existe e atualiza a listview
-    public void buscar(String textoBusca){
+    public void buscar(String textoBusca) {
         System.out.println(textoBusca);
         if (listaNomes != null)
             listaNomes.clear();
-        for(int i=0;i<listaAuxiliar.size();i++){
-            if(listaAuxiliar.get(i).toLowerCase().contains(textoBusca.toLowerCase())){
+        for (int i = 0; i < listaAuxiliar.size(); i++) {
+            if (listaAuxiliar.get(i).toLowerCase().contains(textoBusca.toLowerCase())) {
                 listaNomes.add(listaAuxiliar.get(i));
             }
         }
         adapter.notifyDataSetChanged();
     }
 
+    public void buscaDefault() {
+        textView.setText("Profissionais");
+        firebase.child("profissionais").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() != null) {
+                    for (DataSnapshot dados : dataSnapshot.getChildren()) {
+                        Profissional p = dados.getValue(Profissional.class);//retorna cada objeto da consulta em p
+                        String nome = p.getNome();
+                        profObjetos.add(p);//adiciona o profissional p em profObjetos
+                        listaNomes.add(nome);//adiciona o nome do profissional p em listaNomes
+                        listaAuxiliar.add(nome);//adiciona o nome do profissional p em listaNomes
+                    }
+                    //adapter.notifyDataSetChanged();//notifica ao adapter as mudanças ocorridas
+                    adapter.notifyDataSetChanged();
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    public void listviewDefault() {
+        // método que pega o click da listview
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                Intent intent = new Intent(BuscaGeralActivity.this, PerfilCliente.class);
+
+                for (int j = 0; j < profObjetos.size(); j++) {
+                    if (profObjetos.get(j).getNome().equals(listaNomes.get(i))) {
+
+                        intent.putExtra("email", profObjetos.get(j).getEmail());
+                        intent.putExtra("nome", profObjetos.get(j).getNome());
+                        intent.putExtra("id", profObjetos.get(j).getId());
+                        intent.putExtra("telefone", profObjetos.get(j).getTelefone());
+                        intent.putExtra("endereco", profObjetos.get(j).getEndereco());
+                        intent.putExtra("especialidade", profObjetos.get(j).getEspecialidade());
+                        intent.putExtra("formacao", profObjetos.get(j).getFormacao());
+                        intent.putExtra("numRegistro", profObjetos.get(j).getId());
+
+                        intent.putExtra("horaAbrir", profObjetos.get(j).getHoraAbrir());
+                        intent.putExtra("horaFechar", profObjetos.get(j).getHoraFechar());
+
+                        intent.putExtra("cliente", "profissionais");
+                        intent.putExtra("classe", Profissional.class);
+                        startActivity(intent);
+                    }
+                }
+
+
+            }
+        });
+    }
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) { //método para finalizar a activity caso seja apertado a setinha de voltar
-        if(item.getItemId() == android.R.id.home)
+        if (item.getItemId() == android.R.id.home)
             finish();
         return super.onOptionsItemSelected(item);
     }
+
+
 }
 
