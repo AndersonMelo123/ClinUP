@@ -263,6 +263,7 @@ public class MapaFragment extends Fragment implements
                 goToBuscaActivity();
             }
         });
+
         return mView;
     }
 
